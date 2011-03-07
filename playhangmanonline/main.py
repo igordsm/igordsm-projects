@@ -26,6 +26,8 @@ import os
 import datetime
 import string
 
+from chat_handler import ChatGameHandler
+
 class UserStatistics(db.Model):
     player = db.UserProperty()
     games_played = db.IntegerProperty()
@@ -35,6 +37,10 @@ class UserStatistics(db.Model):
     @staticmethod
     def add_to_user(user, win=True, xmpp=False):
         pass
+    
+class Word(db.Model):
+    word = db.StringProperty()
+    hint = db.StringProperty(default='')
     
 class Game(db.Model):
     player = db.UserProperty()
@@ -52,10 +58,12 @@ class Game(db.Model):
             self.right_letters += letter
         if len(self.wrong_letters) > 5:
             self.finished = True
-            #perdeu
         if len(self.right_letters) == len(set(self.word)):
             self.finished = True
         self.put()
+        
+    def won(self):
+        return self.finished and len(self.right_letters) == len(set(self.word))
     
     @staticmethod
     def get_last_game_from(user):
@@ -66,54 +74,19 @@ class IndexHandler(webapp.RequestHandler):
     def get(self):
         self.response.out.write(template.render(os.path.dirname(__file__) + "/templates/index.html", {}))
 
+
+class GameLetterHandler(webapp.RequestHandler):
+    def get(self, game_id, letter):
+        self.response.out.write('YEAH' + letter)
+        g = Game.get_by_id(game_id)
+        g.try_letter(letter)
+        #return game state
         
-class ChatGameHandler(webapp.RequestHandler):
-    def __send_game_state(self, g, msg):
-        m = u'    ____\n'
-        m+= u'   |   |\n'
-        m+= u'   |   '
-        if len(g.wrong_letters) >= 1: m+= u'0'
-        m+= '\n'
-        m+= u'   |   '
-        if len(g.wrong_letters) >= 2: m+= u'/'
-        if len(g.wrong_letters) >= 3: m+= u'|'
-        if len(g.wrong_letters) >= 4: m+= u'\\'
-        m+= '\n'
-        m+= u'   |   '
-        if len(g.wrong_letters) >= 5: m+= u'/ '
-        if len(g.wrong_letters) > 5: m+= u'\\'
-        m+= '\n'
-        m+= '__|__\n'
-        msg.reply(m)
-        m = ''
-        for c in g.word:
-            if c in g.right_letters:
-                m += c + ' '
-            else:
-                m += '__ '
-        msg.reply(m + '\n')
-        msg.reply('Letters tried: ' + g.wrong_letters)
-        
-    def post(self):
-        msg = xmpp.Message(self.request.POST)
-        curr = Game.get_last_game_from(users.User(msg.sender))
-        if curr:
-            letter = [l for l in msg.body.lower() if l in string.ascii_lowercase]
-            if len(letter) > 0:
-                g.try_letter(letter[0])
-            self.__send_game_state(curr, msg)
-            if g.finished:
-                msg.reply(u'You Lost')
-        else:
-            if msg.body.lower() == 'new game' or msg.body.lower() == 'yes':
-                g = Game(word='bla', player=users.User(msg.sender), using_xmpp=True)
-                g.save()
-                msg.reply(u'New Game started\n')
-                self.__send_game_state(g, msg)
         
 def main():
     application = webapp.WSGIApplication([('/', IndexHandler),
-                                          ('/_ah/xmpp/message/chat/', ChatGameHandler)],
+                                          ('/_ah/xmpp/message/chat/', ChatGameHandler),
+                                          (r'/([0-9]*)/try_letter/([a-z])', GameLetterHandler)],
                                          debug=True)
     util.run_wsgi_app(application)
 
