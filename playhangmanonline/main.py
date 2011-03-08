@@ -27,48 +27,7 @@ import datetime
 import string
 
 from chat_handler import ChatGameHandler
-
-class UserStatistics(db.Model):
-    player = db.UserProperty()
-    games_played = db.IntegerProperty()
-    games_over_xmpp = db.IntegerProperty()
-    times_hanged = db.IntegerProperty()
-    
-    @staticmethod
-    def add_to_user(user, win=True, xmpp=False):
-        pass
-    
-class Word(db.Model):
-    word = db.StringProperty()
-    hint = db.StringProperty(default='')
-    
-class Game(db.Model):
-    player = db.UserProperty()
-    word = db.StringProperty()
-    wrong_letters = db.StringProperty(default='')
-    right_letters = db.StringProperty(default='')
-    using_xmpp = db.BooleanProperty(default=False)
-    date = db.DateTimeProperty(auto_now_add=True)
-    finished = db.BooleanProperty(default=False)
-    
-    def try_letter(self, letter):
-        if not letter in self.wrong_letters and not letter in self.word:
-            self.wrong_letters += letter
-        if letter in self.word and not letter in self.right_letters:
-            self.right_letters += letter
-        if len(self.wrong_letters) > 5:
-            self.finished = True
-        if len(self.right_letters) == len(set(self.word)):
-            self.finished = True
-        self.put()
-        
-    def won(self):
-        return self.finished and len(self.right_letters) == len(set(self.word))
-    
-    @staticmethod
-    def get_last_game_from(user):
-        all_from_user = Game.all().filter('player =', user).filter('finished =', False)
-        return all_from_user.get()
+from models import *
     
 class IndexHandler(webapp.RequestHandler):
     def get(self):
@@ -77,16 +36,32 @@ class IndexHandler(webapp.RequestHandler):
 
 class GameLetterHandler(webapp.RequestHandler):
     def get(self, game_id, letter):
-        self.response.out.write('YEAH' + letter)
         g = Game.get_by_id(game_id)
         g.try_letter(letter)
-        #return game state
+        s = "{wrong: '" + g.wrong_letters + "', right: '" + g.right_letters + "', word: '" + g.word.word + "'}"
+        self.response.out(s)
+        
+class GameHandler(webapp.RequestHandler):
+    def get(self):
+        w = Word.random()
+        #w.put()
+        g = Game(word=w, player=users.User(msg.sender), using_xmpp=False)
+        g.save()
+    
+    def post(self):
+        game_id = self.request.get('game_id')
+        letter = self.request.get('letter')
+        g = Game.get_by_id(game_id)
+        g.try_letter(letter)
+        s = "{wrong: '" + g.wrong_letters + "', right: '" + g.right_letters + "', word: '" + g.word.word + "'}"
+        self.response.out.write(s)
         
         
 def main():
     application = webapp.WSGIApplication([('/', IndexHandler),
                                           ('/_ah/xmpp/message/chat/', ChatGameHandler),
-                                          (r'/([0-9]*)/try_letter/([a-z])', GameLetterHandler)],
+                                          (r'/([0-9]*)/try_letter/([a-z])', GameLetterHandler),
+                                          ('/play/', GameHandler)],
                                          debug=True)
     util.run_wsgi_app(application)
 

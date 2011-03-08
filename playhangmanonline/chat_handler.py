@@ -9,6 +9,8 @@ import os
 import datetime
 import string
 
+from models import *
+
 class ChatGameHandler(webapp.RequestHandler):
     def __send_game_state(self, g, msg):
         m = u'    ____\n'
@@ -28,7 +30,7 @@ class ChatGameHandler(webapp.RequestHandler):
         m+= '__|__\n'
         msg.reply(m)
         m = ''
-        for c in g.word:
+        for c in g.word.word:
             if c in g.right_letters:
                 m += c + ' '
             else:
@@ -40,19 +42,27 @@ class ChatGameHandler(webapp.RequestHandler):
         msg = xmpp.Message(self.request.POST)
         curr = Game.get_last_game_from(users.User(msg.sender))
         if curr:
-            letter = [l for l in msg.body.lower() if l in string.ascii_lowercase]
-            if len(letter) > 0:
-                curr.try_letter(letter[0])
-            self.__send_game_state(curr, msg)
-            if curr.finished:
-                if curr.won():
-                    msg.reply(u'You won!')
-                else:
-                    msg.reply(u'You Lost')
+            if msg.body.lower().find('hint') >= 0:
+                msg.reply(curr.word.hint)
+            else:
+                letter = [l for l in msg.body.lower() if l in string.ascii_lowercase]
+                if len(letter) > 0:
+                    curr.try_letter(letter[0])
+                self.__send_game_state(curr, msg)
+                if curr.finished:
+                    if curr.won():
+                        msg.reply(u'You won!')
+                    else:
+                        msg.reply(u'You Lost')
+                    UserStatistics.game_end(users.User(msg.sender), curr.won())
         else:
             if msg.body.lower() == 'new game' or msg.body.lower() == 'yes':
-                g = Game(word='bla', player=users.User(msg.sender), using_xmpp=True)
+                w = Word.random()
+                #w = Word(word='turtle', hint='animal')
+                #w.put()
+                g = Game(word=w, player=users.User(msg.sender), using_xmpp=True)
                 g.save()
+                UserStatistics.game_begin(users.User(msg.sender), True)
                 msg.reply(u'New Game started\n')
                 self.__send_game_state(g, msg)
                 

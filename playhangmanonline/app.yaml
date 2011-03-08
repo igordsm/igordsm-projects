@@ -1,9 +1,12 @@
 application: playhangmanonline
-version: 2
+version: 3
 runtime: python
 api_version: 1
 
 handlers:
+- url: /js
+  static_dir: js
+  
 - url: .*
   script: main.py
 
@@ -12,3 +15,4 @@ inbound_services:
 
 builtins:
 - remote_api: on
+- datastore_admin: on
