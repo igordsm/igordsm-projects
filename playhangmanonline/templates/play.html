@@ -1,8 +1,46 @@
 <html>
 <head>
-	<script src="/js/game.js" />
+	<script type="text/javascript"> 
+		game_link = "{{ link }}";
+	</script>
+	<script type="text/javascript" src="/js/game.js"> 
+	</script>
+	<style>
+        #content {
+            margin: 0px auto;
+            width: 300px;
+        }
+		
+		#game_state {
+			text-align: left;
+			font-family: courier;
+			font-size: 20pt;
+		}
+		
+		#win {
+			display: none;
+		}
+		
+				
+		#loose {
+			display: none;
+		}
+		
+		#play_new_game {
+			text-align: center;
+			display: none;
+		}
+    </style>
 </head>
-<body>
-
+<body onload="init();">
+    <div id="content">
+        <pre><div id="game_state">{{game_state}}</div></pre> <p>
+        <div id="buckets">{{buckets}}</div> <p>
+		<div id="wrong_letters"> Letters tried: <span id="l">{{ wrong_letters }}</span> </div> <p>
+		<div id="alphabet"> </div>
+		<div id="win"> You won! </div>
+		<div id="loose"> You lost! </div>
+		<div id="play_new_game"> <a href="/play/">Play another game!</a> </div>
+    </div>
 </body>
 </html>
