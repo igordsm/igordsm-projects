@@ -1,0 +1,24 @@
+#content {
+    margin: 0px auto;
+    width: 300px;
+}
+
+#game_state {
+    text-align: left;
+    font-family: courier;
+    font-size: 20pt;
+}
+
+#win {
+    display: none;
+}
+
+        
+#loose {
+    display: none;
+}
+
+#play_new_game {
+    text-align: center;
+    display: none;
+}

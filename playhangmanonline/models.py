@@ -55,9 +55,9 @@ class Game(db.Model):
     finished = db.BooleanProperty(default=False)
     
     def try_letter(self, letter):
-        if not letter in self.wrong_letters and not letter in self.word.word:
+        if letter and not letter in self.wrong_letters and not letter in self.word.word:
             self.wrong_letters += letter
-        if letter in self.word.word and not letter in self.right_letters:
+        if letter and letter in self.word.word and not letter in self.right_letters:
             self.right_letters += letter
         if len(self.wrong_letters) > 5:
             self.finished = True

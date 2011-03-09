@@ -39,6 +39,9 @@ class GameIndex(webapp.RequestHandler):
 
 
 class GameLetterHandler(webapp.RequestHandler):
+    def get(self, game_id):
+        self.get(game_id, '')
+        
     def get(self, game_id, letter):
         g = Game.get_by_id(db.Key(game_id).id())
         if letter and not g.finished:
@@ -65,10 +68,10 @@ class GameLetterHandler(webapp.RequestHandler):
             else:
                 b += '__ '
         self.response.out.write(template.render(os.path.dirname(__file__) + "/templates/play.html", 
-			{'game_state': m, 
-			'buckets': b, 
-			'wrong_letters': g.wrong_letters,
-			'link': self.request.uri[:-1]}))
+            {'game_state': m, 
+            'buckets': b, 
+            'wrong_letters': g.wrong_letters,
+            'link': self.request.uri[:-1]}))
 
 class GameHandler(webapp.RequestHandler):
     def get(self):
@@ -76,7 +79,7 @@ class GameHandler(webapp.RequestHandler):
             w = Word.random()
             g = Game(word=w, player=users.get_current_user(), using_xmpp=False)
             g.put()
-            self.redirect(str(g.key()) + '/try_letter/')
+            self.redirect('/' + str(g.key()) + '/try_letter/')
         else:
             self.redirect(users.create_login_url(self.request.uri))
             
@@ -98,7 +101,7 @@ class AjaxGameHandler(webapp.RequestHandler):
 def main():
     application = webapp.WSGIApplication([('/', IndexHandler),
                                           ('/_ah/xmpp/message/chat/?', ChatGameHandler),
-                                          (r'/([a-zA-Z0-9]*)/try_letter/([a-z])?', GameLetterHandler),
+                                          (r'/+([a-zA-Z0-9]*)/+try_letter/*([a-z])?', GameLetterHandler),
                                           ('/play/?', GameHandler),
                                           ],
                                          debug=True)
