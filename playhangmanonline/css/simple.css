@@ -22,3 +22,32 @@
     text-align: center;
     display: none;
 }
+
+#alphabet a {
+    padding: 3px;
+    margin: 3px;
+    display: inline-block;
+    width: 15px;
+    background-color: #bdfdbd;
+    border: 2px solid #46c046;
+    border-radius: 4px;
+    -moz-border-radius: 4px;
+    text-align: center;
+    color: #46c046;
+    font-weight: bold;
+    text-decoration:none;
+}
+
+#alphabet span {
+    padding: 3px;
+    margin: 3px;
+    display: inline-block;
+    width: 15px;
+    background-color: #f3b3b3;
+    border: 2px solid #ea4949;
+    border-radius: 4px;
+    -moz-border-radius: 4px;
+    text-align: center;
+    color: #ea4949;
+    font-weight: bold;
+}
