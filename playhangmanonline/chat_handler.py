@@ -58,8 +58,6 @@ class ChatGameHandler(webapp.RequestHandler):
         else:
             if msg.body.lower() == 'new game' or msg.body.lower() == 'yes':
                 w = Word.random()
-                #w = Word(word='turtle', hint='animal')
-                #w.put()
                 g = Game(word=w, player=users.User(msg.sender), using_xmpp=True)
                 g.save()
                 UserStatistics.game_begin(users.User(msg.sender), True)

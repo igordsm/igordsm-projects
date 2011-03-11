@@ -1,11 +1,16 @@
 <html>
 <head>
 	<script type="text/javascript"> 
-		game_key = "{{ key }}";
-        word = "{{ word }}";
-        hint = "{{ hint }}";
+        Game = {
+		game_key: "{{ key }}",
+        word: "{{ word }}",
+        hint: "{{ hint }}",
+        wrong_letters: '',
+        right_letters: '',
+        finished: false};
 	</script>
     <script type="text/javascript" src="/js/jquery.js"></script>
+    <script type="text/javascript" src="/js/jquery.simplemodal.js"></script>
 	<script type="text/javascript" src="/js/game.js"> </script>
 	
 	<link rel="stylesheet" media="screen" type="text/css" title="Simple UI" href="/css/simple.css" /> 
@@ -13,12 +18,20 @@
 <body>
     <div id="content">
         <pre><div id="game_state">{{game_state}}</div></pre> <p>
-        <div id="buckets">{{buckets}}</div> <p>
-		<div id="wrong_letters"> Letters tried: <span id="l">{{ wrong_letters }}</span> </div> <p>
-		<div id="alphabet"> <a href="/play/">a</a> </div>
-		<div id="win"> You won! </div>
-		<div id="loose"> You lost! </div>
-		<div id="play_new_game"> <a href="/play/">Play another game!</a> </div>
+        
+        <div id="buckets"> </div> <p>
+		
+        <div id="wrong_letters"> Letters tried: <span> </span> </div> <p>
+		
+        
+        <div id="alphabet"> <a href="/play/">a</a> </div>
+		
+        <div id="end_game">
+            <div id="win"> You won! </div>
+            <div id="lose"> You lost! </div>
+            <div id="play_new_game"> <a href="/play/">Play another game!</a> </div>
+            
+        </div>
     </div>
 </body>
 </html>

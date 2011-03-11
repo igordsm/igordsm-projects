@@ -1,20 +1,6 @@
 #coding: utf-8
 #!/usr/bin/env python
-#
-# Copyright 2007 Google Inc.
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-#
+
 from google.appengine.ext import webapp
 from google.appengine.ext import db
 from google.appengine.api import xmpp
@@ -74,43 +60,42 @@ class GameLetterHandler(webapp.RequestHandler):
             'wrong_letters': g.wrong_letters,
             'link': link}))
 
-class NewGameHandler(webapp.RequestHandler):
+class GameHandler(webapp.RequestHandler):
     def get(self):
         if users.get_current_user():
-            w = Word.random()
-            g = Game(word=w, player=users.get_current_user(), using_xmpp=False)
-            g.put()
-            self.redirect('/play/' + str(g.key())) 
-        else:
-            self.redirect(users.create_login_url(self.request.uri))
-            
-            
-class GameHandler(webapp.RequestHandler):
-    def get(self, game_key):
-        if users.get_current_user():
-            g = Game.get_by_id(db.Key(game_key).id())
+            curr = Game.get_last_game_from(users.get_current_user())
+            if not curr:
+                w = Word.random()
+                curr = Game(word=w, player=users.get_current_user(), using_xmpp=False)
+                curr.put()
+                UserStatistics.game_begin(users.get_current_user())
             self.response.out.write(template.render(os.path.dirname(__file__) + "/templates/play.html", 
-            {'key': game_key,
-             'word': g.word.word,
-             'hint': g.word.hint
+            {'key': str(curr.key()),
+             'word': curr.word.word,
+             'hint': curr.word.hint
             }))
         else:
             self.redirect(users.create_login_url(self.request.uri))
-    
-    def post(self, game_key):
+
+    def post(self):
         wrong_letters = self.request.get('wrong_letters')
+        right_letters = self.request.get('right_letters')
+        game_key = self.request.get('game_key')
         g = Game.get_by_id(db.Key(game_key).id())
-        g.try_letter(letter)
-        s = "{wrong: '" + g.wrong_letters + "', right: '" + g.right_letters + "', word: '" + g.word.word + "'}"
-        self.response.out.write(s)
-    
-        
-        
+        if g:
+            g.finished = True
+            g.wrong_letters = wrong_letters
+            g.right_letters = right_letters
+            g.put()
+            UserStatistics.game_end(users.get_current_user(), g.won())
+        else:
+            pass
+                        
+            
 def main():
     application = webapp.WSGIApplication([('/', IndexHandler),
                                           ('/_ah/xmpp/message/chat/?', ChatGameHandler),
-                                          ('/play/?', NewGameHandler),
-                                          ('/play/+([a-zA-Z0-9]*)/?', GameHandler),
+                                          ('/play/?', GameHandler),
                                           ],
                                          debug=True)
     util.run_wsgi_app(application)

@@ -66,7 +66,7 @@ class Game(db.Model):
         self.put()
         
     def won(self):
-        return self.finished and len(self.right_letters) == len(set(self.word.word))
+        return self.finished and len(set(self.right_letters)) == len(set(self.word.word))
     
     @staticmethod
     def get_last_game_from(user):

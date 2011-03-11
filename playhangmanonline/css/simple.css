@@ -1,3 +1,6 @@
+#simplemodal-overlay {background-color:#000;}
+#simplemodal-container {}
+
 #content {
     margin: 0px auto;
     width: 500px;
@@ -13,11 +16,11 @@
     display: none;
 }
         
-#loose {
+#lose {
     display: none;
 }
 
-#play_new_game {
+#end_game {
     text-align: center;
     display: none;
 }
@@ -31,6 +34,7 @@
     margin: 3px;
     display: inline-block;
     width: 15px;
+    height: 20px;
     border: 2px solid #46c046;
     background-color: #bdfdbd;
     border-radius: 4px;
@@ -38,6 +42,16 @@
     text-align: center;
     color: #46c046;
     font-weight: bold;
+}
+
+.empty_bucket {
+    border: 2px solid #ea4949;
+    background-color: #f3b3b3;
+    color: #ea4949;
+}
+
+.right_bucket {
+
 }
 
 .used_letter {
