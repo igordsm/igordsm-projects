@@ -67,11 +67,12 @@ class GameLetterHandler(webapp.RequestHandler):
                 b += c + ' '
             else:
                 b += '__ '
+        link = '/'.join(self.request.uri.split('/')[:-1])
         self.response.out.write(template.render(os.path.dirname(__file__) + "/templates/play.html", 
             {'game_state': m, 
             'buckets': b, 
             'wrong_letters': g.wrong_letters,
-            'link': self.request.uri[:-1]}))
+            'link': link}))
 
 class GameHandler(webapp.RequestHandler):
     def get(self):

@@ -1,4 +1,6 @@
 
+
+
 function init() {
 	var links = document.getElementById("alphabet");
 	var wrong = document.getElementById("l").innerHTML || "";
