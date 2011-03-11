@@ -74,36 +74,43 @@ class GameLetterHandler(webapp.RequestHandler):
             'wrong_letters': g.wrong_letters,
             'link': link}))
 
-class GameHandler(webapp.RequestHandler):
+class NewGameHandler(webapp.RequestHandler):
     def get(self):
         if users.get_current_user():
             w = Word.random()
             g = Game(word=w, player=users.get_current_user(), using_xmpp=False)
             g.put()
-            self.redirect('/' + str(g.key()) + '/try_letter/')
+            self.redirect('/play/' + str(g.key())) 
         else:
             self.redirect(users.create_login_url(self.request.uri))
             
             
-class AjaxGameHandler(webapp.RequestHandler):
-    def get(self):
-        w = Word.random()
-        self.response.out.write("{word: '" + w.word + "', hint: '" + w.hint + "'}")
-        
-    def post(self):
-        game_id = self.request.get('game_id')
-        letter = self.request.get('letter')
-        g = Game.get_by_id(game_id)
+class GameHandler(webapp.RequestHandler):
+    def get(self, game_key):
+        if users.get_current_user():
+            g = Game.get_by_id(db.Key(game_key).id())
+            self.response.out.write(template.render(os.path.dirname(__file__) + "/templates/play.html", 
+            {'key': game_key,
+             'word': g.word.word,
+             'hint': g.word.hint
+            }))
+        else:
+            self.redirect(users.create_login_url(self.request.uri))
+    
+    def post(self, game_key):
+        wrong_letters = self.request.get('wrong_letters')
+        g = Game.get_by_id(db.Key(game_key).id())
         g.try_letter(letter)
         s = "{wrong: '" + g.wrong_letters + "', right: '" + g.right_letters + "', word: '" + g.word.word + "'}"
         self.response.out.write(s)
+    
         
         
 def main():
     application = webapp.WSGIApplication([('/', IndexHandler),
                                           ('/_ah/xmpp/message/chat/?', ChatGameHandler),
-                                          (r'/+([a-zA-Z0-9]*)/+try_letter/*([a-z])?', GameLetterHandler),
-                                          ('/play/?', GameHandler),
+                                          ('/play/?', NewGameHandler),
+                                          ('/play/+([a-zA-Z0-9]*)/?', GameHandler),
                                           ],
                                          debug=True)
     util.run_wsgi_app(application)
