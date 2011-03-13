@@ -1,6 +1,7 @@
-word,hint
-horse,animal
-elephant,animal
-chair,furniture
-the matrix,movie
-turtles,animal
+word,key,hint
+turtle,19001,animal
+whale,20001,animal
+horse,24003,animal
+elephant,24004,animal
+chair,24005,furniture
+table,24006,furniture
