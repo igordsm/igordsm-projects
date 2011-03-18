@@ -1,5 +1,4 @@
 
-
 function create_letters() {
     var letters = 'abcdefghijklmnopqrstuvxywz';
 	var finalHTML = '';
@@ -61,6 +60,7 @@ function hang_more(letter) {
     if (Game.wrong_letters.length > 5) {
         game_finished(false);
     }
+	$('#game_state img').attr('src', '/img/' + Game.wrong_letters.length.toString() + 'errors.png');
 }
 
 function display_game_end(element) {

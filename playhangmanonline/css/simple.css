@@ -1,15 +1,17 @@
 #simplemodal-overlay {background-color:#000;}
 #simplemodal-container {}
 
-#content {
-    margin: 0px auto;
-    width: 500px;
+html, body {
+    background-color: #000;
+	width: 600px;
+	height: 600px;
 }
 
-#game_state {
-    text-align: left;
-    font-family: courier;
-    font-size: 20pt;
+#content {
+    margin: 0px auto;
+    width: 600px;
+	height: 600px;
+    background-color: #000;
 }
 
 #win {
