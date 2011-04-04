@@ -29,6 +29,11 @@
     text-align: center;
 }
 
+#stats {
+    float: right;
+    background-color: white;
+}
+
 .letters {
     padding: 3px;
     margin: 3px;
