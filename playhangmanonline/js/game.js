@@ -12,7 +12,7 @@ function create_letters() {
 function create_buckets() {
 	var finalHTML = '';
 	for (var i = 0; i < Game.word.length; i++) {
-        finalHTML += "<span id=\"bucket-" + i +  "\" class=\"letters empty_bucket\"> _ </span>";
+        finalHTML += "<img id=\"bucket-" + i +  "\" src=\"/img/letters/__.png\">";
 	}	
     $('#buckets').html(finalHTML);
 }
@@ -42,7 +42,7 @@ function update_buckets(letter) {
             var b = $('#bucket-' + i);
             b.removeClass('empty_bucket');
             b.addClass('right_bucket');
-            b.html(Game.word[i]);
+            //b.html(Game.word[i]);
             right_buckets++;
         }
     }
