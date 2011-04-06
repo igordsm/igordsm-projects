@@ -3,7 +3,7 @@ function create_letters() {
     var letters = 'abcdefghijklmnopqrstuvxywz';
 	var finalHTML = '';
 	for (var i = 0; i < letters.length; i++) {
-        finalHTML += "<span id=\"" + letters[i] +  "\" class=\"letters\">" + letters[i] + "</span>";
+        finalHTML += "<img id=\"" + letters[i] + "\" class=\"letters\" src=\"/img/letters/" + letters[i] + ".png\">";
 	}	
     $('#alphabet').html(finalHTML);
     $('.letters').click(use_letter);
