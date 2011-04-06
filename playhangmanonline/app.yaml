@@ -5,11 +5,11 @@ api_version: 1
 
 handlers:
 - url: /js
-  static_dir: js
+  static_dir: templates/js
 - url: /css
-  static_dir: css
+  static_dir: templates/css
 - url: /img
-  static_dir: img
+  static_dir: templates/img
 - url: /favicon.ico
   static_files: favicon.ico
   upload: favicon.ico

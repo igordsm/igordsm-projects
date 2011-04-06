@@ -40,9 +40,7 @@ function update_buckets(letter) {
 	for (var i = 0; i < Game.word.length; i++) {
         if (Game.right_letters.indexOf(Game.word[i]) != -1) {
             var b = $('#bucket-' + i);
-            b.removeClass('empty_bucket');
-            b.addClass('right_bucket');
-            //b.html(Game.word[i]);
+            b.attr("src", "/img/letters/" + Game.word[i] + ".png");
             right_buckets++;
         }
     }
