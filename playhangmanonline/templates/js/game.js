@@ -3,7 +3,7 @@ function create_letters() {
     var letters = 'abcdefghijklmnopqrstuvxywz';
 	var finalHTML = '';
 	for (var i = 0; i < letters.length; i++) {
-        finalHTML += "<img id=\"" + letters[i] + "\" class=\"letters\" src=\"/img/letters/" + letters[i] + ".png\">";
+        finalHTML += "<div id=\"" + letters[i] + "\" class=\"letters\"> <img src=\"/img/letters/" + letters[i] + ".png\"> </div>";
 	}	
     $('#alphabet').html(finalHTML);
     $('.letters').click(use_letter);
@@ -20,7 +20,7 @@ function create_buckets() {
 function use_letter() {
     if (Game.finished) return;
     $(this).addClass("used_letter");
-    var letter = $(this).html();
+    var letter = $(this).attr('id');
     if (Game.word.indexOf(letter) != -1) {
         if (Game.right_letters.indexOf(letter) == -1) {
             Game.right_letters += letter;
