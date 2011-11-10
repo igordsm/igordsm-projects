@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<!-- Always force latest IE rendering engine (even in intranet) & Chrome Frame
+		Remove this if you use the .htaccess -->
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+		<title>new_file</title>
+		<meta name="description" content="" />
+		<meta name="generator" content="Studio 3 http://aptana.com/" />
+		<meta name="author" content="Igor" />
+		<meta name="viewport" content="width=device-width; initial-scale=1.0" />
+		<!-- Replace favicon.ico & apple-touch-icon.png in the root of your domain and delete these references -->
+		<link rel="shortcut icon" href="/favicon.ico" />
+		<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+		<style>
+			#robots {
+				border: 1px solid;
+				border-color: #000000;
+			}
+		</style>
+		
+		<script src="processing.js"> </script>
+		<script> 
+			function complete_poly() {
+				var p = Processing.getInstanceById("robots");
+				p.finish_poly();
+			}
+			function set_start_point() {
+				var p = Processing.getInstanceById("robots");
+				p.set_mode("start_point");
+			}
+			
+			function set_end_point() {
+				var p = Processing.getInstanceById("robots");
+				p.set_mode("end_point");
+			}
+			
+			function start() {
+				var p = Processing.getInstanceById("robots");
+				p.start_algorithm();
+			}
+		</script>
+	</head>
+	<body>
+		<div>
+			<header>
+				<h1>Locomoção de Robôs - Grafo de Visibilidade</h1>
+			</header>
+			
+			<canvas data-processing-sources="data_structures.pde polygons.pde sort.pde graph_vis_animation.pde main.pde" id="robots"></canvas>
+			<input type="button" value="Complete Polygon" onclick="complete_poly()"/>
+			<input type="button" value="Set start point" onclick="set_start_point()" />
+			<input type="button" value="Set end point" onclick="set_end_point()" />
+			<input type="button" value="Start!" onclick="start()" />
+			<footer>
+				<p>
+					&copy; Copyright 2011 by Igor
+				</p>
+			</footer>
+		</div>
+	</body>
+</html>
