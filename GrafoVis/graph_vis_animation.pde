@@ -6,7 +6,7 @@ class VisibilityGraphBuildAnimation {
 	int last_point = 0;
 	
 	int frame_count = 0;
-	int max_frame = 60;
+	int max_frame = 30;
 	
 	ArrayList all_points = null;
 	SortOrder so;

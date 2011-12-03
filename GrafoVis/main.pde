@@ -7,6 +7,7 @@ Set sweep_line = null;
 
 int current_point = 0;
 VisibilityGraphBuildAnimation vgba = null;
+Graph paths = null;
 
 void set_mode(String m) {
 	mode = m;
@@ -68,8 +69,14 @@ void check_visibles_vertexes(int point, SortOder so) {
    	vgba.start_animation(current_point, so, sweep_line);
 }
 
-void check_intersections(Edge current_edge) {
+boolean check_intersections(Edge current_edge) {
 	println("Checando interseções de: " + current_edge.toString());
+	for (int i = 0; i < sweep_line.size(); i++) {
+		if (current_edge.crosses(sweep_line.get(i)) == true) {
+			return true;
+		}
+	}
+	return false;
 }
 
 void start_algorithm() {
@@ -80,6 +87,7 @@ void start_algorithm() {
 	all_points.add(end);
 	
 	vgba = new VisibilityGraphBuildAnimation(all_points);
+	paths = new Graph(all_points.size(), all_points);
 	current_point = 0;
 	SortOrder so = sort_around_point(all_points, current_point);
 	check_visibles_vertexes(current_point, so);
@@ -102,6 +110,7 @@ void draw() {
 	
 	
 	if (mode == "build_graph") {
+		paths.draw();
 		vgba.draw();
 		if (vgba.is_finished()) {
 			current_point++;
@@ -114,7 +123,12 @@ void draw() {
 		}
 		if (vgba.changed_edge()) {
 			/* olha se cruza com alguem da linha de varredura */
-			check_intersections(vgba.current_edge());
+			Edge current = vgba.current_edge();
+			boolean intersects = check_intersections(current);
+			
+			if (intersects == false) {
+				paths.add_to_graph(current_point, vgba.so.indexes[vgba.point_counter]);
+			}
 		} else if (vgba.changed_to_update_sweep_line()) {
 			update_sweep_line(vgba.point_counter, vgba.so, vgba.current_edge());
 		}

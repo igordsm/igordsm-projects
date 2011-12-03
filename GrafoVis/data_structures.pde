@@ -53,7 +53,7 @@ class Edge {
 	boolean crosses(Edge e) {
 		boolean t1 = (left(e.p1) && !left(e.p2)) || (left(e.p2) && !left(e.p1));
 		boolean t2 = (e.left(p1) && !e.left(p2)) || (e.left(p2) && !e.left(p1));
-		return t1 && t2;;
+		return t1 && t2;
 	}
 	
 	public void draw() {
@@ -149,6 +149,10 @@ class Set {
 		return edges.get(i);
 	}
 	
+	int size() {
+		return edges.size();
+	}
+	
 	boolean remove(Edge e) {
 		for (int i = 0; i < edges.size(); i++) {
 			if (e.equals(edges.get(i)) == true) {
@@ -186,7 +190,7 @@ class Graph {
 	
 	
 	public void draw() {
-		stroke(255, 0, 0);
+		stroke(255, 255, 0);
 		for (int i = 0; i < this.n; i++) {
 			for (int j = 0; j < this.n; j++) { 
 				if (graph_points[i][j] >= 0) {
@@ -203,6 +207,6 @@ class Graph {
 		Point ip = all_points.get(i);
 		Point jp = all_points.get(j);	
 		double d = dist(ip.x, ip.y, jp.x, jp.y);
-		graph_points = d;
+		graph_points[i][j] = d;
 	}	
 }
