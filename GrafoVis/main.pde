@@ -71,12 +71,21 @@ void check_visibles_vertexes(int point, SortOder so) {
 
 boolean check_intersections(Edge current_edge) {
 	println("Checando interseções de: " + current_edge.toString());
-	for (int i = 0; i < sweep_line.size(); i++) {
-		if (current_edge.crosses(sweep_line.get(i)) == true) {
-			return true;
+	/* verifica se as pontas da aresta current_edge estao em poligonos diferentes ou se sao vizinhos no mesmo poligono. */
+	Point p1 = current_edge.p1;
+	Point p2 = current_edge.p2;
+	println(p2.polygon);
+	println(p1.polygon);
+	if (p2.polygon != p1.polygon) {
+		for (int i = 0; i < sweep_line.size(); i++) {
+			if (current_edge.crosses(sweep_line.get(i)) == true) {
+				return true;
+			}
 		}
+		return false;
+	} else {
+		return true;
 	}
-	return false;
 }
 
 void start_algorithm() {
@@ -133,6 +142,8 @@ void draw() {
 			update_sweep_line(vgba.point_counter, vgba.so, vgba.current_edge());
 		}
 		
+	} else if (mode == "shortest_path") {
+		paths.draw();
 	}
 }
 

@@ -1,6 +1,6 @@
 class Point {
 	public int x, y;
-	
+	public Polygon polygon;	
 	public Edge prev, next;
 	
 	public Point(int x, int y) {
@@ -92,6 +92,7 @@ class Polygon {
 			pnext = (Point) this.points.get(next);
 			pprev = (Point) this.points.get(prev);
 			Point p = (Point) this.points.get(i);
+			p.polygon = this;
 			p.prev = new Edge(pprev, p);
 			p.next = new Edge(p, pnext);
 		}
@@ -207,6 +208,6 @@ class Graph {
 		Point ip = all_points.get(i);
 		Point jp = all_points.get(j);	
 		double d = dist(ip.x, ip.y, jp.x, jp.y);
-		graph_points[i][j] = d;
+		graph_points[i][j] = graph_points[j][i] = d;
 	}	
 }
