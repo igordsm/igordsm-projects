@@ -1,0 +1,7 @@
+import cv
+import sys
+
+
+original = cv.LoadImage(sys.argv[1], cv.CV_LOAD_IMAGE_GRAYSCALE)
+
+
