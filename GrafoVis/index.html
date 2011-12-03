@@ -56,11 +56,12 @@
 				}
 			}
 			
-			function load_default() {
+			function load_last() {
 				/*load_from_JSON('{\"start\": {\"x\" : 10, \"y\": 10}, \"end\": {\"x\" : 300, \"y\": 300}, ' + 
 					' \"polygons\" : [ [{\"x\" : 20, \"y\" : 20}, {\"x\" : 30, \"y\" : 10}, {\"x\" : 30, \"y\" : 30}] ]  }');*/
 					
-				load_from_JSON('{"start":{"x":10,"y":10},"end":{"x":300,"y":300},"polygons":[[{"x":20,"y":20},{"x":30,"y":10},{"x":30,"y":30}],[{"x":206,"y":108},{"x":206,"y":152},{"x":355,"y":97}]]}');
+				//load_from_JSON('{"start":{"x":10,"y":10},"end":{"x":300,"y":300},"polygons":[[{"x":20,"y":20},{"x":30,"y":10},{"x":30,"y":30}],[{"x":206,"y":108},{"x":206,"y":152},{"x":355,"y":97}]]}');
+				load_from_JSON(localStorage['last']);
 			}
 			
 			function save_current() {
@@ -80,7 +81,7 @@
 					}	
 					obj['polygons'].push(poly);
 				}
-				console.log(JSON.stringify(obj));
+				localStorage['last'] = JSON.stringify(obj); 
 			}
 
 		</script>
@@ -96,7 +97,7 @@
 			<input type="button" value="Set start point" onclick="set_start_point()" />
 			<input type="button" value="Set end point" onclick="set_end_point()" />
 			<input type="button" value="Start!" onclick="start()" />
-			<input type="button" value="Load" onclick="load_default();" />
+			<input type="button" value="Load" onclick="load_last();" />
 			<input type="button" value="Save" onclick="save_current();" />
 			<footer>
 				<p>
