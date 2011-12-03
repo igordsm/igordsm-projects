@@ -102,7 +102,6 @@ void draw() {
 		}
 		if (vgba.changed_edge()) {
 			/* olha se cruza com alguem da linha de varredura */
-			println("MUDOU");
 			check_intersections();
 		} else if (vgba.changed_to_update_sweep_line()) {
 			update_sweep_line(vgba.point_counter, vgba.so, vgba.current_edge());
@@ -115,12 +114,21 @@ void mouseClicked() {
 	if (mode == "polygon") {
 		click_polys();
 	} else if (mode == "start_point") {
-		start.x = mouseX;
-		start.y = mouseY;
+		set_start(mouseX, mouseY);
 		mode = "polygon";
 	} else if (mode == "end_point") {
 		end.x = mouseX;
 		end.y = mouseY;
 		mode = "polygon";
 	}
+}
+
+void set_start(int x, int y) {
+	start.x = x;
+	start.y = y;
+}
+
+void set_end(int x, int y) {
+	end.x = x;
+	end.y = y;
 }

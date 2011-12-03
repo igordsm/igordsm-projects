@@ -106,8 +106,7 @@ class VisibilityGraphBuildAnimation {
 				draw_intersections();
 			} else {
 				draw_update_sweep_line();
-			}
-			
+			}			
 		}
 	}
 }
