@@ -6,10 +6,16 @@ class Point {
 	public Point(int x, int y) {
 		this.x = x;
 		this.y = y;
+		this.prev = null;
+		this.next = null;
 	}
 	
 	public String toString() {
 		return "(" + x + "," + y + ")";
+	}
+	
+	public boolean equals(Point o) {
+		return x == o.x && y == o.y;
 	}
 }
 
@@ -33,7 +39,15 @@ class Edge {
 		} else {
 			println("PONTO: " + p + " DIREITA");
 		}*/
-		return (p1.x - p.x)*(p2.y - p.y) - (p1.y - p.y)*(p2.x - p.x) >= 0;
+		return (p1.x - p.x)*(p2.y - p.y) - (p1.y - p.y)*(p2.x - p.x) > 0;
+	}
+	
+	boolean right(Point p) {
+		return (p1.x - p.x)*(p2.y - p.y) - (p1.y - p.y)*(p2.x - p.x) < 0
+	}
+	
+	boolean colinear(Point p) {
+		return (p1.x - p.x)*(p2.y - p.y) - (p1.y - p.y)*(p2.x - p.x) == 0
 	}
 	
 	boolean crosses(Edge e) {
@@ -48,6 +62,10 @@ class Edge {
 	
 	public String toString() {
 		return p1.toString() + "->" + p2.toString();
+	}
+	
+	public boolean equals(Edge e) {
+		return p1 == e.p1 && p2 == e.p2;
 	}
 }
 
@@ -121,22 +139,52 @@ class Set {
 	}
 	
 	boolean remove(Edge e) {
-		Edge deleted = (Edge) this.edges.remove(e);
-		return e == deleted;
+		println("REMOVE!");
+		for (int i = 0; i < edges.size(); i++) {
+			if (e.equals(edges.get(i)) == true) {
+				edges.remove(i);
+				return true;
+			}
+		}
+		return false;
 	}
 }
 
 class Graph {
-	public int[][] graph_points;
+	public double[][] graph_points;
 	public int n;
+	private ArrayList all_points;
 	
-	Graph(int n_vertices) {
+	Graph(int n_vertices, ArrayList all_points) {
 		this.n = n_vertices;
-		this.graph_points = new int[n_vertices][n_vertices];
+		this.graph_points = new double[n_vertices][n_vertices];
 		for (int i = 0; i < this.n; i++) {
 			for (int j = 0; j < this.n; j++) {
 				this.graph_points[i][j] = -1; // Nao existem distancias negativas, logo nao existe a aresta i->j 
 			}
 		}
+		this.all_points = all_points;
 	}
+	
+	
+	public void draw() {
+		stroke(255, 0, 0);
+		for (int i = 0; i < this.n; i++) {
+			for (int j = 0; j < this.n; j++) { 
+				if (graph_points[i][j] >= 0) {
+					Point ip = all_points.get(i);
+					Point jp = all_points.get(j);
+					line(ip.x, ip.y, jp.x, jp.y);
+				}
+			}	
+		}
+	}
+
+
+	public void add_to_graph(int i, int j) {
+		Point ip = all_points.get(i);
+		Point jp = all_points.get(j);	
+		double d = dist(ip.x, ip.y, jp.x, jp.y);
+		graph_points = d;
+	}	
 }

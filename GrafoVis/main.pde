@@ -5,7 +5,7 @@ Point end = new Point(-1, -1);
 ArrayList all_points;
 Set sweep_line = null;
 
-int current_point_for_visgraph = 0;
+int current_point = 0;
 VisibilityGraphBuildAnimation vgba = null;
 
 void set_mode(String m) {
@@ -25,10 +25,26 @@ void init_sweep_line(int point, SortOrder so) {
    	}
 }
 
-void update_sweep_line(int point_so, SortOrder so) {
-	/* remove as arestas que tem point_so como ponto extremo e que estão abaixo da sweep_line */
+void update_sweep_line(int point_counter, SortOrder so, Edge current_edge) {
+	Point next = (Point) all_points.get(so.indexes[point_counter]);
+	Edge e1, e2;
+	e1 = next.prev;
+	e2 = next.next;
+	if (e1 == null || e2 == null) return;
+	Point e1p = e1.p1;
+	Point e2p = e2.p2;
 	
-	/* adiciona as arestas que tem point_so como ponto extremo e que estão acima da sweep_line */ 
+	if (current_edge.right(e1p) == true) {
+		sweep_line.remove(e1);
+	} else {
+		sweep_line.add(e1);
+	}
+	
+	if (current_edge.right(e2p) == true) {
+		sweep_line.remove(e1);
+	} else {
+		sweep_line.add(e2);
+	}
 }
 
 void check_visibles_vertexes(int point, SortOder so) {
@@ -37,10 +53,11 @@ void check_visibles_vertexes(int point, SortOder so) {
 	println("CHECK VERTEX " + point);
 	/* inicializa conjunto com arestas que cruzam com a reta p1 = point */
 	init_sweep_line(point, so);
-   	for (int i = 0; i < all_points.size(); i++) {
-   		Edge sweep = new Edge(all_points.get(point), all_points.get(so.indexes[i]) );
-   	}
-   	vgba.start_animation(current_point_for_visgraph, so, sweep_line);
+   	vgba.start_animation(current_point, so, sweep_line);
+}
+
+void check_intersections() {
+
 }
 
 void start_algorithm() {
@@ -51,9 +68,9 @@ void start_algorithm() {
 	all_points.add(end);
 	
 	vgba = new VisibilityGraphBuildAnimation(all_points);
-	current_point_for_visgraph = 0;
-	SortOrder so = sort_around_point(all_points, current_point_for_visgraph);
-	check_visibles_vertexes(current_point_for_visgraph, so);
+	current_point = 0;
+	SortOrder so = sort_around_point(all_points, current_point);
+	check_visibles_vertexes(current_point, so);
 }
 
 void setup() {
@@ -75,14 +92,22 @@ void draw() {
 	if (mode == "build_graph") {
 		vgba.draw();
 		if (vgba.is_finished()) {
-			current_point_for_visgraph++;
-			if (current_point_for_visgraph < all_points.size()) {
-				SortOrder so = sort_around_point(all_points, current_point_for_visgraph);
-				check_visibles_vertexes(current_point_for_visgraph, so);
+			current_point++;
+			if (current_point < all_points.size()) {
+				SortOrder so = sort_around_point(all_points, current_point);
+				check_visibles_vertexes(current_point, so);
 			} else {
 				set_mode("shortest_path");
 			}
 		}
+		if (vgba.changed_edge()) {
+			/* olha se cruza com alguem da linha de varredura */
+			println("MUDOU");
+			check_intersections();
+		} else if (vgba.changed_to_update_sweep_line()) {
+			update_sweep_line(vgba.point_counter, vgba.so, vgba.current_edge());
+		}
+		
 	}
 }
 
