@@ -10,8 +10,8 @@ void draw_polys() {
 	poly.draw();
 }
 
-void click_polys() {
-	poly.add_point(mouseX, mouseY);
+void click_polys(int x, int y) {
+	poly.add_point(x, y);
 }
 
 void finish_poly() {
@@ -28,4 +28,8 @@ ArrayList get_all_points(ArrayList polys) {
 		all.addAll(p.points);	
 	}
 	return all;
+}
+
+ArrayList get_polys() {
+	return polys;
 }

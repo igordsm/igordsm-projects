@@ -112,13 +112,12 @@ void draw() {
 
 void mouseClicked() {
 	if (mode == "polygon") {
-		click_polys();
+		click_polys(mouseX, mouseY);
 	} else if (mode == "start_point") {
 		set_start(mouseX, mouseY);
 		mode = "polygon";
 	} else if (mode == "end_point") {
-		end.x = mouseX;
-		end.y = mouseY;
+		set_end(mouseX, mouseY);
 		mode = "polygon";
 	}
 }
@@ -131,4 +130,12 @@ void set_start(int x, int y) {
 void set_end(int x, int y) {
 	end.x = x;
 	end.y = y;
+}
+
+Point get_start() {
+	return start;
+}
+
+Point get_end() {
+	return end;
 }
