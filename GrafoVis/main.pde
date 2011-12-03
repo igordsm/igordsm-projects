@@ -16,17 +16,19 @@ void init_sweep_line(int point, SortOrder so) {
 	sweep_line = new Set();
 	Point p1 = all_points.get(point); 
 	Edge e = new Edge(p1, new Point(100000000, p1.y));
+	println("Inicialização da linha de varredura:");
 	for (int i = 0; i < all_points.size(); i++) {
    		Edge sweep = all_points.get(so.indexes[i]).next;
    		if (sweep != null && sweep.crosses(e) == true && sweep.p1 != p1 && sweep.p2 != p1) {
-   			println(sweep);
+   			println("Adicionada aresta: " + sweep.toString());
    			sweep_line.add(sweep);
    		}
    	}
+   	println("FIM");
 }
 
 void update_sweep_line(int point_counter, SortOrder so, Edge current_edge) {
-	Point next = (Point) all_points.get(so.indexes[point_counter]);
+	Point next = current_edge.p2;
 	Edge e1, e2;
 	e1 = next.prev;
 	e2 = next.next;
@@ -34,23 +36,29 @@ void update_sweep_line(int point_counter, SortOrder so, Edge current_edge) {
 	Point e1p = e1.p1;
 	Point e2p = e2.p2;
 	
+	println("Atualizando linha de varredura. Linha de varredura: " + current_edge.toString());
+	println("Aresta 1 " + e1.toString() + " ; Vértice " + e1p.toString());
 	if (current_edge.right(e1p) == true) {
 		sweep_line.remove(e1);
 	} else {
 		sweep_line.add(e1);
 	}
+	println("SWEEP LINE " + sweep_line.toString());
 	
+	println("Aresta 2 " + e2.toString() + " ; Vértice " + e2p.toString());
 	if (current_edge.right(e2p) == true) {
 		sweep_line.remove(e1);
 	} else {
 		sweep_line.add(e2);
 	}
+	println("SWEEP LINE " + sweep_line.toString());
+	println("FIM");
 }
 
 void check_visibles_vertexes(int point, SortOder so) {
 	/* check for visible vertexes from point. 
 	   Add edges for all that are visible and run the animation */ 
-	println("CHECK VERTEX " + point);
+	println("Verificando vértice " + all_points.get(point).toString());
 	/* inicializa conjunto com arestas que cruzam com a reta p1 = point */
 	init_sweep_line(point, so);
    	vgba.start_animation(current_point, so, sweep_line);

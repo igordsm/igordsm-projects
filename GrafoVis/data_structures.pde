@@ -106,14 +106,25 @@ class Polygon {
 		}
 		int n = this.points.size();
 		if (n < 2) return;
+		
+		Font font = loadFont("Arial"); 
+		textFont(font); 
+		
 		for (int i = 0; i < n; i++) {
 			int next = (i + 1) % n;
 			Point p1, p2;
 			p1 = (Point) this.points.get(i);
 			p2 = (Point) this.points.get(next);
 			line(p1.x, p1.y, p2.x, p2.y);
+			
 		}
-	
+		fill(0, 0, 255);
+		for (int i = 0; i < n; i++) {
+			Point p1;
+			p1 = (Point) this.points.get(i);
+			text(p1.toString(), p1.x, p1.y);			
+		}
+
 	}
 
 }
@@ -139,7 +150,6 @@ class Set {
 	}
 	
 	boolean remove(Edge e) {
-		println("REMOVE!");
 		for (int i = 0; i < edges.size(); i++) {
 			if (e.equals(edges.get(i)) == true) {
 				edges.remove(i);
@@ -147,6 +157,14 @@ class Set {
 			}
 		}
 		return false;
+	}
+	
+	String toString() {
+		String r = "[";
+		for (int i = 0; i < edges.size(); i++) {
+			r += edges.get(i).toString() + ", ";
+		}
+		return r + "]";
 	}
 }
 
