@@ -67,13 +67,17 @@ def remove_elements(d3):
     cv2.imwrite('4-rem1.png', d3)
     
     #maiores verticalmente sao eliminados
-    d4 = cv2.morphologyEx(d4, cv2.MORPH_OPEN, cv2.getStructuringElement(cv2.MORPH_RECT, (1, 70), (0, 35)) )
+    d4 = cv2.morphologyEx(d3, cv2.MORPH_OPEN, cv2.getStructuringElement(cv2.MORPH_RECT, (1, 70), (0, 35)) )
     d4 = d3 - sup_reconstruction(d4, d3)
     cv2.imwrite('4-rem2.png', d4)
     #menores Hori sao eliminados
     d5 = cv2.morphologyEx(d4, cv2.MORPH_OPEN, cv2.getStructuringElement(cv2.MORPH_RECT, (100, 1), (50, 0)) )
     cv2.imwrite('4-rem3.png', d5)
-    return d4
+    #maiores Hori sao eliminados
+    d6 = cv2.morphologyEx(d4, cv2.MORPH_OPEN, cv2.getStructuringElement(cv2.MORPH_RECT, (170, 1), (85, 0)) )
+    d6 = d5 - sup_reconstruction(d6, d5)
+    cv2.imwrite('4-rem4.png', d6)
+    return d6
     
 def watershed(resized, d5):
     r, bg = cv2.threshold(cv2.bitwise_not(cv2.dilate(d5, None, iterations=10)), 30, 125, cv2.THRESH_BINARY)
