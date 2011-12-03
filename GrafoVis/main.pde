@@ -37,21 +37,25 @@ void update_sweep_line(int point_counter, SortOrder so, Edge current_edge) {
 	Point e2p = e2.p2;
 	
 	println("Atualizando linha de varredura. Linha de varredura: " + current_edge.toString());
-	println("Aresta 1 " + e1.toString() + " ; Vértice " + e1p.toString());
-	if (current_edge.right(e1p) == true) {
-		sweep_line.remove(e1);
-	} else {
-		sweep_line.add(e1);
-	}
-	println("SWEEP LINE " + sweep_line.toString());
 	
-	println("Aresta 2 " + e2.toString() + " ; Vértice " + e2p.toString());
-	if (current_edge.right(e2p) == true) {
-		sweep_line.remove(e1);
-	} else {
-		sweep_line.add(e2);
+	if (e1.p1 != current_edge.p1 && e1.p2 != current_edge.p1) {
+		println("Aresta 1 " + e1.toString() + " ; Vértice " + e1p.toString());
+		if (current_edge.right(e1p) == true) {
+			sweep_line.remove(e1);
+		} else {
+			sweep_line.add(e1);
+		}
+		println("SWEEP LINE " + sweep_line.toString());
 	}
-	println("SWEEP LINE " + sweep_line.toString());
+	if (e2.p1 != current_edge.p1 && e2.p2 != current_edge.p1) {
+		println("Aresta 2 " + e2.toString() + " ; Vértice " + e2p.toString());
+		if (current_edge.right(e2p) == true) {
+			sweep_line.remove(e2);
+		} else {
+			sweep_line.add(e2);
+		}
+		println("SWEEP LINE " + sweep_line.toString());
+	}
 	println("FIM");
 }
 
@@ -64,8 +68,8 @@ void check_visibles_vertexes(int point, SortOder so) {
    	vgba.start_animation(current_point, so, sweep_line);
 }
 
-void check_intersections() {
-
+void check_intersections(Edge current_edge) {
+	println("Checando interseções de: " + current_edge.toString());
 }
 
 void start_algorithm() {
@@ -110,7 +114,7 @@ void draw() {
 		}
 		if (vgba.changed_edge()) {
 			/* olha se cruza com alguem da linha de varredura */
-			check_intersections();
+			check_intersections(vgba.current_edge());
 		} else if (vgba.changed_to_update_sweep_line()) {
 			update_sweep_line(vgba.point_counter, vgba.so, vgba.current_edge());
 		}
