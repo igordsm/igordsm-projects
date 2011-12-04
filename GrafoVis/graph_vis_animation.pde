@@ -144,25 +144,6 @@ class DijkstraAnimation {
 			frame_count = 0;
 		}
 		
-		// pinta vertices na fila
-		
-		// pinta vertices visitados
-		fill(0, 255, 0);
-		for (int i = 0; i < visited.size(); i++) {
-			Point p = g.all_points.get(visited.get(i));
-			ellipse(p.x, p.y, 5, 5)
-		}
-		// pinta distâncias atuais para cada vertice
-		Font font = loadFont("Arial"); 
-		textFont(font); 
-		
-		fill(255, 0, 255);
-		for (int i = 0; i < g.all_points.size(); i++) {
-			Point p = g.all_points.get(i);
-			int d = ((int) (path_length.get(i) * 100)) / 100;
-			String t = d.toString(); 
-			text(t, p.x - textWidth(t), p.y);
-		}
 		if (dj.is_finished()) {
 			int orig = 1;
 			int dest = dj.path.get(orig);
@@ -175,6 +156,27 @@ class DijkstraAnimation {
 				orig = dest;
 				dest = dj.path.get(dest);
 			} 
+		} else {
+			this.g.draw();
+			// pinta vertices na fila
+			
+			// pinta vertices visitados
+			fill(0, 255, 0);
+			for (int i = 0; i < visited.size(); i++) {
+				Point p = g.all_points.get(visited.get(i));
+				ellipse(p.x, p.y, 5, 5)
+			}
+			// pinta distâncias atuais para cada vertice
+			Font font = loadFont("Arial"); 
+			textFont(font); 
+			
+			fill(255, 0, 255);
+			for (int i = 0; i < g.all_points.size(); i++) {
+				Point p = g.all_points.get(i);
+				int d = ((int) (path_length.get(i) * 100)) / 100;
+				String t = d.toString(); 
+				text(t, p.x - textWidth(t), p.y);
+			}
 		}
 	}
 }

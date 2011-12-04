@@ -146,7 +146,6 @@ void draw() {
 		}
 		
 	} else if (mode == "shortest_path") {
-		paths.draw();
 		dijkstra_anim.draw();
 		if (dijkstra_anim.changed_vertex() && dijkstra.is_finished() == false) {
 			int visited = dijkstra.step();
