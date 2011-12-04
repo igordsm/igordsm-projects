@@ -99,7 +99,7 @@ class Polygon {
 		this.complete = true;
 	}
 	
-	void draw() {
+	void draw(boolean draw_points) {
 		if (this.complete) {
 			stroke(0,0,0);
 		} else {
@@ -107,7 +107,7 @@ class Polygon {
 		}
 		int n = this.points.size();
 		if (n < 2) return;
-		
+				
 		Font font = loadFont("Arial"); 
 		textFont(font); 
 		
@@ -119,13 +119,14 @@ class Polygon {
 			line(p1.x, p1.y, p2.x, p2.y);
 			
 		}
-		fill(0, 0, 255);
-		for (int i = 0; i < n; i++) {
-			Point p1;
-			p1 = (Point) this.points.get(i);
-			text(p1.toString(), p1.x, p1.y);			
+		if (draw_points) {
+			fill(0, 0, 255);
+			for (int i = 0; i < n; i++) {
+				Point p1;
+				p1 = (Point) this.points.get(i);
+				text(p1.toString(), p1.x, p1.y);			
+			}
 		}
-
 	}
 
 }

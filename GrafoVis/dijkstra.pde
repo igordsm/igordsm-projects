@@ -18,17 +18,18 @@ function init_dijkstra() {
 	}
 	path_length.set(0, 0);
 	pq.add(0, 0);
-	println("INITI QWREW");
-	while(!pq.empty()) {
-		dijkstra_step();
-	}
-	println("EXIT dijktra step");
+	println("INICIANDO ALGORITMO DE DIJKSTRA");
 }
 
 function dijkstra_step() {
 	if (finished) return;
 	int current_point = pq.min();	
-	for (int j = 0; j < paths.n_vertices; j++) {
+	if (current_point < 0) {
+		finished = true;
+		return -1;
+	}
+	println("Vertice atual: " + all_points.get(current_point).toString());
+	for (int j = 0; j < paths.n; j++) {
 		if (paths.get(current_point, j) > 0) {
 			double new_path = path_length.get(current_point) + paths.get(current_point, j);
 			if (path_length.get(j) > 0) {
@@ -37,10 +38,12 @@ function dijkstra_step() {
 					pq.update(j, new_path);
 				}
 			} else {
+				println("Novo vértice encontrado: " + all_points.get(j).toString());
 				path_length.set(j, new_path);
 				pq.add(j, path_length.get(j)); 
 			}
 			if (j == dest) finished = true;
 		}
 	} 
+	return current_point;
 }

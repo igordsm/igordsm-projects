@@ -6,7 +6,7 @@ class VisibilityGraphBuildAnimation {
 	int last_point = 0;
 	
 	int frame_count = 0;
-	int max_frame = 30;
+	int max_frame = 10;
 	
 	ArrayList all_points = null;
 	SortOrder so;
@@ -115,15 +115,42 @@ class DijkstraAnimation {
 	
 	Graph g;
 	PriorityQueue pq;
-	ArrayList dist;
+	ArrayList path_length;
+	ArrayList visited;
 	
-	DijkstraAnimation(Graph g, PriorityQueue pq, ArrayList dist) {
+	int frame_count = 0;
+	int max_frame = 30;
+	
+	public DijkstraAnimation(Graph g, PriorityQueue pq, ArrayList path_length) {
 		this.g = g;
 		this.pq = pq;
-		this.dist = dist;
+		this.path_length = path_length;
+		this.visited = new ArrayList();
+		println("SDF");
+	}
+	
+	public boolean changed_vertex() {
+		return frame_count == 0;
+	}
+	
+	public void add_visited_vertex(int i) {
+		this.visited.add(i);
 	}
 	
 	public void draw() {
+		frame_count++;
+		if (frame_count == max_frame) {
+			frame_count = 0;
+		}
 		
+		// pinta vertices na fila
+		
+		// pinta vertices visitados
+		fill(0, 255, 0);
+		/*for (int i = 0; i < visited.size(); i++) {
+			Point p = g.all_points.get(visited.get(i));
+			ellipse(p.x, p.y, 5, 5)
+		}*/
+		// pinta distâncias atuais para cada vertice
 	}
 }
