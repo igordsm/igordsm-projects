@@ -109,7 +109,7 @@ void setup() {
 
 void draw() {
 	background(255);
-	draw_polys(mode == "build_graph");	
+	draw_polys(true);	
 	
 	
 	fill(0, 255, 0);
@@ -128,8 +128,8 @@ void draw() {
 				check_visibles_vertexes(current_point, so);
 			} else {
 				set_mode("shortest_path");
-				dijkstra = new DijkstraAnimation(paths, pq, path_length);
 				init_dijkstra();
+				dijkstra = new DijkstraAnimation(paths, pq, path_length);
 			}
 		}
 		if (vgba.changed_edge()) {
@@ -149,7 +149,9 @@ void draw() {
 		dijkstra.draw();
 		if (dijkstra.changed_vertex()) {
 			int visited = dijkstra_step();
-			dijkstra.add_visited_vertex(visited);
+			if (visited > 0) { 
+				dijkstra.add_visited_vertex(visited);
+			}
 		}
 	}
 }

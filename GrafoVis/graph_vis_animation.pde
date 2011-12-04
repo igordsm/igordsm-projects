@@ -126,7 +126,6 @@ class DijkstraAnimation {
 		this.pq = pq;
 		this.path_length = path_length;
 		this.visited = new ArrayList();
-		println("SDF");
 	}
 	
 	public boolean changed_vertex() {
@@ -147,10 +146,20 @@ class DijkstraAnimation {
 		
 		// pinta vertices visitados
 		fill(0, 255, 0);
-		/*for (int i = 0; i < visited.size(); i++) {
+		for (int i = 0; i < visited.size(); i++) {
 			Point p = g.all_points.get(visited.get(i));
 			ellipse(p.x, p.y, 5, 5)
-		}*/
+		}
 		// pinta distâncias atuais para cada vertice
+		Font font = loadFont("Arial"); 
+		textFont(font); 
+		
+		fill(255, 0, 255);
+		for (int i = 0; i < g.all_points.size(); i++) {
+			Point p = g.all_points.get(i);
+			int d = ((int) (path_length.get(i) * 100)) / 100;
+			String t = d.toString(); 
+			text(t, p.x - textWidth(t), p.y);
+		}
 	}
 }
