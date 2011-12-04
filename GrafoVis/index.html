@@ -60,8 +60,13 @@
 				/*load_from_JSON('{\"start\": {\"x\" : 10, \"y\": 10}, \"end\": {\"x\" : 300, \"y\": 300}, ' + 
 					' \"polygons\" : [ [{\"x\" : 20, \"y\" : 20}, {\"x\" : 30, \"y\" : 10}, {\"x\" : 30, \"y\" : 30}] ]  }');*/
 					
-				//load_from_JSON('{"start":{"x":10,"y":10},"end":{"x":300,"y":300},"polygons":[[{"x":20,"y":20},{"x":30,"y":10},{"x":30,"y":30}],[{"x":206,"y":108},{"x":206,"y":152},{"x":355,"y":97}]]}');
-				load_from_JSON(localStorage['last']);
+				//load_from_JSON('{\"start\":{\"x\":10,\"y\":10},\"end\":{\"x\":300,\"y\":300},"polygons":[[{\"x\":20,\"y\":20},{\"x\":30,\"y\":10},{\"x\":30,\"y\":30}],[{\"x\":206,\"y\":108},{\"x\":206,\"y\":152},{\"x\":355,\"y\":97}]]}');
+				if (localStorage['last'] != "undefined" && localStorage['last'] != "" && localStorage['last'] != null &&
+					localStorage['last'] != undefined) {
+					load_from_JSON(localStorage['last']);
+				} else {
+					load_from_JSON("{\"start\":{\"x\":11,\"y\":108},\"end\":{\"x\":472,\"y\":335},\"polygons\":[[{\"x\":44,\"y\":59},{\"x\":44,\"y\":180},{\"x\":220,\"y\":252},{\"x\":375,\"y\":54}],[{\"x\":348,\"y\":191},{\"x\":245,\"y\":379},{\"x\":440,\"y\":472},{\"x\":467,\"y\":151}],[{\"x\":122,\"y\":232},{\"x\":26,\"y\":414},{\"x\":217,\"y\":476}]]}");
+				}
 			}
 			
 			function save_current() {
@@ -99,12 +104,11 @@
 			<input type="button" value="Save" onclick="save_current();" />
 			<br>
 			<canvas data-processing-sources="data_structures.pde polygons.pde sort.pde graph_vis_animation.pde dijkstra.pde main.pde" id="robots"></canvas>
-			
-			<footer>
-				<p>
-					&copy; Copyright 2011 by Igor
-				</p>
-			</footer>
-		</div>
+		</div>	
+		<footer>
+			<p>
+				&copy; Copyright 2011 by Igor
+			</p>
+		</footer>
 	</body>
 </html>

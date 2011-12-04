@@ -45,6 +45,7 @@ class Dijkstra {
 						path_length.set(j, new_path);
 						path.set(j, current_point);
 						pq.update(j, new_path);
+						println("Vértice Atualizado: " + all_points.get(j).toString());
 					}
 				} else {
 					println("Novo vértice encontrado: " + all_points.get(j).toString());
