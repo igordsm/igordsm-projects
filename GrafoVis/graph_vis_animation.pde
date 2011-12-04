@@ -112,5 +112,18 @@ class VisibilityGraphBuildAnimation {
 }
 
 class DijkstraAnimation {
-
+	
+	Graph g;
+	PriorityQueue pq;
+	ArrayList dist;
+	
+	DijkstraAnimation(Graph g, PriorityQueue pq, ArrayList dist) {
+		this.g = g;
+		this.pq = pq;
+		this.dist = dist;
+	}
+	
+	public void draw() {
+		
+	}
 }

@@ -6,8 +6,11 @@ ArrayList all_points;
 Set sweep_line = null;
 
 int current_point = 0;
-VisibilityGraphBuildAnimation vgba = null;
 Graph paths = null;
+
+VisibilityGraphBuildAnimation vgba = null;
+DijkstraAnimation dijkstra = null;
+
 
 void set_mode(String m) {
 	mode = m;
@@ -74,9 +77,7 @@ boolean check_intersections(Edge current_edge) {
 	/* verifica se as pontas da aresta current_edge estao em poligonos diferentes ou se sao vizinhos no mesmo poligono. */
 	Point p1 = current_edge.p1;
 	Point p2 = current_edge.p2;
-	println(p2.polygon);
-	println(p1.polygon);
-	if (p2.polygon != p1.polygon) {
+	if (p2.polygon != p1.polygon || p1.polygon == undefined || p2.polygon == undefined) {
 		for (int i = 0; i < sweep_line.size(); i++) {
 			if (current_edge.crosses(sweep_line.get(i)) == true) {
 				return true;
@@ -84,7 +85,7 @@ boolean check_intersections(Edge current_edge) {
 		}
 		return false;
 	} else {
-		return true;
+		return !(p1.next.p2.equals(p2) || p1.prev.p1.equals(p2));
 	}
 }
 
@@ -128,6 +129,7 @@ void draw() {
 				check_visibles_vertexes(current_point, so);
 			} else {
 				set_mode("shortest_path");
+				//dijkstra = new DijkstraAnimation(paths);
 			}
 		}
 		if (vgba.changed_edge()) {
@@ -144,6 +146,7 @@ void draw() {
 		
 	} else if (mode == "shortest_path") {
 		paths.draw();
+		//dijkstra.draw();
 	}
 }
 

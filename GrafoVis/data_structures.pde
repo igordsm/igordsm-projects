@@ -173,6 +173,57 @@ class Set {
 	}
 }
 
+class PriorityQueue {
+	/* TODO: melhorar conjunto para poder fazer as operacoes em tempo menor que O(n) */
+	private ArrayList pq;
+	private ArrayList priorities;
+	
+	PriorityQueue() {
+		pq = new ArrayList();
+		priorities = new ArrayList();
+	}
+	
+	void add(Object o, int priority) {
+		int i = 0;
+		for (; i < pq.size(); i++) {
+			if (priorities.get(i) > priority) {
+				break;
+			}
+		}
+		pq.add(i, o);
+		priorities.add(i, o);
+	}
+	
+	void update(Object o, int priority) {
+		for (int i = 0; i < pq.size(); i++) {
+			if (pq.get(i) == o) {
+				priorities.set(i, priority);
+			}
+		}
+	}
+	
+	int size() {
+		return pq.size();
+	}
+	
+	Object min() {
+		if (pq.size() >= 1) {
+			priorities.remove(0);
+			return pq.remove(0);
+		}
+		return -1;
+	}
+	
+	String toString() {
+		String r = "[";
+		for (int i = 0; i < pq.size(); i++) {
+			r += pq.get(i).toString() + ", ";
+		}
+		return r + "]";
+	}
+
+}
+
 class Graph {
 	public double[][] graph_points;
 	public int n;
