@@ -8,7 +8,8 @@ Set sweep_line = null;
 int current_point = 0;
 
 VisibilityGraphBuildAnimation vgba = null;
-DijkstraAnimation dijkstra = null;
+DijkstraAnimation dijkstra_anim = null;
+Dijkstra dijkstra = null;
 
 
 void set_mode(String m) {
@@ -128,8 +129,8 @@ void draw() {
 				check_visibles_vertexes(current_point, so);
 			} else {
 				set_mode("shortest_path");
-				init_dijkstra();
-				dijkstra = new DijkstraAnimation(paths, pq, path_length);
+				dijkstra = new Dijkstra(paths);
+				dijkstra_anim = new DijkstraAnimation(paths, dijkstra.pq, dijkstra.path_length);
 			}
 		}
 		if (vgba.changed_edge()) {
@@ -146,11 +147,11 @@ void draw() {
 		
 	} else if (mode == "shortest_path") {
 		paths.draw();
-		dijkstra.draw();
-		if (dijkstra.changed_vertex()) {
-			int visited = dijkstra_step();
+		dijkstra_anim.draw();
+		if (dijkstra_anim.changed_vertex() && dijkstra.is_finished() == false) {
+			int visited = dijkstra.step();
 			if (visited > 0) { 
-				dijkstra.add_visited_vertex(visited);
+				dijkstra_anim.add_visited_vertex(visited);
 			}
 		}
 	}
