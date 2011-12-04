@@ -117,6 +117,7 @@ class DijkstraAnimation {
 	PriorityQueue pq;
 	ArrayList path_length;
 	ArrayList visited;
+	Dijkstra dj;
 	
 	int frame_count = 0;
 	int max_frame = 30;
@@ -126,6 +127,7 @@ class DijkstraAnimation {
 		this.pq = dj.pq;
 		this.path_length = dj.path_length;
 		this.visited = new ArrayList();
+		this.dj = dj;
 	}
 	
 	public boolean changed_vertex() {
@@ -160,6 +162,19 @@ class DijkstraAnimation {
 			int d = ((int) (path_length.get(i) * 100)) / 100;
 			String t = d.toString(); 
 			text(t, p.x - textWidth(t), p.y);
+		}
+		if (dj.is_finished()) {
+			int orig = 1;
+			int dest = dj.path.get(orig);
+			stroke(255, 0, 0);
+			while (dest != 0 || orig != 0) {
+				println("orig" + orig.toString() + "dest" + dest.toString());
+				Point p1 = g.all_points.get(orig);
+				Point p2 = g.all_points.get(dest);
+				line(p1.x, p1.y, p2.x, p2.y);
+				orig = dest;
+				dest = dj.path.get(dest);
+			} 
 		}
 	}
 }

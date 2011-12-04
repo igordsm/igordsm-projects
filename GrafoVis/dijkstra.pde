@@ -19,6 +19,7 @@ class Dijkstra {
 			path_length.add(-1);
 			path.add(-1);
 		}
+		path.set(0, 0);
 		path_length.set(0, 0);
 		pq.add(0, 0);
 		println("INICIANDO ALGORITMO DE DIJKSTRA");
