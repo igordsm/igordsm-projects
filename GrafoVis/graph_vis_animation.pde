@@ -121,10 +121,10 @@ class DijkstraAnimation {
 	int frame_count = 0;
 	int max_frame = 30;
 	
-	public DijkstraAnimation(Graph g, PriorityQueue pq, ArrayList path_length) {
+	public DijkstraAnimation(Graph g, Dijkstra dj) {
 		this.g = g;
-		this.pq = pq;
-		this.path_length = path_length;
+		this.pq = dj.pq;
+		this.path_length = dj.path_length;
 		this.visited = new ArrayList();
 	}
 	

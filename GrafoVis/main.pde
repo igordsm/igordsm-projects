@@ -130,7 +130,7 @@ void draw() {
 			} else {
 				set_mode("shortest_path");
 				dijkstra = new Dijkstra(paths);
-				dijkstra_anim = new DijkstraAnimation(paths, dijkstra.pq, dijkstra.path_length);
+				dijkstra_anim = new DijkstraAnimation(paths, dijkstra);
 			}
 		}
 		if (vgba.changed_edge()) {
