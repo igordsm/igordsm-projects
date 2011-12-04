@@ -5,7 +5,8 @@ class Dijkstra {
 	public ArrayList path_length;
 	public ArrayList path;
 	public int src, dest;
-	public boolean finished;		
+	public boolean finished;
+	public DijkstraAnimation anim = null;		
 			
 	public Dijkstra(Graph g) {
 		this.paths = g;
@@ -28,6 +29,9 @@ class Dijkstra {
 	public int step() {
 		if (finished) return;
 		int current_point = pq.min();	
+		if (anim) {
+			anim.remove_from_queue(current_point);
+		}
 		if (current_point < 0) {
 			finished = true;
 			return -1;
@@ -46,7 +50,10 @@ class Dijkstra {
 					println("Novo vértice encontrado: " + all_points.get(j).toString());
 					path_length.set(j, new_path);
 					path.set(j, current_point);
-					pq.add(j, path_length.get(j)); 
+					pq.add(j, path_length.get(j));
+					if (anim) {
+						anim.add_to_queue(j);
+					} 
 				}
 				if (j == dest) {
 					finished = true;

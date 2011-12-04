@@ -117,16 +117,18 @@ class DijkstraAnimation {
 	PriorityQueue pq;
 	ArrayList path_length;
 	ArrayList visited;
+	ArrayList queue;
 	Dijkstra dj;
 	
 	int frame_count = 0;
-	int max_frame = 30;
+	int max_frame = 60;
 	
 	public DijkstraAnimation(Graph g, Dijkstra dj) {
 		this.g = g;
 		this.pq = dj.pq;
 		this.path_length = dj.path_length;
 		this.visited = new ArrayList();
+		this.queue = new ArrayList();
 		this.dj = dj;
 	}
 	
@@ -137,6 +139,20 @@ class DijkstraAnimation {
 	public void add_visited_vertex(int i) {
 		this.visited.add(i);
 	}
+	
+	public void add_to_queue(int i) {
+		this.queue.add(i);
+	}
+	
+	public void remove_from_queue(int j) {
+		for (int i = 0; i < queue.size(); i++) {
+			if (queue.get(i) == j) {
+				queue.remove(i);
+				break;
+			}
+		}
+	}
+	
 	
 	public void draw() {
 		frame_count++;
@@ -159,7 +175,11 @@ class DijkstraAnimation {
 		} else {
 			this.g.draw();
 			// pinta vertices na fila
-			
+			fill(255, 0, 255);
+			for (int i = 0; i < queue.size(); i++) {
+				Point p = g.all_points.get(queue.get(i));
+				ellipse(p.x, p.y, 5, 5)
+			}
 			// pinta vertices visitados
 			fill(0, 255, 0);
 			for (int i = 0; i < visited.size(); i++) {

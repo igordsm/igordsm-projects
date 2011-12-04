@@ -131,6 +131,7 @@ void draw() {
 				set_mode("shortest_path");
 				dijkstra = new Dijkstra(paths);
 				dijkstra_anim = new DijkstraAnimation(paths, dijkstra);
+				dijkstra.anim = dijkstra_anim;
 			}
 		}
 		if (vgba.changed_edge()) {
@@ -144,7 +145,6 @@ void draw() {
 		} else if (vgba.changed_to_update_sweep_line()) {
 			update_sweep_line(vgba.point_counter, vgba.so, vgba.current_edge());
 		}
-		
 	} else if (mode == "shortest_path") {
 		dijkstra_anim.draw();
 		if (dijkstra_anim.changed_vertex() && dijkstra.is_finished() == false) {
