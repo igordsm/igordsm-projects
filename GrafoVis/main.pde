@@ -6,7 +6,6 @@ ArrayList all_points;
 Set sweep_line = null;
 
 int current_point = 0;
-Graph paths = null;
 
 VisibilityGraphBuildAnimation vgba = null;
 DijkstraAnimation dijkstra = null;
@@ -93,8 +92,8 @@ void start_algorithm() {
 	set_mode("build_graph");
 	sweep_line = new Set();
 	all_points = get_all_points(polys); 
-	all_points.add(start);
-	all_points.add(end);
+	all_points.add(0, start);
+	all_points.add(1, end);
 	
 	vgba = new VisibilityGraphBuildAnimation(all_points);
 	paths = new Graph(all_points.size(), all_points);
@@ -129,7 +128,8 @@ void draw() {
 				check_visibles_vertexes(current_point, so);
 			} else {
 				set_mode("shortest_path");
-				//dijkstra = new DijkstraAnimation(paths);
+				init_dijkstra();
+				dijkstra = new DijkstraAnimation(paths);
 			}
 		}
 		if (vgba.changed_edge()) {
@@ -146,7 +146,7 @@ void draw() {
 		
 	} else if (mode == "shortest_path") {
 		paths.draw();
-		//dijkstra.draw();
+		dijkstra.draw();
 	}
 }
 

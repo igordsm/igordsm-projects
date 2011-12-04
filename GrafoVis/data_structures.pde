@@ -183,7 +183,7 @@ class PriorityQueue {
 		priorities = new ArrayList();
 	}
 	
-	void add(Object o, int priority) {
+	void add(int o, int priority) {
 		int i = 0;
 		for (; i < pq.size(); i++) {
 			if (priorities.get(i) > priority) {
@@ -194,7 +194,7 @@ class PriorityQueue {
 		priorities.add(i, o);
 	}
 	
-	void update(Object o, int priority) {
+	void update(int o, int priority) {
 		for (int i = 0; i < pq.size(); i++) {
 			if (pq.get(i) == o) {
 				priorities.set(i, priority);
@@ -206,12 +206,16 @@ class PriorityQueue {
 		return pq.size();
 	}
 	
-	Object min() {
+	int min() {
 		if (pq.size() >= 1) {
 			priorities.remove(0);
 			return pq.remove(0);
 		}
 		return -1;
+	}
+	
+	boolean empty() {
+		return pq.size() <= 0;
 	}
 	
 	String toString() {
@@ -227,7 +231,7 @@ class PriorityQueue {
 class Graph {
 	public double[][] graph_points;
 	public int n;
-	private ArrayList all_points;
+	public ArrayList all_points;
 	
 	Graph(int n_vertices, ArrayList all_points) {
 		this.n = n_vertices;
@@ -253,7 +257,10 @@ class Graph {
 			}	
 		}
 	}
-
+	
+	public double get(int i, int j) {
+		return graph_points[i][j];
+	}
 
 	public void add_to_graph(int i, int j) {
 		Point ip = all_points.get(i);
