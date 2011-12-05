@@ -23,7 +23,7 @@ def sup_reconstruction(marker, img):
     return marker
     
 def load_image():
-    original_color =    cv2.imread(sys.argv[1]) 
+    original_color = cv2.imread(sys.argv[1]) 
     original = cv2.imread(sys.argv[1], 0)
     resized = cv2.resize(original, (640, 480))
     return original_color, original, resized
@@ -79,24 +79,22 @@ def remove_elements(d3):
     cv2.imwrite('4-rem4.png', d6)
     return d6
     
-def watershed(resized, d5):
-    r, bg = cv2.threshold(cv2.bitwise_not(cv2.dilate(d5, None, iterations=10)), 30, 125, cv2.THRESH_BINARY)
-    fg = d5
-    cv2.imwrite('bg.png', bg)
-    cv2.imwrite('fg.png', fg)
-    marker = cv2.add(fg, bg, dtype=cv2.CV_32SC1)
-    marker32 = numpy.zeros((480, 640), numpy.int32)
-    marker32[:,:] = marker
+def watershed(img, fg_marker):
+    fg_marker = cv2.dilate(fg_marker, None, iterations=5)
+    r, bg_marker = cv2.threshold(cv2.bitwise_not(cv2.dilate(fg_marker, None, iterations=10)), 30, 125, cv2.THRESH_BINARY)
+    cv2.imwrite('bg.png', bg_marker)
+    cv2.imwrite('fg.png', fg_marker)
+    marker = cv2.add(fg_marker, bg_marker, dtype=cv2.CV_32SC1)
     cv2.imwrite('markers.png', marker)
 
     color = numpy.zeros((480, 640, 3), numpy.uint8)
-    color[:,:,0] = resized 
-    color[:,:,1] = resized
-    color[:,:,2] = resized
-    cv2.watershed(color, marker32)
+    color[:,:,0] = img
+    color[:,:,1] = img
+    color[:,:,2] = img
+    cv2.watershed(color, marker)
 
-    cv2.imwrite('watersheds.png', marker32)
-    return marker32
+    cv2.imwrite('watersheds.png', marker)
+    return marker
     
 def generate_final_image(color_image, marker):
     mk = numpy.zeros((480, 640, 3), numpy.uint8)
@@ -128,5 +126,10 @@ d8 = cv2.morphologyEx(d7, cv2.MORPH_OPEN, cv2.getStructuringElement(cv2.MORPH_RE
 d9 = sup_reconstruction(d8, d7)
 cv2.imwrite('1-pre5.png', d9)
 
-marker32 = watershed(resized, d9)
+d10 = cv2.morphologyEx(d9, cv2.MORPH_OPEN, cv2.getStructuringElement(cv2.MORPH_RECT, (1, 51), (0, 25)))
+d11 = d9 - sup_reconstruction(d10, d9)
+cv2.imwrite('1-pre6.png', d11)
+
+
+marker32 = watershed(resized, d11)
 generate_final_image(original_color, marker32)
