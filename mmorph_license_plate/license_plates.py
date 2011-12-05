@@ -116,27 +116,17 @@ cv2.imwrite('1-pre1.png', d)
 d2 = cv2.erode(d, cv2.getStructuringElement(cv2.MORPH_RECT, (1, 7), (0, 3)))
 d3 = sup_reconstruction(d2, d)
 cv2.imwrite('1-pre2.png', d3)
-d4 = cv2.morphologyEx(d3, cv2.MORPH_CLOSE, cv2.getStructuringElement(cv2.MORPH_RECT, (21, 21), (10, 10)))
+d4 = cv2.morphologyEx(d3, cv2.MORPH_CLOSE, cv2.getStructuringElement(cv2.MORPH_RECT, (31, 1), (15, 0)))
 cv2.imwrite('1-pre3.png', d4)
 
 d5 = cv2.erode(d4, cv2.getStructuringElement(cv2.MORPH_RECT, (151, 1), (75, 0)))
-
 d6 = sup_reconstruction(d5, d4)
 d7 = d4 - d6
 cv2.imwrite('1-pre4.png', d7)
 
 d8 = cv2.morphologyEx(d7, cv2.MORPH_OPEN, cv2.getStructuringElement(cv2.MORPH_RECT, (91, 9), (45, 4)))
-cv2.imwrite('1-pre5.png', d8)
+d9 = sup_reconstruction(d8, d7)
+cv2.imwrite('1-pre5.png', d9)
 
-
-"""d4 = cv2.erode(d, cv2.getStructuringElement(cv2.MORPH_RECT, (51, 1), (25, 0)))
-d5 = sup_reconstruction(d4, d3)
-cv2.imwrite('1-pre3.png', d5)"""
-
-
-"""grad, d = pre_processing(resized)
-d2 = remove_smaller_than_license_plate(d)
-d5 = remove_elements(d2)
-marker32 = watershed(resized, d5)
+marker32 = watershed(resized, d9)
 generate_final_image(original_color, marker32)
-"""
