@@ -5,7 +5,7 @@
 		<!-- Always force latest IE rendering engine (even in intranet) & Chrome Frame
 		Remove this if you use the .htaccess -->
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-		<title>new_file</title>
+		<title>Locomoção de Robôs - Grafo de Visibilidade</title>
 		<meta name="description" content="" />
 		<meta name="generator" content="Studio 3 http://aptana.com/" />
 		<meta name="author" content="Igor" />
@@ -40,6 +40,50 @@
 				var p = Processing.getInstanceById("robots");
 				p.start_algorithm();
 			}
+			
+			function load_from_JSON(json_string) {
+				var obj = JSON.parse(json_string);
+				var p = Processing.getInstanceById("robots");
+				p.set_start(obj['start']['x'], obj['start']['y']);
+				p.set_end(obj['end']['x'], obj['end']['y']);
+				var polys = obj['polygons'];
+				for (var i = 0; i < polys.length; i++) {
+					var poly = polys[i];
+					for (var j = 0; j < poly.length; j++) {
+						p.click_polys(poly[j]['x'], poly[j]['y']);
+					}
+					p.finish_poly();
+				}
+			}
+			
+			function load_last() {
+				/*load_from_JSON('{\"start\": {\"x\" : 10, \"y\": 10}, \"end\": {\"x\" : 300, \"y\": 300}, ' + 
+					' \"polygons\" : [ [{\"x\" : 20, \"y\" : 20}, {\"x\" : 30, \"y\" : 10}, {\"x\" : 30, \"y\" : 30}] ]  }');*/
+					
+				//load_from_JSON('{"start":{"x":10,"y":10},"end":{"x":300,"y":300},"polygons":[[{"x":20,"y":20},{"x":30,"y":10},{"x":30,"y":30}],[{"x":206,"y":108},{"x":206,"y":152},{"x":355,"y":97}]]}');
+				load_from_JSON(localStorage['last']);
+			}
+			
+			function save_current() {
+				var obj = {};
+				var p = Processing.getInstanceById("robots");
+				var start = p.get_start();
+				obj['start'] = {"x" : start.x, "y" : start.y};
+				var end = p.get_end();
+				obj['end'] = {"x" : end.x, "y" : end.y};
+				obj['polygons'] = [];
+				var polys = p.get_polys();
+				for(var i = 0; i < polys.size(); i++) {
+					var poly_p5 = polys.get(i).points;
+					var poly = [];
+					for(var j = 0; j < poly_p5.size(); j++) {
+						poly.push({"x": poly_p5.get(j).x, "y": poly_p5.get(j).y});
+					}	
+					obj['polygons'].push(poly);
+				}
+				localStorage['last'] = JSON.stringify(obj); 
+			}
+
 		</script>
 	</head>
 	<body>
@@ -47,12 +91,15 @@
 			<header>
 				<h1>Locomoção de Robôs - Grafo de Visibilidade</h1>
 			</header>
-			
-			<canvas data-processing-sources="data_structures.pde polygons.pde sort.pde graph_vis_animation.pde main.pde" id="robots"></canvas>
 			<input type="button" value="Complete Polygon" onclick="complete_poly()"/>
 			<input type="button" value="Set start point" onclick="set_start_point()" />
 			<input type="button" value="Set end point" onclick="set_end_point()" />
 			<input type="button" value="Start!" onclick="start()" />
+			<input type="button" value="Load" onclick="load_last();" />
+			<input type="button" value="Save" onclick="save_current();" />
+			<br>
+			<canvas data-processing-sources="data_structures.pde polygons.pde sort.pde graph_vis_animation.pde dijkstra.pde main.pde" id="robots"></canvas>
+			
 			<footer>
 				<p>
 					&copy; Copyright 2011 by Igor

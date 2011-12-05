@@ -2,16 +2,16 @@
 ArrayList polys = new ArrayList();
 Polygon poly = new Polygon();
 
-void draw_polys() {
+void draw_polys(boolean draw_points) {
 	for (int i = 0; i < polys.size(); i++) {
 		Polygon p = (Polygon) polys.get(i);
-		p.draw();
+		p.draw(draw_points);
 	}
 	poly.draw();
 }
 
-void click_polys() {
-	poly.add_point(mouseX, mouseY);
+void click_polys(int x, int y) {
+	poly.add_point(x, y);
 }
 
 void finish_poly() {
@@ -28,4 +28,8 @@ ArrayList get_all_points(ArrayList polys) {
 		all.addAll(p.points);	
 	}
 	return all;
+}
+
+ArrayList get_polys() {
+	return polys;
 }
