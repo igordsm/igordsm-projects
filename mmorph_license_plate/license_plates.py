@@ -82,7 +82,6 @@ def remove_elements(d3):
 def watershed(resized, d5):
     r, bg = cv2.threshold(cv2.bitwise_not(cv2.dilate(d5, None, iterations=10)), 30, 125, cv2.THRESH_BINARY)
     fg = d5
-
     cv2.imwrite('bg.png', bg)
     cv2.imwrite('fg.png', fg)
     marker = cv2.add(fg, bg, dtype=cv2.CV_32SC1)
@@ -109,9 +108,19 @@ def generate_final_image(color_image, marker):
     return vis
     
 original_color, original, resized = load_image()
-grad, d = pre_processing(resized)
+
+bth = cv2.morphologyEx(resized, cv2.MORPH_BLACKHAT, cv2.getStructuringElement(cv2.MORPH_RECT, (7, 7), (3, 3)))
+cv2.imwrite('1-pre0.png', bth)
+r, d = cv2.threshold(bth, 30, 255, cv2.THRESH_BINARY)
+cv2.imwrite('1-pre1.png', d)
+d2 = cv2.erode(d, cv2.getStructuringElement(cv2.MORPH_RECT, (1, 7), (0, 3)))
+cv2.imwrite('1-pre2.png', d2)
+d3 = sup_reconstruction(d2, d)
+cv2.imwrite('1-pre3.png', d3)
+
+"""grad, d = pre_processing(resized)
 d2 = remove_smaller_than_license_plate(d)
 d5 = remove_elements(d2)
 marker32 = watershed(resized, d5)
 generate_final_image(original_color, marker32)
-
+"""
