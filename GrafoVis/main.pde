@@ -16,6 +16,24 @@ void set_mode(String m) {
 	mode = m;
 }
 
+void clear_state() {
+    mode = "polygon";
+
+    start = new Point(-1, -1);
+    end = new Point(-1, -1);
+    all_points = null;
+    sweep_line = null;
+
+    current_point = 0;
+
+    vgba = null;
+    dijkstra_anim = null;
+    dijkstra = null;
+    poly = new Polygon();
+    polys = new ArrayList();
+    println("EI!");
+}
+
 void init_sweep_line(int point, SortOrder so) {
 	sweep_line = new Set();
 	Point p1 = all_points.get(point); 
@@ -105,7 +123,7 @@ void start_algorithm() {
 
 void setup() {
 	size(500, 500);
-	start[0] = start[1] = end[0] = end[1] = -1;
+    clear_state();
 }
 
 void draw() {
