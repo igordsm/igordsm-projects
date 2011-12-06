@@ -165,7 +165,6 @@ class DijkstraAnimation {
 			int dest = dj.path.get(orig);
 			stroke(255, 0, 0);
 			while (dest != 0 || orig != 0) {
-				println("orig" + orig.toString() + "dest" + dest.toString());
 				Point p1 = g.all_points.get(orig);
 				Point p2 = g.all_points.get(dest);
 				line(p1.x, p1.y, p2.x, p2.y);

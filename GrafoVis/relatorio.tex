@@ -1,0 +1,153 @@
+% !TEX TS-program = pdflatex
+% !TEX encoding = UTF-8 Unicode
+
+% This is a simple template for a LaTeX document using the "article" class.
+% See "book", "report", "letter" for other types of document.
+
+\documentclass[11pt]{article} % use larger type; default would be 10pt
+
+\usepackage[utf8]{inputenc} % set input encoding (not needed with XeLaTeX)
+
+%%% Examples of Article customizations
+% These packages are optional, depending whether you want the features they provide.
+% See the LaTeX Companion or other references for full information.
+
+%%% PAGE DIMENSIONS
+\usepackage{geometry} % to change the page dimensions
+\usepackage{algorithm2e}
+\geometry{a4paper} % or letterpaper (US) or a5paper or....
+% \geometry{margin=2in} % for example, change the margins to 2 inches all round
+% \geometry{landscape} % set up the page for landscape
+%   read geometry.pdf for detailed page layout information
+
+\usepackage{graphicx} % support the \includegraphics command and options
+
+% \usepackage[parfill]{parskip} % Activate to begin paragraphs with an empty line rather than an indent
+
+%%% PACKAGES
+\usepackage{booktabs} % for much better looking tables
+\usepackage{array} % for better arrays (eg matrices) in maths
+\usepackage{paralist} % very flexible & customisable lists (eg. enumerate/itemize, etc.)
+\usepackage{verbatim} % adds environment for commenting out blocks of text & for better verbatim
+\usepackage{subfig} % make it possible to include more than one captioned figure/table in a single float
+% These packages are all incorporated in the memoir class to one degree or another...
+
+%%% HEADERS & FOOTERS
+\usepackage{fancyhdr} % This should be set AFTER setting up the page geometry
+\pagestyle{fancy} % options: empty , plain , fancy
+\renewcommand{\headrulewidth}{0pt} % customise the layout...
+\lhead{}\chead{}\rhead{}
+\lfoot{}\cfoot{\thepage}\rfoot{}
+
+%%% SECTION TITLE APPEARANCE
+\usepackage{sectsty}
+\allsectionsfont{\sffamily\mdseries\upshape} % (See the fntguide.pdf for font help)
+% (This matches ConTeXt defaults)
+
+%%% ToC (table of contents) APPEARANCE
+\usepackage[nottoc,notlof,notlot]{tocbibind} % Put the bibliography in the ToC
+\usepackage[titles,subfigure]{tocloft} % Alter the style of the Table of Contents
+\renewcommand{\cftsecfont}{\rmfamily\mdseries\upshape}
+\renewcommand{\cftsecpagefont}{\rmfamily\mdseries\upshape} % No bold!
+
+%%% END Article customizations
+
+%%% The "real" document content comes below...
+
+\title{Relatório do projeto de Geometria Computacional\\Locomoção de robôs utilizando grafos de visibilidade}
+\author{Igor dos Santos Montagner}
+%\date{} % Activate to display a given date or no date (if empty),
+         % otherwise the current date is printed 
+
+\begin{document}
+\maketitle
+
+\section{Motivação}
+O algoritmo implementado foi o descrito no capítulo 15 do livro "Computational Geometry: Algorithms and Applications", de Berg, van Kreveld, Overmars e Schwarzkopf, que resolve o problema da busca pelo melhor caminho entre dois pontos em um mundo que contém obstáculos poligonais.
+
+A motivação do algoritmo é resolver o problema da locomoção de robôs de maneira ótima: dados uma origem, um destino e uma série de obstáculos poligonais, qual o caminho mais curto entre os dois pontos sem que o robô esbarre em algum objeto? O algoritmo explicado funciona para robôs "pontuais", porém é explicada a generalização para um robô que translada, mas não rotaciona. Nos casos mais gerais outras medidas podem ser usadas além do caminho mais curto, como número de rotações necessárias no caminho ou caminho com menor número de arestas.
+
+\section{Algoritmo}
+
+O algoritmo é composto de duas partes: determinação do \emph{grafo de visibilidade} que representa os pontos iniciais e os obstáculos e a busca pelo menor caminho dentro deste grafo.
+
+\subsection{Grafo de visibilidade}
+
+O \emph{grafo de visibilidade} tem como vértices os vértices dos obstáculos poligonais mais os pontos iniciais e finais. A aresta $(i, j)$ existe no grafo se o segmento $i,j$ não intercepta nenhum obstáculo poligonal, ou seja, se o ponto $i$ é visível a partir do ponto $j$. 
+
+A partir disto, em cada vértice é feita uma linha de varredura radial no sentido anti-horário que utiliza uma árvore binária balanceada para guardar as arestas que intersectam a linha de varredura no momento atual. Se um vértice $w$ é visível, então o segmento $v,w$ não cruza com nenhuma aresta na linha de varredura. 
+
+O algoritmo é o seguinte:
+
+\begin{algorithm}
+\SetKwInOut{Input}{input}
+\Input{Obstáculos poligonais P, pontos start e end}
+Inicialize um grafo G = (V, E) com os vértices de $P\cup\{start,end\}$ e $E = \emptyset$;
+\ForEach{vértice $v$ em $P\cup\{start,end\}$} {
+	$W \leftarrow VISIBLE(v, P)$
+	\ForEach{vértice $w$ em $w$} {		
+		Adicione a aresta $(v, w)$ a G.
+	}
+}
+\Return{G}
+\caption{VISIBILITY$\_$GRAPH}
+\end{algorithm}
+
+\begin{algorithm}
+\SetKwInOut{Input}{input}
+\Input{vértice v, conjunto de obstáculos poligonais P}
+Ordene os vértices de acordo com o ângulo que formam com a linha paralela ao eixo X que passa por v. Em caso de empate, vértices mais próximos são considerados "menores". Seja $w_1 \dots w_n$ esta lista ordenada.
+
+Seja $\rho$ uma semi reta paralela ao eixo x positivo que tem início em $v$. Adicione as arestas que intersectam $\rho$ a uma árvore binária balanceada $\tau$, ordenando-as por distância até $v$.
+
+$W \leftarrow \emptyset$
+
+\For{$i \leftarrow 1 \dots n$} {
+	\If{$w_i$ for visível a partir de $v$} {
+		Adicione $w_i$ a $W$.
+	}
+	Adicione a $\tau$ as arestas incidentes a $w_i$ que estejam a esquerda da linha de varredura.
+
+	Remova de $\tau$ as arestas incidentes a $w_i$ que estejam a direita da linha de varredura.
+}
+\Return{W}
+\caption{VISIBILE}
+\end{algorithm}
+
+\subsection{Busca pelo menor caminho}
+
+A busca pelo menor caminho no grafo é feita utilizando o algoritmo de Dijkstra. No caso do caminho com menor distância, os pesos nas arestas são a distância euclidiana entre suas duas extremidades.
+
+\subsection{Complexidade}
+
+A complexidade final do algoritmo é $O(n^2 lg n)$ se implementado com as estruturas de dados propostas no livro.
+
+\section{Implementação}
+
+O algoritmo foi implementado para o robô pontual e atualmente só funciona bem para polígonos convexos. Em polígonos côncavos, o passo de decidir se dois vértices do mesmo polígono são visíveis fica mais complicado e ainda não implementei a solução correta.
+
+\subsection{Instruções de uso e legendas}
+
+O projeto foi implementado utilizando ProcessingJS (http://processingjs.org/), uma implementação da linguagem Processing que utiliza HTML5 para fazer visualização e gráficos interativos na web. Deste modo, somente os navegadores mais "modernos" são capazes de mostrar o projeto corretamente. Testei nas versões mais recentes do Firefox e do Chrome e funcionou tudo bem. Para executar a versão entregue, é necessário abrir o arquivo index.html usando o Firefox. É recomendado visualizar o projeto em http://vision.ime.usp.br/$\sim$igor/geocomp. 
+
+O projeto suporta salvar e carregar a última simulação feita. Uma simulação padrão está inclusa para uma visualização rápida do algoritmo: basta apertar o botão "Load" na primeira execução do projeto.
+
+Para criar as próprias instâncias, são necessários três passos: definição do ponto inicial, final e a definição dos polígonos. Para desenhar um polígono bastar clicar na área de simulação para adicionar vértices ao um polígono atual. Para terminar de adicionar vértices basta apertar o botão "Complete Polygon". Os próximos vértices serão agora adicionados a um novo polígono. 
+
+Após definir os obstáculos e os pontos inicial e final, é possível salvar a simulação atual cliando em "Save" ou iniciar a simulação clicando em "Start". Para iniciar uma nova simulação aperte F5 ou recarregue a página.
+
+A simulação inicia com a determinação do grafo de visibilidade. Neste modo, o ponto verde é o ponto analisado atualmente, as arestas vermelhas estão no estado atual da linha de varredura e as arestas amarelas são as que foram adicionadas ao grafo de visibilidade. 
+
+Após o grafo ser determinado completamente, começa a simulação do algoritmo de Dijkstra. Neste modo, os pontos verdes já foram analisados e a distância até eles não mudará mais. Os pontos roxos estão na fila de prioridade e o número roxo ao lado de cada vértice representa sua distância até o ponto inicial. 
+
+Ao final do algoritmo, o caminho mais curto é mostrado em vermelho.
+
+\subsection{Complexidade}
+
+Por falta de tempo, não consegui implementar as estruturas de dados descritas no livro. Por esta razão, a implementação que fiz leva tempo $O(n^3)$.
+
+\section{Relatório pessoal}
+
+Esta versão sofrerá algumas modificações nos próximos dias até a data da apresentação final. Espero conseguir implementar melhores estruturas de dados até lá e ter melhores opções de salvar e carregar ambiente. Tive alguns problemas complicados no trabalho e na faculdade no mês de novembro e não pude dar a atenção necessária ao projeto para estar com um trabalho 100$\%$ agora. A Cris comentou que haveria um extensão do tempo, então pretendo usar este tempo a mais para melhorar este trabalho. A versão mais atual do projeto sempre estará disponível no endereço http://vision.ime.usp.br/$\sim$igor/geocomp . 
+
+\end{document}
