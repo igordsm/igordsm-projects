@@ -55,6 +55,7 @@
 			function load_from_JSON(json_string) {
 				var obj = JSON.parse(json_string);
 				var p = Processing.getInstanceById("robots");
+				p.clear_state();
 				p.set_start(obj['start']['x'], obj['start']['y']);
 				p.set_end(obj['end']['x'], obj['end']['y']);
 				var polys = obj['polygons'];
@@ -81,6 +82,28 @@
                 $("#load_dialog").dialog('open');
 			}
 			
+			function load_simulation() {
+			    var sim_list = $("#simulation_list").html("");
+			    for (var k in localStorage) {
+			        var el = $('<li>' + k + '</li>');
+			        var set_click = function () {
+			            var key = k;
+			            el.click(function () {
+			                load_from_JSON(localStorage[key]);
+			                $("#load_dialog").dialog('close');
+			            });
+			        };
+			        set_click();
+			        sim_list.append(el);
+			    } 
+			    $("#load_dialog").dialog('open');
+			}
+
+            function save_current_simulation() {
+                $("#sim_name").val("");
+                $("#save_dialog").dialog('open');
+            }
+			
 			function save_to_JSON(key) {
 				var obj = {};
 				var p = Processing.getInstanceById("robots");
@@ -105,6 +128,21 @@
                 $("#load_dialog").dialog({
                     autoOpen: false
                 });
+                $("#save_dialog").dialog({
+                    autoOpen: false, 
+                    buttons: {
+                        "Ok": function () {
+                            var sim_name = $("#sim_name").val();
+                            save_to_JSON(sim_name);
+                            $(this).dialog("close"); 
+                        },
+                        "Cancel": function () { 
+                            $(this).dialog("close"); 
+                        }
+                    }
+                    
+                });
+                
 
                 $("#complete_polygon, #set_start_point, #set_end_point, #start_btn, #load_btn, #save_btn, #clear_btn").button();
             });
@@ -120,14 +158,17 @@
 			<input type="button" id="set_start_point" value="Set start point" onclick="set_start_point()" />
 			<input type="button" id="set_end_point" value="Set end point" onclick="set_end_point()" />
 			<input type="button" id="start_btn" value="Start!" onclick="start()" />
-			<input type="button" id="load_btn" value="Load" onclick="load_last();" />
-			<input type="button" id="save_btn" value="Save" onclick="save_to_JSON('last');" />
+			<input type="button" id="load_btn" value="Load" onclick="load_simulation();" />
+			<input type="button" id="save_btn" value="Save" onclick="save_current_simulation();" />
             <input type="button" id="clear_btn" value="Clear" onclick="clear_state();" />
 			<br>
 			<canvas data-processing-sources="data_structures.pde polygons.pde sort.pde graph_vis_animation.pde dijkstra.pde main.pde" id="robots"></canvas>
 		</div>	
         <div id="load_dialog" title="Saved simulations">
-            
+            <li id="simulation_list"> </li>
+        </div>
+        <div id="save_dialog" title="Save simulation">
+            Simulation title: <input type="text" id="sim_name" />
         </div>
 		<footer>
 			<p>
