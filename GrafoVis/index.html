@@ -13,6 +13,11 @@
 		<!-- Replace favicon.ico & apple-touch-icon.png in the root of your domain and delete these references -->
 		<link rel="shortcut icon" href="/favicon.ico" />
 		<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+
+        <link type="text/css" href="css/dot-luv/jquery-ui-1.8.16.custom.css" rel="stylesheet" />	
+		<script type="text/javascript" src="js/jquery-1.6.2.min.js"></script>
+		<script type="text/javascript" src="js/jquery-ui-1.8.16.custom.min.js"></script>
+		<script type="text/javascript" src="js/processing.js"> </script>
 		<style>
 			#robots {
 				border: 1px solid;
@@ -20,7 +25,7 @@
 			}
 		</style>
 		
-		<script src="processing.js"> </script>
+
 		<script> 
 			function complete_poly() {
 				var p = Processing.getInstanceById("robots");
@@ -73,9 +78,10 @@
 				} else {
 					load_from_JSON("{\"start\":{\"x\":11,\"y\":108},\"end\":{\"x\":472,\"y\":335},\"polygons\":[[{\"x\":44,\"y\":59},{\"x\":44,\"y\":180},{\"x\":220,\"y\":252},{\"x\":375,\"y\":54}],[{\"x\":348,\"y\":191},{\"x\":245,\"y\":379},{\"x\":440,\"y\":472},{\"x\":467,\"y\":151}],[{\"x\":122,\"y\":232},{\"x\":26,\"y\":414},{\"x\":217,\"y\":476}]]}");
 				}
+                $("#load_dialog").dialog('open');
 			}
 			
-			function save_current() {
+			function save_to_JSON(key) {
 				var obj = {};
 				var p = Processing.getInstanceById("robots");
 				var start = p.get_start();
@@ -92,26 +98,37 @@
 					}	
 					obj['polygons'].push(poly);
 				}
-				localStorage['last'] = JSON.stringify(obj); 
+				localStorage[key] = JSON.stringify(obj); 
 			}
+
+            $(function () {
+                $("#load_dialog").dialog({
+                    autoOpen: false
+                });
+
+                $("#complete_polygon, #set_start_point, #set_end_point, #start_btn, #load_btn, #save_btn, #clear_btn").button();
+            });
 
 		</script>
 	</head>
 	<body>
+	    <header>
+		    <h1>Locomoção de Robôs - Grafo de Visibilidade</h1>
+	    </header>
 		<div>
-			<header>
-				<h1>Locomoção de Robôs - Grafo de Visibilidade</h1>
-			</header>
-			<input type="button" value="Complete Polygon" onclick="complete_poly()"/>
-			<input type="button" value="Set start point" onclick="set_start_point()" />
-			<input type="button" value="Set end point" onclick="set_end_point()" />
-			<input type="button" value="Start!" onclick="start()" />
-			<input type="button" value="Load" onclick="load_last();" />
-			<input type="button" value="Save" onclick="save_current();" />
-            <input type="button" value="Clear" onclick="clear_state();" />
+			<input type="button" id="complete_polygon" value="Complete Polygon" onclick="complete_poly()"/>
+			<input type="button" id="set_start_point" value="Set start point" onclick="set_start_point()" />
+			<input type="button" id="set_end_point" value="Set end point" onclick="set_end_point()" />
+			<input type="button" id="start_btn" value="Start!" onclick="start()" />
+			<input type="button" id="load_btn" value="Load" onclick="load_last();" />
+			<input type="button" id="save_btn" value="Save" onclick="save_to_JSON('last');" />
+            <input type="button" id="clear_btn" value="Clear" onclick="clear_state();" />
 			<br>
 			<canvas data-processing-sources="data_structures.pde polygons.pde sort.pde graph_vis_animation.pde dijkstra.pde main.pde" id="robots"></canvas>
 		</div>	
+        <div id="load_dialog" title="Saved simulations">
+            
+        </div>
 		<footer>
 			<p>
 				&copy; Copyright 2011 by Igor

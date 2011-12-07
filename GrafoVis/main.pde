@@ -31,7 +31,6 @@ void clear_state() {
     dijkstra = null;
     poly = new Polygon();
     polys = new ArrayList();
-    println("EI!");
 }
 
 void init_sweep_line(int point, SortOrder so) {
