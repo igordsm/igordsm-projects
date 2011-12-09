@@ -44,11 +44,13 @@
 			function start() {
 				var p = Processing.getInstanceById("robots");
 				p.start_algorithm();
+				$("#build_polygon").hide();
 			}
 
             function clear_state() {
 				var p = Processing.getInstanceById("robots");
 				p.clear_state();
+				$("#build_polygon").show();
             }
 			
 			function load_from_JSON(json_string) {
@@ -131,10 +133,9 @@
                             $(this).dialog("close"); 
                         }
                     }
-                    
                 });
                 $("#complete_polygon, #set_start_point, #set_end_point, #start_btn, #load_btn, #save_btn, #clear_btn").button();
-                
+                $("#build_polygon").show();                
                 load_default_simulations();
             });
 
@@ -145,9 +146,6 @@
 		    <h1>Locomoção de Robôs - Grafo de Visibilidade</h1>
 	    </header>
 		<div>
-			<input type="button" id="complete_polygon" value="Complete Polygon" onclick="complete_poly()"/>
-			<input type="button" id="set_start_point" value="Set start point" onclick="set_start_point()" />
-			<input type="button" id="set_end_point" value="Set end point" onclick="set_end_point()" />
 			<input type="button" id="start_btn" value="Start!" onclick="start()" />
 			<input type="button" id="load_btn" value="Load" onclick="load_simulation();" />
 			<input type="button" id="save_btn" value="Save" onclick="save_current_simulation();" />
@@ -155,6 +153,11 @@
 			<br>
 			<canvas data-processing-sources="data_structures.pde polygons.pde sort.pde graph_vis_animation.pde dijkstra.pde main.pde" id="robots"></canvas>
 		</div>	
+		<div id="build_polygon">
+		    <input type="button" id="complete_polygon" value="Complete Polygon" onclick="complete_poly()"/>
+			<input type="button" id="set_start_point" value="Set start point" onclick="set_start_point()" />
+			<input type="button" id="set_end_point" value="Set end point" onclick="set_end_point()" />
+		</div>
         <div id="load_dialog" title="Saved simulations">
             <li id="simulation_list"> </li>
         </div>
