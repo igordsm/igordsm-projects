@@ -169,6 +169,8 @@ class DijkstraAnimation {
 				Point p1 = g.all_points.get(orig);
 				Point p2 = g.all_points.get(dest);
 				line(p1.x, p1.y, p2.x, p2.y);
+				ellipse(p1.x, p1.y, 5, 5);
+				ellipse(p2.x, p2.y, 5, 5);
 				orig = dest;
 				dest = dj.path.get(dest);
 			} 

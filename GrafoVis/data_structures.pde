@@ -33,12 +33,6 @@ class Edge {
 	}
 	
 	boolean left(Point p) {
-		/*println("ARESTA: " + this);
-		if ((p1.x - p.x)*(p2.y - p.y) - (p1.y - p.y)*(p2.x - p.x) >= 0) {
-			println("PONTO: " + p + " ESQUERDA");
-		} else {
-			println("PONTO: " + p + " DIREITA");
-		}*/
 		return (p1.x - p.x)*(p2.y - p.y) - (p1.y - p.y)*(p2.x - p.x) > 0;
 	}
 	
@@ -51,6 +45,7 @@ class Edge {
 	}
 	
 	boolean crosses(Edge e) {
+	    if (colinear(e.p1) || colinear(e.p2)) return false;
 		boolean t1 = (left(e.p1) && !left(e.p2)) || (left(e.p2) && !left(e.p1));
 		boolean t2 = (e.left(p1) && !e.left(p2)) || (e.left(p2) && !e.left(p1));
 		return t1 && t2;

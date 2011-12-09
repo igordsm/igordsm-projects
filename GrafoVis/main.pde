@@ -95,9 +95,11 @@ boolean check_intersections(Edge current_edge) {
 	if (p2.polygon != p1.polygon || p1.polygon == undefined || p2.polygon == undefined) {
 		for (int i = 0; i < sweep_line.size(); i++) {
 			if (current_edge.crosses(sweep_line.get(i)) == true) {
+			    println("Cruza com " + sweep_line.get(i));
 				return true;
 			}
 		}
+		println("Não cruza");
 		return false;
 	} else {
 		return !(p1.next.p2.equals(p2) || p1.prev.p1.equals(p2));
