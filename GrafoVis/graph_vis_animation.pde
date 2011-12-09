@@ -185,10 +185,10 @@ class DijkstraAnimation {
 				Point p = g.all_points.get(visited.get(i));
 				ellipse(p.x, p.y, 5, 5)
 			}
+			
 			// pinta distâncias atuais para cada vertice
 			Font font = loadFont("Arial"); 
 			textFont(font); 
-			
 			fill(255, 0, 255);
 			for (int i = 0; i < g.all_points.size(); i++) {
 				Point p = g.all_points.get(i);
