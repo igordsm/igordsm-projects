@@ -22,7 +22,15 @@
 			#robots {
 				border: 1px solid;
 				border-color: #000000;
+				float:left;
 			}
+			#build_polygon {
+			    border: 1px solid black;
+			    width: 100%;
+			}
+			#credits{
+			    clear:both;
+            }
 		</style>
 		
 
@@ -154,6 +162,7 @@
 			<canvas data-processing-sources="data_structures.pde polygons.pde sort.pde graph_vis_animation.pde dijkstra.pde main.pde" id="robots"></canvas>
 		</div>	
 		<div id="build_polygon">
+		    Build Polygon Tools <br>
 		    <input type="button" id="complete_polygon" value="Complete Polygon" onclick="complete_poly()"/>
 			<input type="button" id="set_start_point" value="Set start point" onclick="set_start_point()" />
 			<input type="button" id="set_end_point" value="Set end point" onclick="set_end_point()" />
@@ -164,10 +173,6 @@
         <div id="save_dialog" title="Save simulation">
             Simulation title: <input type="text" id="sim_name" />
         </div>
-		<footer>
-			<p>
-				&copy; Copyright 2011 by Igor
-			</p>
-		</footer>
+		<div id="credits"> Made by Igor Montagner </div>
 	</body>
 </html>
