@@ -45,7 +45,7 @@ void merge(SortOrder so, int p, int m, int q) {
             index[i] = so.indexes[j];
             j++;
         } else {
-            if (so.angles[so.indexes[j] ] <= so.angles[so.indexes[k] ] ) {
+            if (so.compare(j, k) <= 0 ) {
                 index[i] = so.indexes[j];
                 j++;
             } else {
@@ -63,7 +63,7 @@ void merge(SortOrder so, int p, int m, int q) {
 void merge_sortR(SortOrder so, int p, int q) {
     if (p == q) return;
     if (p == q - 1) {
-        if (so.angles[so.indexes[p] ] > so.angles[so.indexes[q] ] ) {
+        if (so.compare(p, q) > 0) {
             int temp = so.indexes[p];
 		    so.indexes[p] = so.indexes[q];
 		    so.indexes[q] = temp;
