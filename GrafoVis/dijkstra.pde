@@ -28,7 +28,7 @@ class Dijkstra {
 	
 	public int step() {
 		if (finished) return;
-		int current_point = pq.min();	
+		int current_point = pq.min();
 		if (anim) {
 			anim.remove_from_queue(current_point);
 		}
@@ -37,6 +37,12 @@ class Dijkstra {
 			return -1;
 		}
 		println("Vertice atual: " + all_points.get(current_point).toString());
+		
+		if (current_point == dest) {
+			finished = true;
+			println("FIM");
+			return current_point;
+		}
 		for (int j = 0; j < paths.n; j++) {
 			if (this.paths.get(current_point, j) > 0) {
 				double new_path = path_length.get(current_point) + this.paths.get(current_point, j);
@@ -55,11 +61,6 @@ class Dijkstra {
 					if (anim) {
 						anim.add_to_queue(j);
 					} 
-				}
-				if (j == dest) {
-					finished = true;
-					return current_point;
-					println("FIM");
 				}
 			}
 		} 

@@ -123,6 +123,7 @@ class DijkstraAnimation {
 	
 	int frame_count = 0;
 	int max_frame = 60;
+	int last_visited = -1;
 	
 	public DijkstraAnimation(Graph g, Dijkstra dj) {
 		this.g = g;
@@ -139,6 +140,7 @@ class DijkstraAnimation {
 	
 	public void add_visited_vertex(int i) {
 		this.visited.add(i);
+		last_visited = i;
 	}
 	
 	public void add_to_queue(int i) {
@@ -176,6 +178,18 @@ class DijkstraAnimation {
 			} 
 		} else {
 			this.g.draw();
+			// desenha arestas do vértice atual
+			stroke(255, 0, 255);
+			if (last_visited >= 0) {
+			    for (int i = 0; i < this.g.n; i++) {
+			        if (this.g.get(i, last_visited) > 0) {
+			            Point p1 = g.all_points.get(i);
+				        Point p2 = g.all_points.get(last_visited);
+				        line(p1.x, p1.y, p2.x, p2.y);
+			        }
+			    }
+			}
+			
 			// pinta vertices na fila
 			fill(255, 0, 255);
 			for (int i = 0; i < queue.size(); i++) {
