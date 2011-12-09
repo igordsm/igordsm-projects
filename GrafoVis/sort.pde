@@ -1,29 +1,42 @@
 class SortOrder {
 	public int[] indexes;
 	public double[] angles;
+	public ArrayList all_points;
+	Point origin;
 	
-	public SortOrder(int n) {
+	public SortOrder(int n, ArrayList all_points, Point origin) {
 		indexes = new int[n];
 		angles = new double[n];
 		for (int i = 0; i < n; i++) {
 			indexes[i] = i;
 		}
-	}	
+		this.all_points = all_points;
+		this.origin = origin;
+	}
+	
+	public int compare(int i, int j) {
+	    if (angles[indexes[i]] < angles[indexes[j]]) {
+	        return -1;
+	    } else if (angles[indexes[i]] > angles[indexes[j]]) {
+	        return 1;
+	    } else {
+	        Point pi = all_points.get(indexes[i]);
+	        double di = dist(origin.x, origin.y, pi.x, pi.y);
+	        
+	        Point pj = all_points.get(indexes[j]);
+	        double dj = dist(origin.x, origin.y, pj.x, pj.y);
+	        
+	        if (di < dj) return -1;
+	        else if (di > dj) return 1;
+	        return 0;
+	    }
+	}
 }
-
 
 void merge(SortOrder so, int p, int m, int q) {
     int j = p;
     int k = m;
     int index = new int[q - p + 1];
-    println("MERGE " + p + " " + q);
-    String s = "";
-    for (int i = p; i <= q; i++) {
-        if (i == m) s += " | ";
-        s += "" + so.angles[so.indexes[i]] + ", ";
-    }
-    println(s);
-    
     for (int i = p; i <= q; i++) {
         if (j >= m) {
             index[i] = so.indexes[k];
@@ -44,16 +57,10 @@ void merge(SortOrder so, int p, int m, int q) {
     for (int i = p; i <= q; i++) {
         so.indexes[i] = index[i];
     }
-    s = "";
-    for (int i = p; i <= q; i++) {
-        s += "" + so.angles[so.indexes[i]] + ", ";
-    }
-    println(s);
 }
 
 
 void merge_sortR(SortOrder so, int p, int q) {
-    println("P " + p.toString() + " Q " + q.toString());
     if (p == q) return;
     if (p == q - 1) {
         if (so.angles[so.indexes[p] ] > so.angles[so.indexes[q] ] ) {
@@ -72,7 +79,7 @@ void merge_sortR(SortOrder so, int p, int q) {
 
 SortOrder sort_around_point(ArrayList all_points, int p) {
 	int n = all_points.size();
-	SortOrder so = new SortOrder(n);
+	SortOrder so = new SortOrder(n, all_points, all_points.get(p));
 	for (int i = 0; i < n; i++) {
 		Point p1, p2;
 		p1 = (Point) all_points.get(p);
@@ -80,9 +87,5 @@ SortOrder sort_around_point(ArrayList all_points, int p) {
 		so.angles[i] = atan2(p1.y - p2.y, p1.x - p2.x);
 	}
 	merge_sortR(so, 0, n-1);
-	println("SORT FINAL");
-	for (int i = 0; i < n; i++) {
-	    println(so.angles[so.indexes[i]]);
-	}
 	return so;
 }

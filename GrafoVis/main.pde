@@ -83,8 +83,8 @@ void update_sweep_line(int point_counter, SortOrder so, Edge current_edge) {
 void check_visibles_vertexes(int point, SortOder so) {
 	println("Verificando vértice " + all_points.get(point).toString());
 	/* inicializa conjunto com arestas que cruzam com a reta p1 = point */
-	/*init_sweep_line(point, so);
-    vgba.start_animation(current_point, so, sweep_line);*/
+	init_sweep_line(point, so);
+    vgba.start_animation(current_point, so, sweep_line);
 }
 
 boolean check_intersections(Edge current_edge) {
@@ -137,7 +137,7 @@ void draw() {
 	if (mode == "build_graph") {
 		paths.draw();
 		vgba.draw();
-		/*if (vgba.is_finished()) {
+		if (vgba.is_finished()) {
 			current_point++;
 			if (current_point < all_points.size()) {
 				SortOrder so = sort_around_point(all_points, current_point);
@@ -148,7 +148,7 @@ void draw() {
 				dijkstra_anim = new DijkstraAnimation(paths, dijkstra);
 				dijkstra.anim = dijkstra_anim;
 			}
-		}*/
+		}
 		if (vgba.changed_edge()) {
 			/* olha se cruza com alguem da linha de varredura */
 			Edge current = vgba.current_edge();
