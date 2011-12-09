@@ -86,6 +86,7 @@ class VisibilityGraphBuildAnimation {
 		} else {
 			next = (Point) all_points.get(so.indexes[point_counter]);
 			line(current.x, current.y, next.x, next.y);
+			ellipse(next.x, next.y, 5, 5);
 		}
 		ellipse(current.x, current.y, 5, 5);
 	}
