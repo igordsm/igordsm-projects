@@ -166,7 +166,7 @@ void draw() {
 		dijkstra_anim.draw();
 		if (dijkstra_anim.changed_vertex() && dijkstra.is_finished() == false) {
 			int visited = dijkstra.step();
-			if (visited > 0) { 
+			if (visited >= 0) { 
 				dijkstra_anim.add_visited_vertex(visited);
 			}
 		}
