@@ -121,7 +121,7 @@ void start_algorithm() {
 }
 
 void setup() {
-	size(500, 500);
+	size(500, 450);
     clear_state();
 }
 

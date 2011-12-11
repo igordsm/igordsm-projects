@@ -19,14 +19,16 @@
 		<script type="text/javascript" src="js/jquery-ui-1.8.16.custom.min.js"></script>
 		<script type="text/javascript" src="js/processing.js"> </script>
 		<style>
-			#robots {
-				border: 1px solid;
+			#robots  {
+				border: 1px solid black;
 				border-color: #000000;
-				float:left;
 			}
 			#build_polygon {
 			    border: 1px solid black;
-			    width: 100%;
+			    margin-top: 5px;
+			}
+			#simulation_tools {
+			    border: 1px solid black;
 			}
 			#credits{
 			    clear:both;
@@ -81,9 +83,7 @@
 			}
 			
 			function load_default_simulations() {
-				localStorage['Example1'] = "{\"start\":{\"x\":11,\"y\":108},\"end\":{\"x\":472,\"y\":335},\"polygons\":[[{\"x\":44,\"y\":59},{\"x\":44,\"y\":180},{\"x\":220,\"y\":252},{\"x\":375,\"y\":54}],[{\"x\":348,\"y\":191},{\"x\":245,\"y\":379},{\"x\":440,\"y\":472},{\"x\":467,\"y\":151}],[{\"x\":122,\"y\":232},{\"x\":26,\"y\":414},{\"x\":217,\"y\":476}]]}";
-				localStorage['Example Colinear'] = "{\"start\":{\"x\":100,\"y\":100},\"end\":{\"x\":400,\"y\":400},\"polygons\":[[{\"x\":200,\"y\":200},{\"x\":300,\"y\":300},{\"x\":50,\"y\":150}]] }";
-				localStorage['Example Colinear 2'] = "{\"start\":{\"x\":100,\"y\":100},\"end\":{\"x\":450,\"y\":450},\"polygons\":[[{\"x\":200,\"y\":200},{\"x\":300,\"y\":300},{\"x\":50,\"y\":150}], [{\"x\":350,\"y\":350},{\"x\":400,\"y\":400},{\"x\":450,\"y\":300}]] }";
+				import_simulations($("#default_sims").html());
 			}
 			
 			function load_simulation() {
@@ -135,7 +135,6 @@
 				for (simulation in lS) {
 					localStorage[simulation] = lS[simulation];
 				}
-				alert("Import finished");
 			}
 			
 			function export_dialog() {
@@ -177,6 +176,7 @@
                     buttons: {
                         "Ok": function () {
                             import_simulations($("#sim_import").val());
+                            alert("Import finished");
                             $(this).dialog("close");  
                         },
                         "Cancel": function () { 
@@ -185,7 +185,7 @@
                     }
                 });
                 
-                $("#complete_polygon, #set_start_point, #set_end_point, #start_btn, #load_btn, #save_btn, #clear_btn, #export_btn, #import_btn").button();
+                //$("#complete_polygon, #set_start_point, #set_end_point, #start_btn, #load_btn, #save_btn, #clear_btn, #export_btn, #import_btn").button();
                 $("#build_polygon").show();                
                 load_default_simulations();
             });
@@ -193,37 +193,45 @@
 		</script>
 	</head>
 	<body>
-	    <header>
-		    <h1>Locomoção de Robôs - Grafo de Visibilidade</h1>
-	    </header>
-		<div>
-			<input type="button" id="start_btn" value="Start!" onclick="start()" />
-			<input type="button" id="load_btn" value="Load" onclick="load_simulation();" />
-			<input type="button" id="save_btn" value="Save" onclick="save_current_simulation();" />
-            <input type="button" id="clear_btn" value="Clear" onclick="clear_state();" />
-            <input type="button" id="export_btn" value="Export" onclick="export_dialog();" />
-            <input type="button" id="import_btn" value="Import" onclick="import_dialog();" />
-			<br>
-			<canvas data-processing-sources="data_structures.pde polygons.pde sort.pde graph_vis_animation.pde dijkstra.pde main.pde" id="robots"></canvas>
-		</div>	
-		<div id="build_polygon">
-		    Build Polygon Tools <br>
-		    <input type="button" id="complete_polygon" value="Complete Polygon" onclick="complete_poly()"/>
-			<input type="button" id="set_start_point" value="Set start point" onclick="set_start_point()" />
-			<input type="button" id="set_end_point" value="Set end point" onclick="set_end_point()" />
-		</div>
-        <div id="load_dialog" title="Saved simulations">
-            <ul id="simulation_list"> </ul>
-        </div>
-        <div id="save_dialog" title="Save simulation">
-            Simulation title: <input type="text" id="sim_name" />
-        </div>
-        <div id="export" title="Export simulations">Copy the following text to other instance of the program:<br>
-        	<span id="env"></span>
-        </div>
-        <div id="import" title="Import simulations">Paste the export text:<br>
-        	Simulations input: <input type="textarea" id="sim_import" />
-        </div>
+		<table>
+			<tr>
+				<td>
+					<canvas data-processing-sources="data_structures.pde polygons.pde sort.pde graph_vis_animation.pde dijkstra.pde main.pde" id="robots"></canvas>			
+				</td>
+				<td valign="top">
+					<div id="simulation_tools">
+						Simulation tools: <br>
+						<input type="button" id="start_btn" value="Start!" onclick="start()" />
+						<input type="button" id="load_btn" value="Load" onclick="load_simulation();" />
+						<input type="button" id="save_btn" value="Save" onclick="save_current_simulation();" />
+			            <input type="button" id="clear_btn" value="Clear" onclick="clear_state();" />
+			            <input type="button" id="export_btn" value="Export" onclick="export_dialog();" />
+			            <input type="button" id="import_btn" value="Import" onclick="import_dialog();" />
+					</div>	
+					<div id="build_polygon">
+					    Build Polygon Tools <br>
+					    <input type="button" id="complete_polygon" value="Complete Polygon" onclick="complete_poly()"/>
+						<input type="button" id="set_start_point" value="Set start point" onclick="set_start_point()" />
+						<input type="button" id="set_end_point" value="Set end point" onclick="set_end_point()" />
+					</div>
+			        <div id="load_dialog" title="Saved simulations">
+			            <ul id="simulation_list"> </ul>
+			        </div>
+			        <div id="save_dialog" title="Save simulation">
+			            Simulation title: <input type="text" id="sim_name" />
+			        </div>
+			        <div id="export" title="Export simulations">Copy the following text to other instance of the program:<br>
+			        	<span id="env"></span>
+			        </div>
+			        <div id="import" title="Import simulations">Paste the export text:<br>
+			        	Simulations input: <input type="textarea" id="sim_import" />
+			        </div>
+			        <div id="default_sims" style="display: none;">
+			        	{"Zig Zag":"{\"start\":{\"x\":13,\"y\":224},\"end\":{\"x\":484,\"y\":225},\"polygons\":[[{\"x\":26,\"y\":81},{\"x\":23,\"y\":243},{\"x\":47,\"y\":238},{\"x\":47,\"y\":86}],[{\"x\":113,\"y\":214},{\"x\":112,\"y\":428},{\"x\":152,\"y\":421},{\"x\":144,\"y\":216}],[{\"x\":168,\"y\":48},{\"x\":174,\"y\":229},{\"x\":211,\"y\":224},{\"x\":193,\"y\":57}],[{\"x\":273,\"y\":211},{\"x\":262,\"y\":439},{\"x\":400,\"y\":433},{\"x\":377,\"y\":215}],[{\"x\":391,\"y\":38},{\"x\":390,\"y\":233},{\"x\":439,\"y\":227},{\"x\":423,\"y\":36}]]}","Example 1":"{\"start\":{\"x\":11,\"y\":108},\"end\":{\"x\":472,\"y\":335},\"polygons\":[[{\"x\":44,\"y\":59},{\"x\":44,\"y\":180},{\"x\":220,\"y\":252},{\"x\":375,\"y\":54}],[{\"x\":348,\"y\":191},{\"x\":245,\"y\":379},{\"x\":440,\"y\":442},{\"x\":447,\"y\":151}],[{\"x\":122,\"y\":232},{\"x\":26,\"y\":414},{\"x\":217,\"y\":446}]]}","Example Colinear":"{\"start\":{\"x\":100,\"y\":100},\"end\":{\"x\":400,\"y\":400},\"polygons\":[[{\"x\":200,\"y\":200},{\"x\":300,\"y\":300},{\"x\":50,\"y\":150}]] }","Example Colinear 2":"{\"start\":{\"x\":100,\"y\":100},\"end\":{\"x\":440,\"y\":440},\"polygons\":[[{\"x\":200,\"y\":200},{\"x\":300,\"y\":300},{\"x\":50,\"y\":150}], [{\"x\":350,\"y\":350},{\"x\":400,\"y\":400},{\"x\":440,\"y\":300}]] }"}
+			        </div>
+				</td>				
+			</tr>
+		</table>
 		<div id="credits"> Made by Igor Montagner </div>
 	</body>
 </html>
