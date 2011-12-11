@@ -69,7 +69,7 @@ A motivação do algoritmo é resolver o problema da locomoção de robôs de ma
 
 \section{Algoritmo}
 
-O algoritmo é composto de duas partes: determinação do \emph{grafo de visibilidade} que representa os pontos iniciais e os obstáculos e a busca pelo menor caminho dentro deste grafo.
+Dados os pontos $s$, $f$ e um conjunto de polígonos $S$, desejamos encontrar o menor caminho de $s$ até $f$ que não intersecta em nenhum obstáculo de $S$. É provado que o caminho mais curto desviando dos obstáculos é composto somente por segmentos de reta que possuem como extremidades ou vértices de um mesmo polígono ou vértices de polígonos diferentes ou os pontos iniciais e finais. Deste modo, é necessário saber, dado um ponto $p$, quais pontos são visíveis a partir dele, ou seja, quais segmentos de reta $\overline{pw}$, para todo vértice $w \in \{s, f\} \cup \{S\}$, não intersectam com nenhum obstáculo em $S$. O algoritmo é composto de duas partes: determinação do \emph{grafo de visibilidade}, que representa os caminhos visíveis entre pontos iniciais e os obstáculos, e a busca pelo menor caminho dentro deste grafo.
 
 \subsection{Grafo de visibilidade}
 
@@ -114,27 +114,28 @@ $W \leftarrow \emptyset$
 \caption{VISIBILE}
 \end{algorithm}
 
+\subsubsection{Determinação de visibilidade de um ponto}
+
+aslkasdjkl
+
 \subsection{Busca pelo menor caminho}
 
-A busca pelo menor caminho no grafo é feita utilizando o algoritmo de Dijkstra. No caso do caminho com menor distância, os pesos nas arestas são a distância euclidiana entre suas duas extremidades.
+A busca pelo menor caminho no grafo é feita utilizando o algoritmo de Dijkstra. No caso do caminho com menor distância, os pesos nas arestas são a distância euclidiana entre suas duas extremidades. A fila de prioridade utilizada foi um Min-Heap.
 
 \subsection{Complexidade}
 
-A complexidade final do algoritmo é $O(n^2 lg n)$ se implementado com as estruturas de dados propostas no livro.
+A complexidade final do algoritmo é $O(n^2 lg n)$ se implementado com as estruturas de dados propostas no livro. Como a implementação que fiz não utilizou uma árvore binária balanceada, a complexidade final é $O(n^3)$.
 
 \section{Implementação}
 
 O algoritmo foi implementado para o robô pontual e atualmente só funciona bem para polígonos convexos. Em polígonos côncavos, o passo de decidir se dois vértices do mesmo polígono são visíveis fica mais complicado e ainda não implementei a solução correta.
 
-\subsection{Instruções de uso e legendas}
+\subsection{Instruções de uso}
 
-O projeto foi implementado utilizando ProcessingJS (http://processingjs.org/), uma implementação da linguagem Processing que utiliza HTML5 para fazer visualização e gráficos interativos na web. Deste modo, somente os navegadores mais "modernos" são capazes de mostrar o projeto corretamente. Testei nas versões mais recentes do Firefox e do Chrome e funcionou tudo bem. Para executar a versão entregue, é necessário abrir o arquivo index.html usando o Firefox. É recomendado visualizar o projeto em http://vision.ime.usp.br/$\sim$igor/geocomp. 
+O projeto foi implementado utilizando ProcessingJS (http://processingjs.org/), uma implementação da linguagem Processing que utiliza HTML5 para fazer visualização e gráficos interativos na web. Deste modo, somente os navegadores mais "modernos" são capazes de mostrar o projeto corretamente. As versões mais recentes do Firefox e do Chrome são capazes de executar o projeto sem erros. Para executar a versão entregue, é necessário abrir o arquivo index.html usando o Firefox. É recomendado visualizar o projeto em http://vision.ime.usp.br/$\sim$igor/geocomp. 
 
-O projeto suporta salvar e carregar a última simulação feita. Uma simulação padrão está inclusa para uma visualização rápida do algoritmo: basta apertar o botão "Load" na primeira execução do projeto.
-
-Para criar as próprias instâncias, são necessários três passos: definição do ponto inicial, final e a definição dos polígonos. Para desenhar um polígono bastar clicar na área de simulação para adicionar vértices ao um polígono atual. Para terminar de adicionar vértices basta apertar o botão "Complete Polygon". Os próximos vértices serão agora adicionados a um novo polígono. 
-
-Após definir os obstáculos e os pontos inicial e final, é possível salvar a simulação atual cliando em "Save" ou iniciar a simulação clicando em "Start". Para iniciar uma nova simulação aperte F5 ou recarregue a página.
+O projeto é capaz de guardar e carregar as simulações feitas em um computador. 
+\subsection{Legenda}
 
 A simulação inicia com a determinação do grafo de visibilidade. Neste modo, o ponto verde é o ponto analisado atualmente, as arestas vermelhas estão no estado atual da linha de varredura e as arestas amarelas são as que foram adicionadas ao grafo de visibilidade. 
 
