@@ -6,7 +6,7 @@ class VisibilityGraphBuildAnimation {
 	int last_point = 0;
 	
 	int frame_count = 0;
-	int max_frame = 10;
+	int max_frame = 1;
 	
 	ArrayList all_points = null;
 	SortOrder so;
@@ -179,34 +179,41 @@ class DijkstraAnimation {
 		} else {
 			this.g.draw();
 			// desenha arestas do vértice atual
-			stroke(255, 0, 255);
+			fill(255, 0, 0);
+			stroke(255, 0, 0);
 			if (last_visited >= 0) {
+			    Point current_p = g.all_points.get(last_visited);
 			    for (int i = 0; i < this.g.n; i++) {
 			        if (this.g.get(i, last_visited) > 0) {
 			            Point p1 = g.all_points.get(i);
-				        Point p2 = g.all_points.get(last_visited);
-				        line(p1.x, p1.y, p2.x, p2.y);
+				        line(p1.x, p1.y, current_p.x, current_p.y);
 			        }
 			    }
+				ellipse(current_p.x, current_p.y, 15, 15);
 			}
 			
-			// pinta vertices na fila
-			fill(255, 0, 255);
-			for (int i = 0; i < queue.size(); i++) {
-				Point p = g.all_points.get(queue.get(i));
-				ellipse(p.x, p.y, 5, 5)
-			}
 			// pinta vertices visitados
-			fill(0, 255, 0);
+			fill(255, 0, 255);
+			stroke(255, 0, 255);
 			for (int i = 0; i < visited.size(); i++) {
 				Point p = g.all_points.get(visited.get(i));
+				ellipse(p.x, p.y, 5, 5)
+			}
+			
+			
+			// pinta vertices na fila
+			fill(0, 0, 255);
+			stroke(0, 0, 255);
+			for (int i = 0; i < queue.size(); i++) {
+				Point p = g.all_points.get(queue.get(i));
 				ellipse(p.x, p.y, 5, 5)
 			}
 			
 			// pinta distâncias atuais para cada vertice
 			Font font = loadFont("Arial"); 
 			textFont(font); 
-			fill(255, 0, 255);
+			fill(0, 0, 0);
+			stroke(0, 0, 0);
 			for (int i = 0; i < g.all_points.size(); i++) {
 				Point p = g.all_points.get(i);
 				int d = ((int) (path_length.get(i) * 100)) / 100;

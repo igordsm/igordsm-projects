@@ -84,8 +84,9 @@ O algoritmo é o seguinte:
 \Input{Obstáculos poligonais P, pontos start e end}
 Inicialize um grafo G = (V, E) com os vértices de $P\cup\{start,end\}$ e $E = \emptyset$;
 \ForEach{vértice $v$ em $P\cup\{start,end\}$} {
-	$W \leftarrow VISIBLE(v, P)$
-	\ForEach{vértice $w$ em $w$} {		
+	$W \leftarrow VISIBLE(v, P)$;
+
+	\ForEach{vértice $w$ em $W$} {		
 		Adicione a aresta $(v, w)$ a G.
 	}
 }
@@ -138,7 +139,16 @@ O projeto é capaz de guardar e carregar as simulações feitas em um computador
 
 \subsection{Legenda}
 
-A simulação inicia com a determinação do grafo de visibilidade. Neste modo, o ponto verde é o ponto analisado atualmente, as arestas vermelhas estão no estado atual da linha de varredura e as arestas amarelas são as que foram adicionadas ao grafo de visibilidade. 
+
+A simulação possui duas partes: determinação do grafo de visibilidade e algoritmo de Dijkstra.
+
+Durante a determinação do grafo de visibilidade, a linha verde representa a linha de varredura (os extremos do segmento atual são os bolinhas verdes) e as arestas vermelhas são as arestas que atualmente cruzam com a linha de varredura e estão no conjunto $\tau$. Durante a determinação dos vértices visíveis a partir de um ponto $p$, quando a linha de varredura muda de vértice, existe um pequeno intervalo em que podemos ver o estado antes e depois da atualização de $\tau$. Se o segmento não cruzou nenhuma aresta em $\tau$, ele é adicionado ao grafo e é pintado de amarelo.
+
+Durante a execução do Algoritmo de Dijkstra, o grafo de visibilidade está pintado em amarelo, o ponto vermelho grande é o vértice atual (que possui as arestas pintadas em vermelho), os pontos azuis estão na fila de prioridade e os pontos rosas já foram analisados. A distância até cada ponto está escrita ao lado de cada ponto.
+
+O resultado final do algoritmo é mostrado em vermelho.
+
+ Neste modo, o ponto verde é o ponto analisado atualmente, as arestas vermelhas estão no estado atual da linha de varredura e as arestas amarelas são as que foram adicionadas ao grafo de visibilidade. 
 
 Após o grafo ser determinado completamente, começa a simulação do algoritmo de Dijkstra. Neste modo, os pontos verdes já foram analisados e a distância até eles não mudará mais. Os pontos roxos estão na fila de prioridade e o número roxo ao lado de cada vértice representa sua distância até o ponto inicial. 
 
