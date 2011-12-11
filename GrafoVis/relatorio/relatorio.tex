@@ -144,15 +144,30 @@ A simulação possui duas partes: determinação do grafo de visibilidade e algo
 
 Durante a determinação do grafo de visibilidade, a linha verde representa a linha de varredura (os extremos do segmento atual são os bolinhas verdes) e as arestas vermelhas são as arestas que atualmente cruzam com a linha de varredura e estão no conjunto $\tau$. Durante a determinação dos vértices visíveis a partir de um ponto $p$, quando a linha de varredura muda de vértice, existe um pequeno intervalo em que podemos ver o estado antes e depois da atualização de $\tau$. Se o segmento não cruzou nenhuma aresta em $\tau$, ele é adicionado ao grafo e é pintado de amarelo.
 
+\begin{figure}[!htp]
+	\begin{center}
+		\includegraphics[scale=0.5]{img/visgraph.png}
+	\end{center}	
+\end{figure}
+
 Durante a execução do Algoritmo de Dijkstra, o grafo de visibilidade está pintado em amarelo, o ponto vermelho grande é o vértice atual (que possui as arestas pintadas em vermelho), os pontos azuis estão na fila de prioridade e os pontos rosas já foram analisados. A distância até cada ponto está escrita ao lado de cada ponto.
+
+\begin{figure}[!htp]
+	\begin{center}
+		\includegraphics[scale=0.5]{img/dijkstra.png}
+	\end{center}	
+\end{figure}
+
+\newpage
 
 O resultado final do algoritmo é mostrado em vermelho.
 
- Neste modo, o ponto verde é o ponto analisado atualmente, as arestas vermelhas estão no estado atual da linha de varredura e as arestas amarelas são as que foram adicionadas ao grafo de visibilidade. 
+\begin{figure}[!htp]
+	\begin{center}
+		\includegraphics[scale=0.5]{img/final.png}
+	\end{center}	
+\end{figure}
 
-Após o grafo ser determinado completamente, começa a simulação do algoritmo de Dijkstra. Neste modo, os pontos verdes já foram analisados e a distância até eles não mudará mais. Os pontos roxos estão na fila de prioridade e o número roxo ao lado de cada vértice representa sua distância até o ponto inicial. 
-
-Ao final do algoritmo, o caminho mais curto é mostrado em vermelho.
 
 \subsection{Complexidade}
 
