@@ -216,7 +216,7 @@ class DijkstraAnimation {
 			stroke(0, 0, 0);
 			for (int i = 0; i < g.all_points.size(); i++) {
 				Point p = g.all_points.get(i);
-				int d = ((int) (path_length.get(i) * 100)) / 100;
+				int d = Math.round(path_length.get(i));
 				String t = d.toString(); 
 				text(t, p.x - textWidth(t), p.y);
 			}
