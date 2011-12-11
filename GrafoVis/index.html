@@ -31,6 +31,9 @@
 			#credits{
 			    clear:both;
             }
+            #export {
+            	overflow: scroll;
+            }
 		</style>
 		
 
@@ -86,6 +89,8 @@
 			function load_simulation() {
 			    var sim_list = $("#simulation_list").html("");
 			    for (var k in localStorage) {
+			    	var val = localStorage[k];
+			    	if (val == undefined || val == "" || val == "undefined" || val == null) continue;
 			        var el = $('<li>' + k + '</li>');
 			        var set_click = function () {
 			            var key = k;
@@ -124,6 +129,24 @@
 				}
 				localStorage[key] = JSON.stringify(obj); 
 			}
+			
+			function import_simulations(import_txt) {
+				var lS = JSON.parse(import_txt);
+				for (simulation in lS) {
+					localStorage[simulation] = lS[simulation];
+				}
+				alert("Import finished");
+			}
+			
+			function export_dialog() {
+				var export_txt = JSON.stringify(localStorage);
+				$("#env").html(export_txt);
+				$("#export").dialog("open");
+			}
+			
+			function import_dialog() {
+				$("#import").dialog("open");
+			}
 
             $(function () {
                 $("#load_dialog").dialog({
@@ -142,7 +165,27 @@
                         }
                     }
                 });
-                $("#complete_polygon, #set_start_point, #set_end_point, #start_btn, #load_btn, #save_btn, #clear_btn").button();
+                
+                $("#export").dialog({
+                    autoOpen: false, 
+                    width: 700,
+                    height: 500
+                });
+                
+                $("#import").dialog({
+                    autoOpen: false, 
+                    buttons: {
+                        "Ok": function () {
+                            import_simulations($("#sim_import").val());
+                            $(this).dialog("close");  
+                        },
+                        "Cancel": function () { 
+                            $(this).dialog("close"); 
+                        }
+                    }
+                });
+                
+                $("#complete_polygon, #set_start_point, #set_end_point, #start_btn, #load_btn, #save_btn, #clear_btn, #export_btn, #import_btn").button();
                 $("#build_polygon").show();                
                 load_default_simulations();
             });
@@ -158,6 +201,8 @@
 			<input type="button" id="load_btn" value="Load" onclick="load_simulation();" />
 			<input type="button" id="save_btn" value="Save" onclick="save_current_simulation();" />
             <input type="button" id="clear_btn" value="Clear" onclick="clear_state();" />
+            <input type="button" id="export_btn" value="Export" onclick="export_dialog();" />
+            <input type="button" id="import_btn" value="Import" onclick="import_dialog();" />
 			<br>
 			<canvas data-processing-sources="data_structures.pde polygons.pde sort.pde graph_vis_animation.pde dijkstra.pde main.pde" id="robots"></canvas>
 		</div>	
@@ -168,10 +213,16 @@
 			<input type="button" id="set_end_point" value="Set end point" onclick="set_end_point()" />
 		</div>
         <div id="load_dialog" title="Saved simulations">
-            <li id="simulation_list"> </li>
+            <ul id="simulation_list"> </ul>
         </div>
         <div id="save_dialog" title="Save simulation">
             Simulation title: <input type="text" id="sim_name" />
+        </div>
+        <div id="export" title="Export simulations">Copy the following text to other instance of the program:<br>
+        	<span id="env"></span>
+        </div>
+        <div id="import" title="Import simulations">Paste the export text:<br>
+        	Simulations input: <input type="textarea" id="sim_import" />
         </div>
 		<div id="credits"> Made by Igor Montagner </div>
 	</body>
