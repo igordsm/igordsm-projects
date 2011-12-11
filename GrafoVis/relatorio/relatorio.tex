@@ -7,7 +7,7 @@
 \documentclass[11pt]{article} % use larger type; default would be 10pt
 
 \usepackage[utf8]{inputenc} % set input encoding (not needed with XeLaTeX)
-
+\usepackage{hyperref}
 %%% Examples of Article customizations
 % These packages are optional, depending whether you want the features they provide.
 % See the LaTeX Companion or other references for full information.
@@ -117,7 +117,13 @@ $W \leftarrow \emptyset$
 
 \subsubsection{Determinação de visibilidade de um ponto}
 
-aslkasdjkl
+Um ponto $q$ é visível a partir de outro ponto $p$ se o segmento $\overline{pq}$ não intersecta nenhuma aresta em $\tau$ e, se ambos pertencem ao mesmo polígono, se o segmento $pq$ não intersecta o interior do polígono. 
+
+Para verificar se um ponto qualquer é visível a partir de outro é necessário verificar a interseção com todos os obstáculos, porém como faremos isto para todos os pontos podemos conseguir um algoritmo melhor. Uma linha de varredura radial é utilizada para ser possível saber se um ponto é visível a partir de outro em tempo $O(lg n)$, dado que a utilizemos para analisar todos os pontos em tempo total $O(n lg n)$.
+
+A linha de varredura  guarda as arestas que a intersectam a no momento, logo se um ponto está a esquerda da aresta mais próxima, então ele é visível, do contrário ele não é visível. Se guardarmos o estado em uma árvore binária balanceada, a aresta mais próxima de $p$ está na folha mais a esquerda da árvore. Deste modo, podemos verificar se um ponto cruza as arestas da linha de varredura em tempo $O(lg n)$.
+
+Se ambos os pontos estão no mesmo polígono e o segmento não intersecta nenhuma aresta, então é possível verificar se o segmento intersecta o polígono verificando se o ponto $p$ está no cone formado pelos vértices ($prev(q)$, $q$, $next(q)$), uma operação que leva tempo constante.
 
 \subsection{Busca pelo menor caminho}
 
@@ -133,9 +139,20 @@ O algoritmo foi implementado para o robô pontual e atualmente só funciona bem 
 
 \subsection{Instruções de uso}
 
-O projeto foi implementado utilizando ProcessingJS (http://processingjs.org/), uma implementação da linguagem Processing que utiliza HTML5 para fazer visualização e gráficos interativos na web. Deste modo, somente os navegadores mais "modernos" são capazes de mostrar o projeto corretamente. As versões mais recentes do Firefox e do Chrome são capazes de executar o projeto sem erros. Para executar a versão entregue, é necessário abrir o arquivo index.html usando o Firefox. É recomendado visualizar o projeto em http://vision.ime.usp.br/$\sim$igor/geocomp. 
+O projeto foi implementado utilizando  \href{http://processingjs.org/}{ProcessingJS}, uma implementação da linguagem Processing que utiliza HTML5 para fazer visualização e gráficos interativos na web. Deste modo, somente os navegadores mais "modernos" são capazes de mostrar o projeto corretamente. As versões mais recentes do Firefox e do Chrome são capazes de executar o projeto sem erros. Para executar a versão entregue, é necessário abrir o arquivo index.html usando o Firefox. É recomendado visualizar o projeto em \href{http://vision.ime.usp.br/~igor/geocomp}{meu site na Vision}.
 
 O projeto é capaz de guardar e carregar as simulações feitas em um computador. Para guardar uma simulação basta apertar o botão "Save" e escolher um nome para a simulação. Para carregar uma simulação basta apertar o botão "Load" e clicar na simulação escolhida. As simulações são salvas somente no browser utilizado no momento. Para exportar as simulações salvas, aperte o botão "Export" e copie o texto. Para importar o ambiente em outro browser, aperte "Import" e cole o texto copiado anteriormente.
+
+Para criar uma nova simulação é necessário:
+\begin{enumerate}
+	\item Criar os obstáculos poligonais;
+	\item Definir um ponto inicial;
+	\item Definir um ponto final.
+\end{enumerate}
+
+Para criar um obstáculo poligonal, basta clicar na área de simulação no local aonde devem ser posicionados os vértices. Ao completar um polígono aperte "Complete Polygon". A partir deste momento pode-se adicionar vértices a um novo polígono.
+
+Para definir os pontos iniciais e finais, clique no botão correspondente e clique na área de simulação para definir o local do ponto.
 
 \subsection{Legenda}
 
@@ -149,7 +166,7 @@ Durante a determinação do grafo de visibilidade, a linha verde representa a li
 		\includegraphics[scale=0.5]{img/visgraph.png}
 	\end{center}	
 \end{figure}
-
+\newpage
 Durante a execução do Algoritmo de Dijkstra, o grafo de visibilidade está pintado em amarelo, o ponto vermelho grande é o vértice atual (que possui as arestas pintadas em vermelho), os pontos azuis estão na fila de prioridade e os pontos rosas já foram analisados. A distância até cada ponto está escrita ao lado de cada ponto.
 
 \begin{figure}[!htp]
