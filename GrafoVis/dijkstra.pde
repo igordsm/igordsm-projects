@@ -12,7 +12,7 @@ class Dijkstra {
 		this.paths = g;
 		path_length = new ArrayList();
 		path = new ArrayList();
-		pq = new PriorityQueue();
+		pq = new MinHeap(g.n);
 		src = 0; dest = 1;
 		finished = false;
 		
@@ -29,6 +29,7 @@ class Dijkstra {
 	public int step() {
 		if (finished) return;
 		int current_point = pq.min();
+		println("PQ MIN" + pq);
 		if (anim) {
 			anim.remove_from_queue(current_point);
 		}
@@ -52,6 +53,7 @@ class Dijkstra {
 						path.set(j, current_point);
 						pq.update(j, new_path);
 						println("Vértice Atualizado: " + all_points.get(j).toString());
+						println("PQ MOD" + pq);
 					}
 				} else {
 					println("Novo vértice encontrado: " + all_points.get(j).toString());
@@ -61,9 +63,11 @@ class Dijkstra {
 					if (anim) {
 						anim.add_to_queue(j);
 					} 
+					println("PQ ADD" + pq);
 				}
 			}
 		} 
+		println("PQ AFTER" + pq);
 		return current_point;
 	}
 	

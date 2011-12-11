@@ -224,6 +224,88 @@ class PriorityQueue {
 
 }
 
+class MinHeap extends PriorityQueue {
+	int pq[], qp[], cst[];
+	int n;
+	
+	public MinHeap(int N) {
+		this.n = 0;
+		pq = new int[N+2];
+		qp = new int[N+2];
+		cst = new int[N+2];
+	}
+
+	void add(int o, int priority) {
+		n++;
+		qp[o] = n;
+		pq[n] = o;
+		cst[o] = priority;
+		fixUp(n);
+	}
+	
+	void update(int o, int priority) {
+		cst[o] = priority;
+		fixUp(qp[o]);
+	}
+	
+	int min() {
+		swap(1, n);
+		n--;
+		fixDown(1);
+		return pq[n+1];
+	}
+	
+	private void swap(int i, int j) {
+		int temp = pq[i];
+		pq[i] = pq[j];
+		pq[j] = temp;
+		
+		qp[pq[i]] = i;
+		qp[pq[j]] = j;
+	}
+	
+	void fixUp(int i) {
+		int up = (int) (i/2);
+		println("FIXUP" + cst[pq[up]] + " > " + cst[pq[i]]);
+		while (i > 1 && cst[pq[up]] > cst[pq[i]] ) {
+			println("CST " + cst[pq[up]] + " > " + cst[pq[i]]);
+			swap(i, up);
+			up = (int) (i/2);
+		}
+	}
+	
+	void fixDown(int i) {
+		while (2 * i <= n) {
+			int c = 2*i;
+			if (c <= n -1 && cst[pq[c]] > cst[pq[c+1]]) {
+				c++;
+			}
+			if (cst[pq[i]] <= cst[pq[c]]) {
+				break;
+			}
+			swap(i, c);
+			i = c;
+		}
+	}
+	
+	int size() {
+		return n + 1;
+	}
+	
+	boolean empty() {
+		return size() == 0;
+	}
+	
+	String toString() {
+		String r = "[";
+		for (int i = 1; i <= n; i++) {
+			r += "(" + pq[i] + "-" + cst[pq[i]] + "), ";
+		}
+		return r + "]";
+	}
+
+}
+
 class Graph {
 	public double[][] graph_points;
 	public int n;
