@@ -202,6 +202,7 @@ class MinHeap extends PriorityQueue {
 		while (i > 1 && cst[pq[up]] > cst[pq[i]] ) {
 			println("CST " + cst[pq[up]] + " > " + cst[pq[i]]);
 			swap(i, up);
+			i = (int) (i/2);
 			up = (int) (i/2);
 		}
 	}
