@@ -11,7 +11,8 @@ void draw_polys(boolean draw_points) {
 }
 
 void click_polys(int x, int y) {
-	poly.add_point(x, y);
+
+	poly.add_point(x, height-y);
 }
 
 void finish_poly() {
@@ -69,15 +70,19 @@ class Edge {
 	}
 	
 	boolean left(Point p) {
-		return (p1.x - p.x)*(p2.y - p.y) - (p1.y - p.y)*(p2.x - p.x) > 0;
+		return compare(p) > 0;
 	}
 	
 	boolean right(Point p) {
-		return (p1.x - p.x)*(p2.y - p.y) - (p1.y - p.y)*(p2.x - p.x) < 0
+		return compare(p) < 0;
 	}
 	
 	boolean colinear(Point p) {
-		return (p1.x - p.x)*(p2.y - p.y) - (p1.y - p.y)*(p2.x - p.x) == 0
+		return compare(p) == 0;
+	}
+	
+	double compare(Point p) {
+		return (p2.x - p1.x)*(p.y - p1.y) - (p2.y - p1.y)*(p.x - p1.x);
 	}
 	
 	boolean crosses(Edge e) {
@@ -88,7 +93,7 @@ class Edge {
 	}
 	
 	public void draw() {
-		line(p1.x, p1.y, p2.x, p2.y);
+		line(p1.x, height-p1.y, p2.x, height-p2.y);
 	}
 	
 	public String toString() {
@@ -147,7 +152,7 @@ class Polygon {
 			Point p1, p2;
 			p1 = (Point) this.points.get(i);
 			p2 = (Point) this.points.get(next);
-			line(p1.x, p1.y, p2.x, p2.y);
+			line(p1.x, height-p1.y, p2.x, height-p2.y);
 			
 		}
 		if (draw_points) {
@@ -155,7 +160,7 @@ class Polygon {
 			for (int i = 0; i < n; i++) {
 				Point p1;
 				p1 = (Point) this.points.get(i);
-				text(p1.toString(), p1.x, p1.y);			
+				text(p1.toString(), p1.x, height-p1.y);			
 			}
 		}
 	}

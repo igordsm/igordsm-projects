@@ -82,13 +82,13 @@ class VisibilityGraphBuildAnimation {
 		Point current;
 		current = (Point) all_points.get(current_point);
 		if (point_counter == -1) {
-			line(current.x, current.y, 1000, current.y);
+			line(current.x, height-current.y, 1000, height-current.y);
 		} else {
 			next = (Point) all_points.get(so.indexes[point_counter]);
-			line(current.x, current.y, next.x, next.y);
-			ellipse(next.x, next.y, 5, 5);
+			line(current.x, height-current.y, next.x, height-next.y);
+			ellipse(next.x, height-next.y, 5, 5);
 		}
-		ellipse(current.x, current.y, 5, 5);
+		ellipse(current.x, height-current.y, 5, 5);
 	}
 	
 	public void draw_sweep_line() {

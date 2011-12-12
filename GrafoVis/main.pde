@@ -87,22 +87,47 @@ void check_visibles_vertexes(int point, SortOder so) {
     vgba.start_animation(current_point, so, sweep_line);
 }
 
+boolean noCone(Edge current_edge) {
+	Point p1 = current_edge.p1;
+	Point p2 = current_edge.p2;
+	Point prev = p2.prev.p1;
+	Point next = p2.next.p2;
+	if (p2.prev.compare(next) >= 0) {
+		println("CONVEXO");
+		return current_edge.compare(prev) < 0 && current_edge.compare(next) > 0; 
+	} else {
+		println("Concavo");
+		return !(current_edge.compare(prev) >= 0 && current_edge.compare(next) <= 0);
+	}
+}
+
 boolean check_intersections(Edge current_edge) {
 	println("Checando interseções de: " + current_edge.toString());
 	/* verifica se as pontas da aresta current_edge estao em poligonos diferentes ou se sao vizinhos no mesmo poligono. */
 	Point p1 = current_edge.p1;
 	Point p2 = current_edge.p2;
-	if (p2.polygon != p1.polygon || p1.polygon == undefined || p2.polygon == undefined) {
-		for (int i = 0; i < sweep_line.size(); i++) {
-			if (current_edge.crosses(sweep_line.get(i)) == true) {
-			    println("Cruza com " + sweep_line.get(i));
-				return true;
-			}
+	boolean cruza = false;
+	for (int i = 0; i < sweep_line.size(); i++) {
+		if (current_edge.crosses(sweep_line.get(i)) == true) {
+		    println("Cruza com " + sweep_line.get(i));
+			cruza = true;
 		}
-		println("Não cruza");
-		return false;
+	}
+	if (p2.polygon != p1.polygon || p1.polygon == undefined || p2.polygon == undefined) {
+		return cruza;
 	} else {
-		return !(p1.next.p2.equals(p2) || p1.prev.p1.equals(p2));
+		println("POLIGONO" + cruza);
+		if (cruza == true) {
+			return true;
+		} else {
+			if (p2.polygon == p1.polygon && p1.polygon != undefined) {
+				println("CONE!");
+				//return !(p1.next.p2.equals(p2) || p1.prev.p1.equals(p2));
+				return noCone(current_edge);			
+			} else {
+				return false;
+			}	
+		}
 	}
 }
 
@@ -131,9 +156,9 @@ void draw() {
 	
 	
 	fill(0, 255, 0);
-	ellipse(start.x, start.y, 5, 5);
+	ellipse(start.x, height-start.y, 5, 5);
 	fill(255, 0, 0);
-	ellipse(end.x, end.y, 5, 5);
+	ellipse(end.x, height-end.y, 5, 5);
 	
 	
 	if (mode == "build_graph") {
@@ -187,12 +212,12 @@ void mouseClicked() {
 
 void set_start(int x, int y) {
 	start.x = x;
-	start.y = y;
+	start.y = height-y;
 }
 
 void set_end(int x, int y) {
 	end.x = x;
-	end.y = y;
+	end.y = height-y;
 }
 
 Point get_start() {

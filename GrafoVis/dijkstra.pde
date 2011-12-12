@@ -134,9 +134,9 @@ class DijkstraAnimation {
 			while (dest != 0 || orig != 0) {
 				Point p1 = g.all_points.get(orig);
 				Point p2 = g.all_points.get(dest);
-				line(p1.x, p1.y, p2.x, p2.y);
-				ellipse(p1.x, p1.y, 5, 5);
-				ellipse(p2.x, p2.y, 5, 5);
+				line(p1.x, height-p1.y, p2.x, height-p2.y);
+				ellipse(p1.x, height-p1.y, 5, 5);
+				ellipse(p2.x, height-p2.y, 5, 5);
 				orig = dest;
 				dest = dj.path.get(dest);
 			} 
@@ -150,10 +150,10 @@ class DijkstraAnimation {
 			    for (int i = 0; i < this.g.n; i++) {
 			        if (this.g.get(i, last_visited) > 0) {
 			            Point p1 = g.all_points.get(i);
-				        line(p1.x, p1.y, current_p.x, current_p.y);
+				        line(p1.x, height-p1.y, current_p.x, height-current_p.y);
 			        }
 			    }
-				ellipse(current_p.x, current_p.y, 15, 15);
+				ellipse(current_p.x, height-current_p.y, 15, 15);
 			}
 			
 			// pinta vertices visitados
@@ -161,7 +161,7 @@ class DijkstraAnimation {
 			stroke(255, 0, 255);
 			for (int i = 0; i < visited.size(); i++) {
 				Point p = g.all_points.get(visited.get(i));
-				ellipse(p.x, p.y, 5, 5)
+				ellipse(p.x, height-p.y, 5, 5)
 			}
 			
 			
@@ -170,7 +170,7 @@ class DijkstraAnimation {
 			stroke(0, 0, 255);
 			for (int i = 0; i < queue.size(); i++) {
 				Point p = g.all_points.get(queue.get(i));
-				ellipse(p.x, p.y, 5, 5)
+				ellipse(p.x, height-p.y, 5, 5)
 			}
 			
 			// pinta distâncias atuais para cada vertice
@@ -182,7 +182,7 @@ class DijkstraAnimation {
 				Point p = g.all_points.get(i);
 				int d = Math.round(path_length.get(i));
 				String t = d.toString(); 
-				text(t, p.x - textWidth(t), p.y);
+				text(t, p.x - textWidth(t), height-p.y);
 			}
 		}
 	}

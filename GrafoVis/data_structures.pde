@@ -58,6 +58,10 @@ class BinaryTreeNode {
 	void remove(Edge e) {
 		
 	}
+	
+	boolean isLeaf() {
+		return left == null && right == null;
+	}
 }
 
 class BinaryTree extends Set {
@@ -72,8 +76,16 @@ class BinaryTree extends Set {
 		this.origin = origin;
 	}
 	
+	private double calculateValue(Edge e) {
+		return 0.0;
+	}
+	
 	void add(Edge e) {
+		if (root != null) {
 		
+		} else {
+			root = new BinaryTree(calculateValue(e), null, null);
+		}
 	}
 	
 	int size() {
@@ -249,7 +261,7 @@ class Graph {
 				if (graph_points[i][j] >= 0) {
 					Point ip = all_points.get(i);
 					Point jp = all_points.get(j);
-					line(ip.x, ip.y, jp.x, jp.y);
+					line(ip.x, height-ip.y, jp.x, height-jp.y);
 				}
 			}	
 		}
