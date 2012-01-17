@@ -67,9 +67,14 @@ class BinaryTree extends Set {
 	}
 	
 	boolean remove(Edge e) {
-		double key = calculateValue(e);
-		BinaryTreeNode p = find(key);
-		
+		BinaryTreeNode p = findE(e.p1);
+		BinaryTreeNode parent = p.parent;
+		if (p == parent.left) {
+			parent.key = p.key;
+			parent.value = p.value;
+			fixUp(parent);
+		}
+		parent.left = parent.right = null;
 	}
 	
 	int size() {
@@ -82,6 +87,22 @@ class BinaryTree extends Set {
 		while (p.left != null) {
 			p = p.left;
 		}	
+		return p;
+	}
+	
+	Edge findE(Point p) {
+		BinaryTreeNode p = root;
+		while (p != null) {
+			if (p.isLeaf()) {
+				break;
+			} else {
+				if (p.value.left(p) || p.value.colinear(p)) {
+					p = p.left;
+				} else {
+					p = p.right;
+				}
+			}
+		}
 		return p;
 	}
 	
