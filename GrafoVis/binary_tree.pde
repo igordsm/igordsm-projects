@@ -1,9 +1,9 @@
 class BinaryTreeNode {
-	double key;
+	float key;
 	Object value;
 	public BinaryTreeNode left, right, parent;
 	
-	public BinaryTreeNode(double key, Object value, BinaryTreeNode left, BinaryTreeNode right, BinaryTreeNode parent) {
+	public BinaryTreeNode(float key, Object value, BinaryTreeNode left, BinaryTreeNode right, BinaryTreeNode parent) {
 		this.value = value;
 		this.key = key;
 		this.left = left;
@@ -32,7 +32,7 @@ class BinaryTree extends Set {
 		this.origin = origin;
 	}
 	
-	private double calculateValue(Edge e) {
+	private float calculateValue(Edge e) {
 		return 0.0;
 	}
 	
@@ -47,11 +47,13 @@ class BinaryTree extends Set {
 		}
 	}
 	
-	void add(Edge e) {
+	void add(Edge e, float key) {
+		println("Add: " + e + " key : " + key);
 		if (root != null) {
-			BinaryTreeNode p = findE(e);
+			BinaryTreeNode p = find(key);
+			println("FIND: " + p);
 			if (p.value.right(e.p1)) {
-				BinaryTreeNode left = new BinaryTreeNode(calculateValue(key), e, null, null, p);
+				BinaryTreeNode left = new BinaryTreeNode(key, e, null, null, p);
 				BinaryTreeNode right = new BinaryTreeNode(p.key, p.value, null, null, p);
 				p.left = left;
 				p.right = right;
@@ -59,7 +61,7 @@ class BinaryTree extends Set {
 				p.value = left.value;
 				fixUp(p.right);
 			} else {
-				BinaryTreeNode right = new BinaryTreeNode(calculateValue(key), e, null, null, p);
+				BinaryTreeNode right = new BinaryTreeNode(key, e, null, null, p);
 				BinaryTreeNode left = new BinaryTreeNode(p.key, p.value, null, null, p);
 				p.left = left;
 				p.right = right;
@@ -94,22 +96,25 @@ class BinaryTree extends Set {
 	}
 	
 	Edge findE(Point p) {
-		BinaryTreeNode p = root;
-		while (p != null) {
-			if (p.isLeaf()) {
+		println("findE : " + p);
+		BinaryTreeNode ptr = root;
+		while (ptr!= null) {
+			if (ptr.isLeaf()) {
 				break;
 			} else {
-				if (p.value.left(p) || p.value.colinear(p)) {
-					p = p.left;
+				if (ptr.value.left(p) || ptr.value.colinear(p)) {
+					println(p + " is in left of " + ptr.value);
+					ptr = ptr.left;
 				} else {
-					p = p.right;
+					println(p + " is in right of " + ptr.value);
+					ptr = ptr.right;
 				}
 			}
 		}
-		return p;
+		return ptr;
 	}
 	
-	Edge find(double distance) {
+	Edge find(float distance) {
 		BinaryTreeNode p = root;
 		while (p != null) {
 			if (p.isLeaf()) {

@@ -65,7 +65,7 @@ class Edge {
 		this.p2 = p2;
 	}
 	
-	double length() {
+	float length() {
 		return dist(p1.x, p1.y, p2.x, p2.y);
 	}
 	
@@ -81,7 +81,7 @@ class Edge {
 		return compare(p) == 0;
 	}
 	
-	double compare(Point p) {
+	float compare(Point p) {
 		return (p2.x - p1.x)*(p.y - p1.y) - (p2.y - p1.y)*(p.x - p1.x);
 	}
 	

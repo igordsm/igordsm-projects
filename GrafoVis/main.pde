@@ -45,7 +45,7 @@ void init_sweep_line(int point, SortOrder so) {
    		if (sweep != null && sweep.crosses(e) == true && sweep.p1 != p1 && sweep.p2 != p1) {
    			println("Adicionada aresta: " + sweep.toString());
    			sweep_line.add(sweep);
-   			btree_test.add(sweep);
+   			btree_test.add(sweep, dist(p1.x, p1.y, sweep.p1.x, sweep.p1.y) );
    		}
    	}
    	println(btree_test);
@@ -62,7 +62,6 @@ void update_sweep_line(int point_counter, SortOrder so, Edge current_edge) {
 	Point e2p = e2.p2;
 	
 	println("Atualizando linha de varredura. Linha de varredura: " + current_edge.toString());
-	
 	if (e1.p1 != current_edge.p1 && e1.p2 != current_edge.p1) {
 		println("Aresta 1 " + e1.toString() + " ; Vértice " + e1p.toString());
 		if (current_edge.right(e1p) == true) {
@@ -71,7 +70,8 @@ void update_sweep_line(int point_counter, SortOrder so, Edge current_edge) {
 			println(btree_test);
 		} else {
 			sweep_line.add(e1);
-			btree_test.add(e1);
+			float key = current_edge.length()();
+			btree_test.add(e1, key);
 			println(btree_test);
 		}
 	}
@@ -83,7 +83,8 @@ void update_sweep_line(int point_counter, SortOrder so, Edge current_edge) {
 			println(btree_test);
 		} else {
 			sweep_line.add(e2);
-			btree_test.add(e2);
+			float key = current_edge.length()();
+			btree_test.add(e2, key);
 			println(btree_test);
 		}
 	}
@@ -103,10 +104,8 @@ boolean noCone(Edge current_edge) {
 	Point prev = p2.prev.p1;
 	Point next = p2.next.p2;
 	if (p2.prev.compare(next) >= 0) {
-		println("CONVEXO");
 		return current_edge.compare(prev) < 0 && current_edge.compare(next) > 0; 
 	} else {
-		println("Concavo");
 		return !(current_edge.compare(prev) >= 0 && current_edge.compare(next) <= 0);
 	}
 }
