@@ -65,7 +65,7 @@ class Edge {
 		this.p2 = p2;
 	}
 	
-	float length() {
+	float edge_length() {
 		return dist(p1.x, p1.y, p2.x, p2.y);
 	}
 	

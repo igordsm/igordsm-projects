@@ -1,14 +1,22 @@
 
-float get_slope(Edge e) {
-	return (e.p2.y - e.p1.y)/(e.p2.x - e.p1.x);;
+float get_slope_y(Edge e) {
+	return ((float) (e.p2.y - e.p1.y))/(e.p2.x - e.p1.x);
 }
 
 Point edge_intersect_point(Edge e1, Edge e2) {
+	if (e2.p1.x == e2.p2.x) return edge_intersect_point(e2, e1);
+	if (e1.p1.x == e1.p2.x) {
+		/* trata caso em que o get_slope_y daria divisao por 0 */
+	}	
 	/* line equation: y = ax + b */
-	float a1 = -get_slope(e1);
-	float a2 = -get_slope(e2);
-	float b1 = e1.p1.y + a1 * e1.p1.x;
-	float b1 = e2.p1.y + a2 * e2.p1.x;
+	float a1 = get_slope_y(e1);
+	float a2 = get_slope_y(e2);
+	float b1 = e1.p1.y - a1 * e1.p1.x;
+	float b2 = e2.p1.y - a2 * e2.p1.x;
+	/*println(e1);
+	println("E1 : y = " + a1 + "x + " + b1);
+	println(e2);
+	println("E2 : y = " + a2 + "x + " + b2);*/ 
 	
 	float inter_x = (b2 - b1)/(a1 - a2);
 	float inter_y = a1 * inter_x + b1;
@@ -34,8 +42,10 @@ class BinaryTreeNode {
 		return value.toString();
 	}
 	
-	float calculate_key(Point p) {
-		return 0;
+	float calculate_key(Edge e) {
+		Point crossing = edge_intersect_point(e, value);
+		float key = dist(e.p1.x, e.p1.y, crossing.x, crossing.y);
+		return key;
 	}
 }
 
@@ -62,35 +72,37 @@ class BinaryTree extends Set {
 		}
 	}
 	
-	void add(Edge e, float key) {
+	void add(Edge e, Edge current) {
+		Point crossing = edge_intersect_point(e, current);
+		float key = dist(origin.x, origin.y, crossing.x, crossing.y);
 		println("Add: " + e + " key : " + key);
-		/*if (root != null) {
-			BinaryTreeNode p = find(key);
-			println("FIND: " + p);
-			if (p.value.right(e.p1)) {
-				BinaryTreeNode left = new BinaryTreeNode(key, e, null, null, p);
-				BinaryTreeNode right = new BinaryTreeNode(p.key, p.value, null, null, p);
+		if (root != null) {
+			BinaryTreeNode p = find(key, current);
+			println("FIND: " + p + ": " + p.calculate_key(current));
+			if (key <= p.calculate_key(current)) {
+				BinaryTreeNode left = new BinaryTreeNode(e, null, null, p);
+				BinaryTreeNode right = new BinaryTreeNode(p.value, null, null, p);
 				p.left = left;
 				p.right = right;
-				p.key = left.key;
 				p.value = left.value;
-				fixUp(p.right);
 			} else {
-				BinaryTreeNode right = new BinaryTreeNode(key, e, null, null, p);
-				BinaryTreeNode left = new BinaryTreeNode(p.key, p.value, null, null, p);
+				BinaryTreeNode left = new BinaryTreeNode(p.value, null, null, p);
+				BinaryTreeNode right = new BinaryTreeNode(e, null, null, p);
 				p.left = left;
 				p.right = right;
+				fixUp(p.right);
 			}
 		} else {
-			root = new BinaryTreeNode(key, e, null, null, null);
-		}*/
+			root = new BinaryTreeNode(e, null, null, null);
+		}
 		size++;
 	}
 	
-	Edge find(float key) {
+	Edge find(float key, Edge current) {
 		BinaryTreeNode ptr = root;
 		while (ptr != null && !ptr.isLeaf()) {
-			float ptr_key = ptr.calculate_key();
+			println(ptr);
+			float ptr_key = ptr.calculate_key(current);
 			if (ptr <= ptr_key) {
 				ptr = ptr.left;
 			} else {
@@ -121,7 +133,7 @@ class BinaryTree extends Set {
 		while (p.left != null) {
 			p = p.left;
 		}	
-		return p;
+		return p.value;
 	}
 	
 	String print(BinaryTreeNode p) {
