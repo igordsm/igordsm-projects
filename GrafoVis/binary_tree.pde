@@ -14,6 +14,10 @@ class BinaryTreeNode {
 	boolean isLeaf() {
 		return left == null && right == null;
 	}
+	
+	String toString() {
+		return value.toString();
+	}
 }
 
 class BinaryTree extends Set {
@@ -44,22 +48,21 @@ class BinaryTree extends Set {
 	}
 	
 	void add(Edge e) {
-		double key = calculateValue(e);
 		if (root != null) {
-			BinaryTreeNode p = find(key);
-			if (key <= p.value) {
-				BinaryTreeNode left = new BinaryTreeNode(key, e, null, null, p);
+			BinaryTreeNode p = findE(e);
+			if (p.value.right(e.p1)) {
+				BinaryTreeNode left = new BinaryTreeNode(calculateValue(key), e, null, null, p);
 				BinaryTreeNode right = new BinaryTreeNode(p.key, p.value, null, null, p);
 				p.left = left;
 				p.right = right;
+				p.key = left.key;
+				p.value = left.value;
+				fixUp(p.right);
 			} else {
-				BinaryTreeNode right = new BinaryTreeNode(key, e, null, null, p);
+				BinaryTreeNode right = new BinaryTreeNode(calculateValue(key), e, null, null, p);
 				BinaryTreeNode left = new BinaryTreeNode(p.key, p.value, null, null, p);
 				p.left = left;
 				p.right = right;
-				p.key = right.key;
-				p.value = right.value;
-				fixUp(p.right);
 			}
 		} else {
 			root = new BinaryTreeNode(key, e, null, null, null);
@@ -124,6 +127,17 @@ class BinaryTree extends Set {
 	
 	boolean remove(Edge e) {
 		return false;
+	}
+	
+	String print(BinaryTreeNode p) {
+		if (p == null) return "";
+		String l = print(p.left);
+		String r = print(p.right);
+		return "[" + l + "] " + p.toString() + " [" + r + "]";
+	}
+	
+	String toString() {
+		return print(root);
 	}
 
 }

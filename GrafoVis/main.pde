@@ -48,6 +48,7 @@ void init_sweep_line(int point, SortOrder so) {
    			btree_test.add(sweep);
    		}
    	}
+   	println(btree_test);
    	println("FIM");
 }
 
@@ -67,22 +68,24 @@ void update_sweep_line(int point_counter, SortOrder so, Edge current_edge) {
 		if (current_edge.right(e1p) == true) {
 			sweep_line.remove(e1);
 			btree_test.remove(e1);
+			println(btree_test);
 		} else {
 			sweep_line.add(e1);
 			btree_test.add(e1);
+			println(btree_test);
 		}
-		println("SWEEP LINE " + sweep_line.toString());
 	}
 	if (e2.p1 != current_edge.p1 && e2.p2 != current_edge.p1) {
 		println("Aresta 2 " + e2.toString() + " ; Vértice " + e2p.toString());
 		if (current_edge.right(e2p) == true) {
 			sweep_line.remove(e2);
 			btree_test.remove(e2);
+			println(btree_test);
 		} else {
 			sweep_line.add(e2);
 			btree_test.add(e2);
+			println(btree_test);
 		}
-		println("SWEEP LINE " + sweep_line.toString());
 	}
 	println("FIM");
 }
@@ -110,7 +113,23 @@ boolean noCone(Edge current_edge) {
 
 boolean check_intersections(Edge current_edge) {
 	println("Checando interseções de: " + current_edge.toString());
-	/* verifica se as pontas da aresta current_edge estao em poligonos diferentes ou se sao vizinhos no mesmo poligono. */
+	Point p1 = current_edge.p1;
+	Point p2 = current_edge.p2;
+	
+	if (p2.polygon != undefined && noCone(current_edge)) {
+		return true;
+	}
+	Edge e = btree_test.getNearestEdge();
+	if (e != null) {
+ 		return !current_edge.crosses(e);
+	} else {
+		return true;
+	}
+}
+
+
+/*boolean check_intersections(Edge current_edge) {
+	println("Checando interseções de: " + current_edge.toString());
 	Point p1 = current_edge.p1;
 	Point p2 = current_edge.p2;
 	boolean cruza = false;
@@ -136,7 +155,7 @@ boolean check_intersections(Edge current_edge) {
 			}	
 		}
 	}
-}
+} */
 
 void start_algorithm() {
 	set_mode("build_graph");
