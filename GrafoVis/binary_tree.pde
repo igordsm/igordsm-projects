@@ -63,6 +63,7 @@ class BinaryTree extends Set {
 	
 	void fixUp(BinaryTreeNode p) {
 		BinaryTreeNode ptr = p.parent;
+		if (ptr == null) return;
 		while(ptr.parent != null && ptr == ptr.parent.left) {
 			ptr = ptr.parent;
 		} 
@@ -101,9 +102,9 @@ class BinaryTree extends Set {
 	Edge find(float key, Edge current) {
 		BinaryTreeNode ptr = root;
 		while (ptr != null && !ptr.isLeaf()) {
-			println(ptr);
 			float ptr_key = ptr.calculate_key(current);
-			if (ptr <= ptr_key) {
+			println("Find: " + ptr + ", key: " + ptr_key);
+			if (key <= ptr_key) {
 				ptr = ptr.left;
 			} else {
 				ptr = ptr.right;
@@ -112,15 +113,23 @@ class BinaryTree extends Set {
 		return ptr;
 	}
 	
-	boolean remove(Edge e) {
-		/*BinaryTreeNode p = findE(e.p1);
-		BinaryTreeNode parent = p.parent;
-		if (p == parent.left) {
-			parent.key = p.key;
-			parent.value = p.value;
-			fixUp(parent);
+	boolean remove(Edge e, Edge current) {
+		Point crossing = edge_intersect_point(e, current);
+		float key = dist(origin.x, origin.y, crossing.x, crossing.y);
+		println("Remove: " + e + ", key: " + key);
+		BinaryTreeNode p = find(key, current);
+		println("Find: " + p);
+		if (p == root) {
+			root = null;
+		} else {
+			BinaryTreeNode parent = p.parent;
+			if (p == parent.left) {
+				parent.value = p.value;
+				fixUp(parent);
+			}
+			parent.left = parent.right = null;
 		}
-		parent.left = parent.right = null;*/
+		size--;
 	}
 	
 	int size() {

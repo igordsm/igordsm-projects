@@ -67,7 +67,7 @@ void update_sweep_line(int point_counter, SortOrder so, Edge current_edge) {
 		println("Aresta 1 " + e1.toString() + " ; Vértice " + e1p.toString());
 		if (current_edge.right(e1p) == true) {
 			sweep_line.remove(e1);
-			btree_test.remove(e1);
+			btree_test.remove(e1, current_edge);
 			println(btree_test);
 		} else {
 			sweep_line.add(e1);
@@ -79,7 +79,7 @@ void update_sweep_line(int point_counter, SortOrder so, Edge current_edge) {
 		println("Aresta 2 " + e2.toString() + " ; Vértice " + e2p.toString());
 		if (current_edge.right(e2p) == true) {
 			sweep_line.remove(e2);
-			btree_test.remove(e2);
+			btree_test.remove(e2, current_edge);
 			println(btree_test);
 		} else {
 			sweep_line.add(e2);
@@ -102,6 +102,7 @@ boolean noCone(Edge current_edge) {
 	Point p2 = current_edge.p2;
 	Point prev = p2.prev.p1;
 	Point next = p2.next.p2;
+	println("Cone: " + prev + "-" + next);
 	if (p2.prev.compare(next) >= 0) {
 		return current_edge.compare(prev) < 0 && current_edge.compare(next) > 0; 
 	} else {
@@ -115,6 +116,7 @@ boolean check_intersections(Edge current_edge) {
 	Point p2 = current_edge.p2;
 	
 	if (p2.polygon != undefined && noCone(current_edge)) {
+		println("No cone!");
 		return true;
 	}
 	Edge e = btree_test.getNearestEdge();
