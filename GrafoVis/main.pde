@@ -120,9 +120,9 @@ boolean check_intersections(Edge current_edge) {
 	}
 	Edge e = btree_test.getNearestEdge();
 	if (e != null) {
- 		return !current_edge.crosses(e);
+ 		return current_edge.crosses(e);
 	} else {
-		return true;
+		return false;
 	}
 }
 
