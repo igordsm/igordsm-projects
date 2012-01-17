@@ -24,6 +24,7 @@ void clear_state() {
     end = new Point(-1, -1);
     all_points = null;
     sweep_line = null;
+    btree_test = null;
 
     current_point = 0;
 

@@ -1,11 +1,26 @@
+
+float get_slope(Edge e) {
+	return (e.p2.y - e.p1.y)/(e.p2.x - e.p1.x);;
+}
+
+Point edge_intersect_point(Edge e1, Edge e2) {
+	/* line equation: y = ax + b */
+	float a1 = -get_slope(e1);
+	float a2 = -get_slope(e2);
+	float b1 = e1.p1.y + a1 * e1.p1.x;
+	float b1 = e2.p1.y + a2 * e2.p1.x;
+	
+	float inter_x = (b2 - b1)/(a1 - a2);
+	float inter_y = a1 * inter_x + b1;
+	return new Point(inter_x, inter_y);
+}
+
 class BinaryTreeNode {
-	float key;
 	Object value;
 	public BinaryTreeNode left, right, parent;
 	
-	public BinaryTreeNode(float key, Object value, BinaryTreeNode left, BinaryTreeNode right, BinaryTreeNode parent) {
+	public BinaryTreeNode(Object value, BinaryTreeNode left, BinaryTreeNode right, BinaryTreeNode parent) {
 		this.value = value;
-		this.key = key;
 		this.left = left;
 		this.right = right;
 		this.parent = parent;
@@ -17,6 +32,10 @@ class BinaryTreeNode {
 	
 	String toString() {
 		return value.toString();
+	}
+	
+	float calculate_key(Point p) {
+		return 0;
 	}
 }
 
@@ -32,10 +51,6 @@ class BinaryTree extends Set {
 		this.origin = origin;
 	}
 	
-	private float calculateValue(Edge e) {
-		return 0.0;
-	}
-	
 	void fixUp(BinaryTreeNode p) {
 		BinaryTreeNode ptr = p.parent;
 		while(ptr.parent != null && ptr == ptr.parent.left) {
@@ -49,7 +64,7 @@ class BinaryTree extends Set {
 	
 	void add(Edge e, float key) {
 		println("Add: " + e + " key : " + key);
-		if (root != null) {
+		/*if (root != null) {
 			BinaryTreeNode p = find(key);
 			println("FIND: " + p);
 			if (p.value.right(e.p1)) {
@@ -68,18 +83,32 @@ class BinaryTree extends Set {
 			}
 		} else {
 			root = new BinaryTreeNode(key, e, null, null, null);
-		}
+		}*/
+		size++;
+	}
+	
+	Edge find(float key) {
+		BinaryTreeNode ptr = root;
+		while (ptr != null && !ptr.isLeaf()) {
+			float ptr_key = ptr.calculate_key();
+			if (ptr <= ptr_key) {
+				ptr = ptr.left;
+			} else {
+				ptr = ptr.right;
+			}
+		} 
+		return ptr;
 	}
 	
 	boolean remove(Edge e) {
-		BinaryTreeNode p = findE(e.p1);
+		/*BinaryTreeNode p = findE(e.p1);
 		BinaryTreeNode parent = p.parent;
 		if (p == parent.left) {
 			parent.key = p.key;
 			parent.value = p.value;
 			fixUp(parent);
 		}
-		parent.left = parent.right = null;
+		parent.left = parent.right = null;*/
 	}
 	
 	int size() {
@@ -93,45 +122,6 @@ class BinaryTree extends Set {
 			p = p.left;
 		}	
 		return p;
-	}
-	
-	Edge findE(Point p) {
-		println("findE : " + p);
-		BinaryTreeNode ptr = root;
-		while (ptr!= null) {
-			if (ptr.isLeaf()) {
-				break;
-			} else {
-				if (ptr.value.left(p) || ptr.value.colinear(p)) {
-					println(p + " is in left of " + ptr.value);
-					ptr = ptr.left;
-				} else {
-					println(p + " is in right of " + ptr.value);
-					ptr = ptr.right;
-				}
-			}
-		}
-		return ptr;
-	}
-	
-	Edge find(float distance) {
-		BinaryTreeNode p = root;
-		while (p != null) {
-			if (p.isLeaf()) {
-				break;
-			} else {
-				if (p.value >= distance) {
-					p = p.left;
-				} else {
-					p = p.right;
-				}
-			}
-		}
-		return p;
-	}
-	
-	boolean remove(Edge e) {
-		return false;
 	}
 	
 	String print(BinaryTreeNode p) {
