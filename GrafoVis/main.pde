@@ -4,6 +4,7 @@ Point start = new Point(-1, -1);
 Point end = new Point(-1, -1);
 ArrayList all_points;
 Set sweep_line = null;
+Set btree_test;
 
 int current_point = 0;
 
@@ -35,7 +36,8 @@ void clear_state() {
 
 void init_sweep_line(int point, SortOrder so) {
 	sweep_line = new Set();
-	Point p1 = all_points.get(point); 
+	Point p1 = all_points.get(point);
+	btree_test = new BinaryTree(point); 
 	Edge e = new Edge(p1, new Point(100000000, p1.y));
 	println("Inicialização da linha de varredura:");
 	for (int i = 0; i < all_points.size(); i++) {
@@ -43,6 +45,7 @@ void init_sweep_line(int point, SortOrder so) {
    		if (sweep != null && sweep.crosses(e) == true && sweep.p1 != p1 && sweep.p2 != p1) {
    			println("Adicionada aresta: " + sweep.toString());
    			sweep_line.add(sweep);
+   			btree_test.add(sweep);
    		}
    	}
    	println("FIM");
@@ -63,8 +66,10 @@ void update_sweep_line(int point_counter, SortOrder so, Edge current_edge) {
 		println("Aresta 1 " + e1.toString() + " ; Vértice " + e1p.toString());
 		if (current_edge.right(e1p) == true) {
 			sweep_line.remove(e1);
+			btree_test.remove(e1);
 		} else {
 			sweep_line.add(e1);
+			btree_test.add(e1);
 		}
 		println("SWEEP LINE " + sweep_line.toString());
 	}
@@ -72,8 +77,10 @@ void update_sweep_line(int point_counter, SortOrder so, Edge current_edge) {
 		println("Aresta 2 " + e2.toString() + " ; Vértice " + e2p.toString());
 		if (current_edge.right(e2p) == true) {
 			sweep_line.remove(e2);
+			btree_test.remove(e2);
 		} else {
 			sweep_line.add(e2);
+			btree_test.add(e2);
 		}
 		println("SWEEP LINE " + sweep_line.toString());
 	}
@@ -152,8 +159,6 @@ void setup() {
 
 void draw() {
 	background(255);
-	draw_polys(true);	
-	
 	
 	fill(0, 255, 0);
 	ellipse(start.x, height-start.y, 5, 5);
@@ -162,6 +167,7 @@ void draw() {
 	
 	
 	if (mode == "build_graph") {
+		draw_polys(true);
 		paths.draw();
 		vgba.draw();
 		if (vgba.is_finished()) {
@@ -188,13 +194,16 @@ void draw() {
 			update_sweep_line(vgba.point_counter, vgba.so, vgba.current_edge());
 		}
 	} else if (mode == "shortest_path") {
+		draw_polys(false);
 		dijkstra_anim.draw();
 		if (dijkstra_anim.changed_vertex() && dijkstra.is_finished() == false) {
 			int visited = dijkstra.step();
 			if (visited >= 0) { 
 				dijkstra_anim.add_visited_vertex(visited);
 			}
-		}
+		} 
+	} else {
+		draw_polys(true);
 	}
 }
 

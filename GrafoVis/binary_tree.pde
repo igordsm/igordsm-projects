@@ -34,7 +34,7 @@ class BinaryTree extends Set {
 	
 	void fixUp(BinaryTreeNode p) {
 		BinaryTreeNode ptr = p.parent;
-		while(ptr.parent != null || ptr == ptr.parent.left) {
+		while(ptr.parent != null && ptr == ptr.parent.left) {
 			ptr = ptr.parent;
 		} 
 		if (ptr.parent != null) {
