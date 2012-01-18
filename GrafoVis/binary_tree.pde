@@ -135,7 +135,11 @@ class BinaryTree extends Set {
 		} else {
 			BinaryTreeNode parent = p.parent;
 			if (parent == root) {
-				
+				BinaryTreeNode new_parent;
+				if (p == parent.left) new_parent = parent.right;
+				else if (p == parent.right) new_parent = parent.left;
+				new_parent.parent = null;
+				root = new_parent;
 			} else {
 				BinaryTreeNode rest, new_parent;
 				if (p == parent.left) {
