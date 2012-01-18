@@ -62,7 +62,7 @@ void update_sweep_line(int point_counter, SortOrder so, Edge current_edge) {
 	Point e2p = e2.p2;
 	
 	println("Atualizando linha de varredura. Linha de varredura: " + current_edge.toString());
-	if (e1.p1 != current_edge.p1 && e1.p2 != current_edge.p1) {
+	if (!e1.p1.equals(current_edge.p1) && !e1.p2.equals(current_edge.p1)) {
 		println("Aresta 1 " + e1.toString() + " ; Vértice " + e1p.toString());
 		if (current_edge.right(e1p) == true) {
 			sweep_line.remove(e1);
@@ -72,7 +72,7 @@ void update_sweep_line(int point_counter, SortOrder so, Edge current_edge) {
 			btree_test.add(e1, current_edge);
 		}
 	}
-	if (e2.p1 != current_edge.p1 && e2.p2 != current_edge.p1) {
+	if (!e2.p1.equals(current_edge.p1) && !e2.p2.equals(current_edge.p1)) {
 		println("Aresta 2 " + e2.toString() + " ; Vértice " + e2p.toString());
 		if (current_edge.right(e2p) == true) {
 			sweep_line.remove(e2);
@@ -174,7 +174,7 @@ void draw() {
 		vgba.draw();
 		if (vgba.is_finished()) {
 			current_point++;
-			if (current_point < all_points.size()) {
+			if (current_point < -1/*all_points.size()*/) {
 				SortOrder so = sort_around_point(all_points, current_point);
 				check_visibles_vertexes(current_point, so);
 			} else {

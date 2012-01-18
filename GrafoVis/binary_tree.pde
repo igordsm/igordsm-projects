@@ -68,7 +68,7 @@ class BinaryTree extends Set {
 	}
 	
 	void fixUp(BinaryTreeNode p) {
-		BinaryTreeNode ptr = p.parent;
+		BinaryTreeNode ptr = p;
 		if (ptr == null) return;
 		while(ptr.parent != null && ptr == ptr.parent.right) {
 			ptr = ptr.parent;
