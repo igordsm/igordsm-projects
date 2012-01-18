@@ -154,7 +154,7 @@ void start_algorithm() {
 	
 	vgba = new VisibilityGraphBuildAnimation(all_points);
 	paths = new Graph(all_points.size(), all_points);
-	current_point = 5;
+	current_point = 0;
 	SortOrder so = sort_around_point(all_points, current_point);
 	check_visibles_vertexes(current_point, so);
 }
