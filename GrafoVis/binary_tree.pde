@@ -78,6 +78,16 @@ class BinaryTree extends Set {
 		}
 	}
 	
+	float getKeyForward(Edge e, Edge current) {
+		Edge new_current = new Edge(current.p1, current.p2);
+		Point new_p2 = new Point(current.p2.x - current.p1.x, current.p2.y - current.p1.y);
+		new_p2.x = new_p2.x * cos(-QUARTER_PI/10) + new_p2.y * sin(-QUARTER_PI/10) + current.p1.x;
+		new_p2.y =  - new_p2.x * sin(-QUARTER_PI/10) + new_p2.y * cos(-QUARTER_PI/10) + current.p1.y;
+		new_current.p2 = new_p2;
+		println(new_p2);
+		return getKey(e, new_current);
+	}	
+	
 	void add(Edge e, Edge current) {
 		float key = getKey(e, current);
 		println("Add: " + e + " key : " + key);
@@ -85,7 +95,16 @@ class BinaryTree extends Set {
 			BinaryTreeNode p = find(e, current);
 			println("Found: " + p + ": " + p.calculate_key(current));
 			println(this);
-			if (key <= p.calculate_key(current)) {
+			float ptr_key = p.calculate_key(current);
+			if (abs(key - ptr_key) < 0.0001) {
+				/* Se caiu aqui entao estou adicionando a segunda aresta de um "bico" 
+				   Deste modo, preciso "avancar" um pouco no sentido da aresta para saber qual esta na frente	
+				*/
+				key = getKeyForward(e, current);  
+				ptr_key = getKeyForward(p.value, current);
+				println("New Key: " + key + ", New ptr_key " + ptr_key);
+			}
+			if (key < ptr_key) {
 				BinaryTreeNode left = new BinaryTreeNode(e, null, null, p);
 				BinaryTreeNode right = new BinaryTreeNode(p.value, null, null, p);
 				p.left = left;

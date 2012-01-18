@@ -174,7 +174,7 @@ void draw() {
 		vgba.draw();
 		if (vgba.is_finished()) {
 			current_point++;
-			if (current_point < -1/*all_points.size()*/) {
+			if (current_point < all_points.size()) {
 				SortOrder so = sort_around_point(all_points, current_point);
 				check_visibles_vertexes(current_point, so);
 			} else {
