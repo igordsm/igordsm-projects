@@ -135,7 +135,7 @@ class BinaryTree extends Set {
 		} else {
 			BinaryTreeNode parent = p.parent;
 			if (parent == root) {
-			
+				
 			} else {
 				BinaryTreeNode parent2 = parent.parent;
 				BinaryTreeNode rest;
@@ -144,10 +144,14 @@ class BinaryTree extends Set {
 				} else {
 					rest = parent.left;
 				}
+				rest.parent = parent2;
+				println("PParent" + p.parent + "Parent->rightt: " + parent.right + ", Rest: " + rest + ", parent2: " + parent2);
 				if (parent2.right == parent) {
 					/* o valor do parent ja esta certo, pois removi um ramo da direita */
+					println("Parent2 right");
 					parent2.right = rest;
 				} else {
+					println("Parent2 left");
 					parent2.left = rest;
 					/* conserta valor do parent2: pega o mais a direita de rest*/
 					BinaryTreeNode ptr = rest;
