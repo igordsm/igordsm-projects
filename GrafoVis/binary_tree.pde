@@ -7,6 +7,10 @@ Point edge_intersect_point(Edge e1, Edge e2) {
 	if (e2.p1.x == e2.p2.x) return edge_intersect_point(e2, e1);
 	if (e1.p1.x == e1.p2.x) {
 		/* trata caso em que o get_slope_y daria divisao por 0 */
+		float a2 = get_slope_y(e2);
+		float b2 = e2.p1.y - a2 * e2.p1.x;
+		float inter_y = a2 * e1.p1.x + b2;
+		return new Point(e1.p1.x, inter_y);
 	}	
 	/* line equation: y = ax + b */
 	float a1 = get_slope_y(e1);
