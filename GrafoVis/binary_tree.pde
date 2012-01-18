@@ -74,7 +74,7 @@ class BinaryTree extends Set {
 			ptr = ptr.parent;
 		} 
 		if (ptr.parent != null) {
-			ptr.value = p.value;
+			ptr.parent.value = p.value;
 		}
 	}
 	
@@ -137,28 +137,29 @@ class BinaryTree extends Set {
 			if (parent == root) {
 				
 			} else {
-				BinaryTreeNode parent2 = parent.parent;
-				BinaryTreeNode rest;
+				BinaryTreeNode rest, new_parent;
 				if (p == parent.left) {
 					rest = parent.right;
 				} else {
 					rest = parent.left;
 				}
-				rest.parent = parent2;
-				println("PParent" + p.parent + "Parent->rightt: " + parent.right + ", Rest: " + rest + ", parent2: " + parent2);
-				if (parent2.right == parent) {
-					/* o valor do parent ja esta certo, pois removi um ramo da direita */
-					println("Parent2 right");
-					parent2.right = rest;
-				} else {
-					println("Parent2 left");
-					parent2.left = rest;
-					/* conserta valor do parent2: pega o mais a direita de rest*/
-					BinaryTreeNode ptr = rest;
-					while (!ptr.isLeaf()) {
-						ptr = ptr.right;
+				new_parent = parent.parent;
+				rest.parent = new_parent;
+				if (parent == new_parent.left) {
+					new_parent.left = rest;
+					BinaryTreeNode rightmost = new_parent.left;
+					while (!rightmost.isLeaf()) {
+						rightmost = rightmost.right;
 					}
-					parent2.value = ptr.value;
+					fixUp(rightmost);
+				} else if (parent == new_parent.right) {
+					println("Right of new_parent");
+					new_parent.right = rest;
+					BinaryTreeNode rightmost = new_parent;
+					while (!rightmost.isLeaf()) {
+						rightmost = rightmost.right;
+					}
+					fixUp(rightmost);
 				}
 			}
 		}
