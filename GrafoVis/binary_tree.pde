@@ -61,6 +61,12 @@ class BinaryTree extends Set {
 		this.origin = origin;
 	}
 	
+	float getKey(Edge e, Edge current) {
+		Point crossing = edge_intersect_point(e, current);
+		float key = dist(origin.x, origin.y, crossing.x, crossing.y);
+		return key;
+	}
+	
 	void fixUp(BinaryTreeNode p) {
 		BinaryTreeNode ptr = p.parent;
 		if (ptr == null) return;
@@ -74,12 +80,12 @@ class BinaryTree extends Set {
 	}
 	
 	void add(Edge e, Edge current) {
-		Point crossing = edge_intersect_point(e, current);
-		float key = dist(origin.x, origin.y, crossing.x, crossing.y);
+		float key = getKey(e, current);
 		println("Add: " + e + " key : " + key);
 		if (root != null) {
-			BinaryTreeNode p = find(key, current);
-			println("FIND: " + p + ": " + p.calculate_key(current));
+			BinaryTreeNode p = find(e, current);
+			println("Found: " + p + ": " + p.calculate_key(current));
+			println(this);
 			if (key <= p.calculate_key(current)) {
 				BinaryTreeNode left = new BinaryTreeNode(e, null, null, p);
 				BinaryTreeNode right = new BinaryTreeNode(p.value, null, null, p);
@@ -87,6 +93,7 @@ class BinaryTree extends Set {
 				p.right = right;
 				p.value = left.value;
 			} else {
+				println("RIGHT");
 				BinaryTreeNode left = new BinaryTreeNode(p.value, null, null, p);
 				BinaryTreeNode right = new BinaryTreeNode(e, null, null, p);
 				p.left = left;
@@ -99,12 +106,17 @@ class BinaryTree extends Set {
 		size++;
 	}
 	
-	Edge find(float key, Edge current) {
+	Edge find(Edge e, Edge current) {
 		BinaryTreeNode ptr = root;
+		float key = getKey(e, current);
 		while (ptr != null && !ptr.isLeaf()) {
 			float ptr_key = ptr.calculate_key(current);
 			println("Find: " + ptr + ", key: " + ptr_key);
-			if (key <= ptr_key) {
+			if (key == ptr_key && !ptr.isLeaf() && (ptr.left.isLeaf() || ptr.right.isLeaf())) {
+				if (ptr.left.value.equals(e)) ptr = ptr.left;
+				else if (ptr.right.value.equals(e))  ptr = ptr.right;
+				else ptr = ptr.left;
+			} else if (key <= ptr_key) {
 				ptr = ptr.left;
 			} else {
 				ptr = ptr.right;
@@ -114,20 +126,38 @@ class BinaryTree extends Set {
 	}
 	
 	boolean remove(Edge e, Edge current) {
-		Point crossing = edge_intersect_point(e, current);
-		float key = dist(origin.x, origin.y, crossing.x, crossing.y);
+		float key = getKey(e, current);
 		println("Remove: " + e + ", key: " + key);
-		BinaryTreeNode p = find(key, current);
+		BinaryTreeNode p = find(e, current);
 		println("Find: " + p);
 		if (p == root) {
 			root = null;
 		} else {
 			BinaryTreeNode parent = p.parent;
-			if (p == parent.left) {
-				parent.value = p.value;
-				fixUp(parent);
+			if (parent == root) {
+			
+			} else {
+				BinaryTreeNode parent2 = parent.parent;
+				BinaryTreeNode rest;
+				if (p == parent.left) {
+					rest = parent.right;
+				} else {
+					rest = parent.left;
+				}
+				if (parent2.right == parent) {
+					/* o valor do parent ja esta certo, pois removi um ramo da direita */
+					parent2.right = rest;
+				} else {
+					parent2.left = rest;
+					/* conserta valor do parent2: pega o mais a direita de rest*/
+					BinaryTreeNode ptr = rest;
+					while (!ptr.isLeaf()) {
+						ptr = ptr.right;
+					}
+					parent2.value = ptr.value;
+				}
 			}
-			parent.left = parent.right = null;
+				
 		}
 		size--;
 	}
@@ -149,7 +179,12 @@ class BinaryTree extends Set {
 		if (p == null) return "";
 		String l = print(p.left);
 		String r = print(p.right);
-		return "[" + l + "] " + p.toString() + " [" + r + "]";
+		if (p == root) {
+			return "[" + l + "] R" + p.toString() + " [" + r + "]";
+		} else {
+			return "[" + l + "] " + p.toString() + " [" + r + "]";
+		}
+		
 	}
 	
 	String toString() {

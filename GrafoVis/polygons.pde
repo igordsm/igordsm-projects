@@ -101,7 +101,7 @@ class Edge {
 	}
 	
 	public boolean equals(Edge e) {
-		return p1 == e.p1 && p2 == e.p2;
+		return p1.equals(e.p1) && p2.equals(e.p2);
 	}
 }
 

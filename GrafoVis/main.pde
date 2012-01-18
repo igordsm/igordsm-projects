@@ -104,9 +104,26 @@ boolean noCone(Edge current_edge) {
 	Point next = p2.next.p2;
 	println("Cone: " + prev + "-" + next);
 	if (p2.prev.compare(next) >= 0) {
+		println("Convexo");
 		return current_edge.compare(prev) < 0 && current_edge.compare(next) > 0; 
 	} else {
+		println("Concavo");
 		return !(current_edge.compare(prev) >= 0 && current_edge.compare(next) <= 0);
+	}
+}
+
+boolean noConeInv(Edge current_edge) {
+	Point p1 = current_edge.p1;
+	Point p2 = current_edge.p2;
+	Point prev = p1.prev.p1;
+	Point next = p1.next.p2;
+	println("Cone: " + prev + "-" + next);
+	if (p1.prev.compare(next) >= 0) {
+		println("Convexo");
+		return current_edge.compare(prev) > 0 && current_edge.compare(next) < 0; 
+	} else {
+		println("Concavo");
+		return !(current_edge.compare(prev) <= 0 && current_edge.compare(next) >= 0);
 	}
 }
 
@@ -115,7 +132,7 @@ boolean check_intersections(Edge current_edge) {
 	Point p1 = current_edge.p1;
 	Point p2 = current_edge.p2;
 	
-	if (p2.polygon != undefined && noCone(current_edge)) {
+	if ((p2.polygon != undefined && noCone(current_edge)) || (p1.polygon != undefined && noConeInv(current_edge)) ) {
 		println("No cone!");
 		return true;
 	}
@@ -137,7 +154,7 @@ void start_algorithm() {
 	
 	vgba = new VisibilityGraphBuildAnimation(all_points);
 	paths = new Graph(all_points.size(), all_points);
-	current_point = 0;
+	current_point = 5;
 	SortOrder so = sort_around_point(all_points, current_point);
 	check_visibles_vertexes(current_point, so);
 }
@@ -162,14 +179,14 @@ void draw() {
 		vgba.draw();
 		if (vgba.is_finished()) {
 			current_point++;
-			if (current_point < all_points.size()) {
+			if (current_point < -1/*all_points.size()*/) {
 				SortOrder so = sort_around_point(all_points, current_point);
 				check_visibles_vertexes(current_point, so);
 			} else {
-				set_mode("shortest_path");
+				/*set_mode("shortest_path");
 				dijkstra = new Dijkstra(paths);
 				dijkstra_anim = new DijkstraAnimation(paths, dijkstra);
-				dijkstra.anim = dijkstra_anim;
+				dijkstra.anim = dijkstra_anim;*/
 			}
 		}
 		if (vgba.changed_edge()) {
