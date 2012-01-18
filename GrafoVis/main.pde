@@ -49,7 +49,6 @@ void init_sweep_line(int point, SortOrder so) {
    			btree_test.add(sweep, e);
    		}
    	}
-   	println(btree_test);
    	println("FIM");
 }
 

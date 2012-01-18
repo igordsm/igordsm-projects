@@ -16,11 +16,7 @@ Point edge_intersect_point(Edge e1, Edge e2) {
 	float a1 = get_slope_y(e1);
 	float a2 = get_slope_y(e2);
 	float b1 = e1.p1.y - a1 * e1.p1.x;
-	float b2 = e2.p1.y - a2 * e2.p1.x;
-	/*println(e1);
-	println("E1 : y = " + a1 + "x + " + b1);
-	println(e2);
-	println("E2 : y = " + a2 + "x + " + b2);*/ 
+	float b2 = e2.p1.y - a2 * e2.p1.x; 
 	
 	float inter_x = (b2 - b1)/(a1 - a2);
 	float inter_y = a1 * inter_x + b1;
@@ -74,11 +70,10 @@ class BinaryTree extends Set {
 	void fixUp(BinaryTreeNode p) {
 		BinaryTreeNode ptr = p.parent;
 		if (ptr == null) return;
-		while(ptr.parent != null && ptr == ptr.parent.left) {
+		while(ptr.parent != null && ptr == ptr.parent.right) {
 			ptr = ptr.parent;
 		} 
 		if (ptr.parent != null) {
-			ptr.key = p.key;
 			ptr.value = p.value;
 		}
 	}
@@ -97,13 +92,13 @@ class BinaryTree extends Set {
 				p.right = right;
 				p.value = left.value;
 			} else {
-				println("RIGHT");
 				BinaryTreeNode left = new BinaryTreeNode(p.value, null, null, p);
 				BinaryTreeNode right = new BinaryTreeNode(e, null, null, p);
 				p.left = left;
 				p.right = right;
 				fixUp(p.right);
 			}
+			println(this);
 		} else {
 			root = new BinaryTreeNode(e, null, null, null);
 		}
