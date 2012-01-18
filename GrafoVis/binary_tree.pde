@@ -141,7 +141,7 @@ class BinaryTree extends Set {
 		while (ptr != null && !ptr.isLeaf()) {
 			float ptr_key = ptr.calculate_key(current);
 			/*println("Find: " + ptr + ", key: " + ptr_key);*/
-			if (key == ptr_key && !ptr.isLeaf() && (ptr.left.isLeaf() || ptr.right.isLeaf())) {
+			if (abs(key - ptr_key) < 0.0001 && !ptr.isLeaf() && (ptr.left.isLeaf() || ptr.right.isLeaf())) {
 				if (ptr.left.value.equals(e)) ptr = ptr.left;
 				else if (ptr.right.value.equals(e))  ptr = ptr.right;
 				else ptr = ptr.left;
