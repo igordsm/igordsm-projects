@@ -129,6 +129,7 @@ class BinaryTree extends Set {
 		println("Remove: " + e + ", key: " + key);
 		BinaryTreeNode p = find(e, current);
 		println("Find: " + p);
+		println(this);
 		if (p == root) {
 			root = null;
 		} else {
@@ -156,8 +157,8 @@ class BinaryTree extends Set {
 					parent2.value = ptr.value;
 				}
 			}
-				
 		}
+		println(this);
 		size--;
 	}
 	

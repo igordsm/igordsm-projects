@@ -67,11 +67,9 @@ void update_sweep_line(int point_counter, SortOrder so, Edge current_edge) {
 		if (current_edge.right(e1p) == true) {
 			sweep_line.remove(e1);
 			btree_test.remove(e1, current_edge);
-			println(btree_test);
 		} else {
 			sweep_line.add(e1);
 			btree_test.add(e1, current_edge);
-			println(btree_test);
 		}
 	}
 	if (e2.p1 != current_edge.p1 && e2.p2 != current_edge.p1) {
@@ -79,11 +77,9 @@ void update_sweep_line(int point_counter, SortOrder so, Edge current_edge) {
 		if (current_edge.right(e2p) == true) {
 			sweep_line.remove(e2);
 			btree_test.remove(e2, current_edge);
-			println(btree_test);
 		} else {
 			sweep_line.add(e2);
 			btree_test.add(e2, current_edge);
-			println(btree_test);
 		}
 	}
 	println("FIM");
