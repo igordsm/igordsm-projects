@@ -87,6 +87,20 @@ class BinaryTree extends Set {
 		return getKey(e, new_current);
 	}	
 	
+	float getAngle(Point p1, Point p2, Point p3) {
+		/*float v1x = p1.x - p2.x;
+		float v1y = p1.y - p2.y;
+		float v2x = p3.x - p2.x;
+		float v2y = p3.x - p2.y;
+		println("AN" + (v1x * v2x + v1y * v2y) / (dist(p1.x, p1.y, p2.x, p2.y) * dist(p2.x, p2.y, p3.x, p3.y)));
+		return acos((v1x * v2x + v1y * v2y) / (dist(p1.x, p1.y, p2.x, p2.y) * dist(p2.x, p2.y, p3.x, p3.y)));*/
+		float a = dist(p1.x, p1.y, p2.x, p2.y);
+		float b = dist(p3.x, p3.y, p2.x, p2.y);
+		float c = dist(p3.x, p3.y, p1.x, p1.y);
+		float cosi = (c*c - a*a - b*b)/(-2*a*b);
+		return acos(cosi);
+	}
+	
 	void add(Edge e, Edge current) {
 		float key = getKey(e, current);
 		/*println("Add: " + e + " key : " + key);*/
@@ -97,23 +111,26 @@ class BinaryTree extends Set {
 			float ptr_key = p.calculate_key(current);
 			if (abs(key - ptr_key) < 0.0001) {
 				/* Se caiu aqui entao estou adicionando a segunda aresta de um "bico" 
-				   Deste modo, preciso "avancar" um pouco no sentido da aresta para saber qual esta na frente	
-				key = getKeyForward(e, current);  
-				ptr_key = getKeyForward(p.value, current);
-				println("New Key: " + key + ", New ptr_key " + ptr_key);*/
+				   Um modo de saber qual aresta esta na frente e calcular o angulo entre os vertices e pegar a aresta 
+				   que forma o menor angulo para ficar na frente.	
+				*/
+				Point p3_p;
+				Point p3_ptr;
+				
 				if (e.p1.equals(current.p2)) {
-					if (e.p1.next.equals(p.value)) {
-						key--;
-					} else if (e.p1.prev.equals(p.value)) {
-						ptr_key--;					
-					}
+					p3_p = e.p2;
+					p3_ptr = p.value.p1;
 				} else if (e.p2.equals(current.p2)) {
-					if (e.p2.next.equals(p.value)) {
-						key--;
-					} else if (e.p2.prev.equals(p.value)) {
-						ptr_key--;					
-					}
+					p3_p = e.p1;
+					p3_ptr = p.value.p2;
 				}
+				println("P3p " + p3_p + " P3ptr " + p3_ptr + " angle1 " + getAngle(origin, current.p2, p3_p) + " angle2 " + getAngle(origin, current.p2, p3_ptr));
+				if (getAngle(origin, current.p2, p3_p) < getAngle(origin, current.p2, p3_ptr)) {
+					key--;
+				} else {
+					ptr_key--;
+				}
+				
 			}
 			if (key < ptr_key) {
 				BinaryTreeNode left = new BinaryTreeNode(e, null, null, p);
@@ -156,10 +173,10 @@ class BinaryTree extends Set {
 	
 	boolean remove(Edge e, Edge current) {
 		float key = getKey(e, current);
-		/*println("Remove: " + e + ", key: " + key);*/
+		println("Remove: " + e + ", key: " + key);
 		BinaryTreeNode p = find(e, current);
-		/*println("Find: " + p);
-		println(this);*/
+		println("Find: " + p);
+		println(this);
 		if (p == root) {
 			root = null;
 		} else {
@@ -196,7 +213,7 @@ class BinaryTree extends Set {
 				}
 			}
 		}
-		/*println(this);*/
+		println(this);
 		size--;
 	}
 	

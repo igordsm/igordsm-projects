@@ -60,28 +60,43 @@ void update_sweep_line(int point_counter, SortOrder so, Edge current_edge) {
 	if (e1 == null || e2 == null) return;
 	Point e1p = e1.p1;
 	Point e2p = e2.p2;
-	
+	boolean add1, del1, add2, del2;
+	add1 = del1 = add2 = del2 = false;
 	println("Atualizando linha de varredura. Linha de varredura: " + current_edge.toString());
 	if (!e1.p1.equals(current_edge.p1) && !e1.p2.equals(current_edge.p1)) {
 		println("Aresta 1 " + e1.toString() + " ; Vértice " + e1p.toString());
 		if (current_edge.right(e1p) == true) {
-			sweep_line.remove(e1);
-			btree_test.remove(e1, current_edge);
+			del1 = true;
 		} else {
-			sweep_line.add(e1);
-			btree_test.add(e1, current_edge);
+			add1 = true;
 		}
 	}
 	if (!e2.p1.equals(current_edge.p1) && !e2.p2.equals(current_edge.p1)) {
 		println("Aresta 2 " + e2.toString() + " ; Vértice " + e2p.toString());
 		if (current_edge.right(e2p) == true) {
-			sweep_line.remove(e2);
-			btree_test.remove(e2, current_edge);
+			del2 = true;
 		} else {
-			sweep_line.add(e2);
-			btree_test.add(e2, current_edge);
+			add2 = true;
 		}
 	}
+	if (del1) {
+		sweep_line.remove(e1);
+		btree_test.remove(e1, current_edge);
+	} 
+	if (del2) {
+		sweep_line.remove(e2);
+		btree_test.remove(e2, current_edge);
+	} 
+	if (add1) {
+		sweep_line.add(e1);
+		btree_test.add(e1, current_edge);
+	}
+	if (add2) {
+		sweep_line.add(e2);
+		btree_test.add(e2, current_edge);
+	}
+	
+	
 	println("FIM");
 }
 
@@ -178,10 +193,10 @@ void draw() {
 				SortOrder so = sort_around_point(all_points, current_point);
 				check_visibles_vertexes(current_point, so);
 			} else {
-				/*set_mode("shortest_path");
+				set_mode("shortest_path");
 				dijkstra = new Dijkstra(paths);
 				dijkstra_anim = new DijkstraAnimation(paths, dijkstra);
-				dijkstra.anim = dijkstra_anim;*/
+				dijkstra.anim = dijkstra_anim;
 			}
 		}
 		if (vgba.changed_edge()) {
