@@ -149,7 +149,20 @@ boolean check_intersections(Edge current_edge) {
 	Edge e = btree_test.getNearestEdge();
 	println("Closest: " + e);
 	if (e != null) {
- 		return current_edge.crosses(e);
+		// Se colinear current_edge.p2 current_edge.p1 e ponto anterior (vgba.so.indexes[vgba.point_counter])
+		if (vgba.point_counter > 0 && vgba.point_counter != current_point && 
+				current_edge.colinear(all_points.get(vgba.so.indexes[vgba.point_counter - 1])) ) {
+			// Se o ponto anterior não for visivel:
+			println("Colinear com o anterior!");
+			if (paths.graph_points[current_point][vgba.so.indexes[vgba.point_counter - 1]] <= 0) { 
+				/* point_counter-1 não está visível */
+				return false;
+			} else {
+				println("DEVERIA CAIR AQUI!!!");
+			}
+		}
+		// se não
+ 			return current_edge.crosses(e);
 	} else {
 		return false;
 	}
@@ -187,18 +200,6 @@ void draw() {
 		draw_polys(true);
 		paths.draw();
 		vgba.draw();
-		if (vgba.is_finished()) {
-			current_point++;
-			if (current_point < all_points.size()) {
-				SortOrder so = sort_around_point(all_points, current_point);
-				check_visibles_vertexes(current_point, so);
-			} else {
-				set_mode("shortest_path");
-				dijkstra = new Dijkstra(paths);
-				dijkstra_anim = new DijkstraAnimation(paths, dijkstra);
-				dijkstra.anim = dijkstra_anim;
-			}
-		}
 		if (vgba.changed_edge()) {
 			/* olha se cruza com alguem da linha de varredura */
 			Edge current = vgba.current_edge();
@@ -209,6 +210,17 @@ void draw() {
 			}
 		} else if (vgba.changed_to_update_sweep_line()) {
 			update_sweep_line(vgba.point_counter, vgba.so, vgba.current_edge());
+		} else if (vgba.is_finished()) {
+			current_point++;
+			if (current_point < all_points.size()) {
+				SortOrder so = sort_around_point(all_points, current_point);
+				check_visibles_vertexes(current_point, so);
+			} else {
+				/*set_mode("shortest_path");
+				dijkstra = new Dijkstra(paths);
+				dijkstra_anim = new DijkstraAnimation(paths, dijkstra);
+				dijkstra.anim = dijkstra_anim;*/
+			}
 		}
 	} else if (mode == "shortest_path") {
 		draw_polys(false);

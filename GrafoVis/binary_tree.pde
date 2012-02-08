@@ -47,6 +47,50 @@ class BinaryTreeNode {
 		float key = dist(e.p1.x, e.p1.y, crossing.x, crossing.y);
 		return key;
 	}
+	
+		
+	float getAngle(Point p1, Point p2, Point p3) {
+		float a = dist(p1.x, p1.y, p2.x, p2.y);
+		float b = dist(p3.x, p3.y, p2.x, p2.y);
+		float c = dist(p3.x, p3.y, p1.x, p1.y);
+		float cosi = (c*c - a*a - b*b)/(-2*a*b);
+		return acos(cosi);
+	}
+	
+	float getKey(Edge e, Edge current, Point origin) {
+		Point crossing = edge_intersect_point(e, current);
+		float key = dist(origin.x, origin.y, crossing.x, crossing.y);
+		return key;
+	}
+	
+	boolean onLeft(Edge e, Edge current, Point origin) {
+		float key = getKey(e, current, origin);
+		float ptr_key = calculate_key(current);
+		
+		if (abs(key - ptr_key) < 0.0001) {
+			Point p3_p;
+			Point p3_ptr;
+			
+			if (e.p1.equals(current.p2)) {
+				p3_p = e.p2;
+				p3_ptr = value.p1;
+			} else if (e.p2.equals(current.p2)) {
+				p3_p = e.p1;
+				p3_ptr = value.p2;
+			}
+			println("This " + this + " e " + e + " current " + current);
+			println("P3p " + p3_p + " P3ptr " + p3_ptr + " angle1 " + getAngle(origin, current.p2, p3_p) + " angle2 " + getAngle(origin, current.p2, p3_ptr));
+			if (getAngle(origin, current.p2, p3_p) < getAngle(origin, current.p2, p3_ptr)) {
+				return true;
+			} else {
+				return false;
+			}
+		} else {
+			return key < ptr_key;
+		}
+	}
+	
+	
 }
 
 class BinaryTree extends Set {
@@ -77,16 +121,7 @@ class BinaryTree extends Set {
 			ptr.parent.value = p.value;
 		}
 	}
-	
-	float getKeyForward(Edge e, Edge current) {
-		Edge new_current = new Edge(current.p1, current.p2);
-		Point new_p2 = new Point(current.p2.x - current.p1.x, current.p2.y - current.p1.y);
-		new_p2.x = new_p2.x * cos(-QUARTER_PI/10) + new_p2.y * sin(-QUARTER_PI/10) + current.p1.x;
-		new_p2.y =  - new_p2.x * sin(-QUARTER_PI/10) + new_p2.y * cos(-QUARTER_PI/10) + current.p1.y;
-		new_current.p2 = new_p2;
-		return getKey(e, new_current);
-	}	
-	
+			
 	float getAngle(Point p1, Point p2, Point p3) {
 		/*float v1x = p1.x - p2.x;
 		float v1y = p1.y - p2.y;
@@ -106,33 +141,7 @@ class BinaryTree extends Set {
 		/*println("Add: " + e + " key : " + key);*/
 		if (root != null) {
 			BinaryTreeNode p = find(e, current);
-			/*println("Found: " + p + ": " + p.calculate_key(current));
-			println(this);*/
-			float ptr_key = p.calculate_key(current);
-			if (abs(key - ptr_key) < 0.0001) {
-				/* Se caiu aqui entao estou adicionando a segunda aresta de um "bico" 
-				   Um modo de saber qual aresta esta na frente e calcular o angulo entre os vertices e pegar a aresta 
-				   que forma o menor angulo para ficar na frente.	
-				*/
-				Point p3_p;
-				Point p3_ptr;
-				
-				if (e.p1.equals(current.p2)) {
-					p3_p = e.p2;
-					p3_ptr = p.value.p1;
-				} else if (e.p2.equals(current.p2)) {
-					p3_p = e.p1;
-					p3_ptr = p.value.p2;
-				}
-				println("P3p " + p3_p + " P3ptr " + p3_ptr + " angle1 " + getAngle(origin, current.p2, p3_p) + " angle2 " + getAngle(origin, current.p2, p3_ptr));
-				if (getAngle(origin, current.p2, p3_p) < getAngle(origin, current.p2, p3_ptr)) {
-					key--;
-				} else {
-					ptr_key--;
-				}
-				
-			}
-			if (key < ptr_key) {
+			if (p.onLeft(e, current, origin)) {
 				BinaryTreeNode left = new BinaryTreeNode(e, null, null, p);
 				BinaryTreeNode right = new BinaryTreeNode(p.value, null, null, p);
 				p.left = left;
@@ -166,7 +175,12 @@ class BinaryTree extends Set {
 				ptr = ptr.left;
 			} else {
 				ptr = ptr.right;
-			}
+			}/*
+			if (ptr.onLeft(e, current, origin) ) {
+				ptr = ptr.left;			
+			} else {
+				ptr = ptr.right;
+			}*/
 		} 
 		return ptr;
 	}
