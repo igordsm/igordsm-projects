@@ -285,7 +285,7 @@
                         </Animation>
                     </Animations>
                 </Objet>
-                <Objet nom="NewObject" type="Sprite">
+                <Objet nom="PlayAgain" type="Sprite">
                     <Variables />
                     <Animations>
                         <Animation typeNormal="false">
@@ -302,7 +302,7 @@
                         </Animation>
                     </Animations>
                 </Objet>
-                <Objet nom="NewObject2" type="Sprite">
+                <Objet nom="Gem" type="Sprite">
                     <Variables />
                     <Animations>
                         <Animation typeNormal="false">
@@ -312,6 +312,167 @@
                                         <Points />
                                         <PointOrigine nom="origine" X="0.000000" Y="0.000000" />
                                         <PointCentre nom="centre" X="50.000000" Y="50.000000" automatic="true" />
+                                        <CustomCollisionMask custom="false" />
+                                    </Sprite>
+                                </Sprites>
+                            </Direction>
+                        </Animation>
+                    </Animations>
+                </Objet>
+                <Objet nom="explosion" type="Sprite">
+                    <Variables />
+                    <Animations>
+                        <Animation typeNormal="false">
+                            <Direction boucle="false" tempsEntre="0.020000">
+                                <Sprites>
+                                    <Sprite image="1.png">
+                                        <Points />
+                                        <PointOrigine nom="origine" X="0.000000" Y="0.000000" />
+                                        <PointCentre nom="centre" X="64.000000" Y="64.000000" automatic="true" />
+                                        <CustomCollisionMask custom="false" />
+                                    </Sprite>
+                                    <Sprite image="3.png">
+                                        <Points />
+                                        <PointOrigine nom="origine" X="0.000000" Y="0.000000" />
+                                        <PointCentre nom="centre" X="64.000000" Y="64.000000" automatic="true" />
+                                        <CustomCollisionMask custom="false" />
+                                    </Sprite>
+                                    <Sprite image="5.png">
+                                        <Points />
+                                        <PointOrigine nom="origine" X="0.000000" Y="0.000000" />
+                                        <PointCentre nom="centre" X="64.000000" Y="64.000000" automatic="true" />
+                                        <CustomCollisionMask custom="false" />
+                                    </Sprite>
+                                    <Sprite image="7.png">
+                                        <Points />
+                                        <PointOrigine nom="origine" X="0.000000" Y="0.000000" />
+                                        <PointCentre nom="centre" X="64.000000" Y="64.000000" automatic="true" />
+                                        <CustomCollisionMask custom="false" />
+                                    </Sprite>
+                                    <Sprite image="9.png">
+                                        <Points />
+                                        <PointOrigine nom="origine" X="0.000000" Y="0.000000" />
+                                        <PointCentre nom="centre" X="64.000000" Y="64.000000" automatic="true" />
+                                        <CustomCollisionMask custom="false" />
+                                    </Sprite>
+                                    <Sprite image="12.png">
+                                        <Points />
+                                        <PointOrigine nom="origine" X="0.000000" Y="0.000000" />
+                                        <PointCentre nom="centre" X="64.000000" Y="64.000000" automatic="true" />
+                                        <CustomCollisionMask custom="false" />
+                                    </Sprite>
+                                    <Sprite image="15.png">
+                                        <Points />
+                                        <PointOrigine nom="origine" X="0.000000" Y="0.000000" />
+                                        <PointCentre nom="centre" X="64.000000" Y="64.000000" automatic="true" />
+                                        <CustomCollisionMask custom="false" />
+                                    </Sprite>
+                                    <Sprite image="17.png">
+                                        <Points />
+                                        <PointOrigine nom="origine" X="0.000000" Y="0.000000" />
+                                        <PointCentre nom="centre" X="64.000000" Y="64.000000" automatic="true" />
+                                        <CustomCollisionMask custom="false" />
+                                    </Sprite>
+                                    <Sprite image="19.png">
+                                        <Points />
+                                        <PointOrigine nom="origine" X="0.000000" Y="0.000000" />
+                                        <PointCentre nom="centre" X="64.000000" Y="64.000000" automatic="true" />
+                                        <CustomCollisionMask custom="false" />
+                                    </Sprite>
+                                    <Sprite image="22.png">
+                                        <Points />
+                                        <PointOrigine nom="origine" X="0.000000" Y="0.000000" />
+                                        <PointCentre nom="centre" X="64.000000" Y="64.000000" automatic="true" />
+                                        <CustomCollisionMask custom="false" />
+                                    </Sprite>
+                                    <Sprite image="24.png">
+                                        <Points />
+                                        <PointOrigine nom="origine" X="0.000000" Y="0.000000" />
+                                        <PointCentre nom="centre" X="64.000000" Y="64.000000" automatic="true" />
+                                        <CustomCollisionMask custom="false" />
+                                    </Sprite>
+                                    <Sprite image="25.png">
+                                        <Points />
+                                        <PointOrigine nom="origine" X="0.000000" Y="0.000000" />
+                                        <PointCentre nom="centre" X="64.000000" Y="64.000000" automatic="true" />
+                                        <CustomCollisionMask custom="false" />
+                                    </Sprite>
+                                    <Sprite image="26.png">
+                                        <Points />
+                                        <PointOrigine nom="origine" X="0.000000" Y="0.000000" />
+                                        <PointCentre nom="centre" X="64.000000" Y="64.000000" automatic="true" />
+                                        <CustomCollisionMask custom="false" />
+                                    </Sprite>
+                                    <Sprite image="28.png">
+                                        <Points />
+                                        <PointOrigine nom="origine" X="0.000000" Y="0.000000" />
+                                        <PointCentre nom="centre" X="64.000000" Y="64.000000" automatic="true" />
+                                        <CustomCollisionMask custom="false" />
+                                    </Sprite>
+                                    <Sprite image="30.png">
+                                        <Points />
+                                        <PointOrigine nom="origine" X="0.000000" Y="0.000000" />
+                                        <PointCentre nom="centre" X="64.000000" Y="64.000000" automatic="true" />
+                                        <CustomCollisionMask custom="false" />
+                                    </Sprite>
+                                    <Sprite image="32.png">
+                                        <Points />
+                                        <PointOrigine nom="origine" X="0.000000" Y="0.000000" />
+                                        <PointCentre nom="centre" X="64.000000" Y="64.000000" automatic="true" />
+                                        <CustomCollisionMask custom="false" />
+                                    </Sprite>
+                                    <Sprite image="34.png">
+                                        <Points />
+                                        <PointOrigine nom="origine" X="0.000000" Y="0.000000" />
+                                        <PointCentre nom="centre" X="64.000000" Y="64.000000" automatic="true" />
+                                        <CustomCollisionMask custom="false" />
+                                    </Sprite>
+                                    <Sprite image="36.png">
+                                        <Points />
+                                        <PointOrigine nom="origine" X="0.000000" Y="0.000000" />
+                                        <PointCentre nom="centre" X="64.000000" Y="64.000000" automatic="true" />
+                                        <CustomCollisionMask custom="false" />
+                                    </Sprite>
+                                    <Sprite image="39.png">
+                                        <Points />
+                                        <PointOrigine nom="origine" X="0.000000" Y="0.000000" />
+                                        <PointCentre nom="centre" X="64.000000" Y="64.000000" automatic="true" />
+                                        <CustomCollisionMask custom="false" />
+                                    </Sprite>
+                                    <Sprite image="46.png">
+                                        <Points />
+                                        <PointOrigine nom="origine" X="0.000000" Y="0.000000" />
+                                        <PointCentre nom="centre" X="64.000000" Y="64.000000" automatic="true" />
+                                        <CustomCollisionMask custom="false" />
+                                    </Sprite>
+                                    <Sprite image="48.png">
+                                        <Points />
+                                        <PointOrigine nom="origine" X="0.000000" Y="0.000000" />
+                                        <PointCentre nom="centre" X="64.000000" Y="64.000000" automatic="true" />
+                                        <CustomCollisionMask custom="false" />
+                                    </Sprite>
+                                    <Sprite image="50.png">
+                                        <Points />
+                                        <PointOrigine nom="origine" X="0.000000" Y="0.000000" />
+                                        <PointCentre nom="centre" X="64.000000" Y="64.000000" automatic="true" />
+                                        <CustomCollisionMask custom="false" />
+                                    </Sprite>
+                                    <Sprite image="60.png">
+                                        <Points />
+                                        <PointOrigine nom="origine" X="0.000000" Y="0.000000" />
+                                        <PointCentre nom="centre" X="64.000000" Y="64.000000" automatic="true" />
+                                        <CustomCollisionMask custom="false" />
+                                    </Sprite>
+                                    <Sprite image="62.png">
+                                        <Points />
+                                        <PointOrigine nom="origine" X="0.000000" Y="0.000000" />
+                                        <PointCentre nom="centre" X="64.000000" Y="64.000000" automatic="true" />
+                                        <CustomCollisionMask custom="false" />
+                                    </Sprite>
+                                    <Sprite image="64.png">
+                                        <Points />
+                                        <PointOrigine nom="origine" X="0.000000" Y="0.000000" />
+                                        <PointCentre nom="centre" X="64.000000" Y="64.000000" automatic="true" />
                                         <CustomCollisionMask custom="false" />
                                     </Sprite>
                                 </Sprites>
@@ -360,7 +521,7 @@
                     <stringInfos />
                     <InitialVariables />
                 </Objet>
-                <Objet nom="NewObject" x="256.000000" y="256.000000" plan="100" layer="GameOver" angle="0.000000" personalizedSize="false" width="0.000000" height="0.000000" locked="false">
+                <Objet nom="PlayAgain" x="256.000000" y="256.000000" plan="100" layer="GameOver" angle="0.000000" personalizedSize="false" width="0.000000" height="0.000000" locked="false">
                     <floatInfos />
                     <stringInfos />
                     <InitialVariables />
@@ -439,6 +600,11 @@
                         </Action>
                         <Action>
                             <Type value="Delete" />
+                            <Parametre value="explosion" />
+                            <Parametre value="" />
+                        </Action>
+                        <Action>
+                            <Type value="Delete" />
                             <Parametre value="laser" />
                             <Parametre value="" />
                         </Action>
@@ -463,12 +629,6 @@
                             <Type value="ResetTimer" />
                             <Parametre value="" />
                             <Parametre value='&quot;FireRate&quot;' />
-                        </Action>
-                        <Action>
-                            <Type value="ChangePlan" />
-                            <Parametre value="ship" />
-                            <Parametre value="=" />
-                            <Parametre value="30" />
                         </Action>
                         <Action>
                             <Type value="MettreXY" />
@@ -505,12 +665,6 @@
                             <Parametre value="" />
                         </Action>
                         <Action>
-                            <Type value="ChangeScale" />
-                            <Parametre value="meteor" />
-                            <Parametre value="=" />
-                            <Parametre value="0.5" />
-                        </Action>
-                        <Action>
                             <Type value="ChangePlan" />
                             <Parametre value="meteor" />
                             <Parametre value="=" />
@@ -536,7 +690,7 @@
                             <Type value="SourisX" Contraire="false" />
                             <Parametre value="NewObject" />
                             <Parametre value="&gt;" />
-                            <Parametre value="NewObject.X()" />
+                            <Parametre value="PlayAgain.X()" />
                             <Parametre value="" />
                             <Parametre value="" />
                         </Condition>
@@ -544,7 +698,7 @@
                             <Type value="SourisY" Contraire="false" />
                             <Parametre value="" />
                             <Parametre value="&gt;" />
-                            <Parametre value="NewObject.Y()" />
+                            <Parametre value="PlayAgain.Y()" />
                             <Parametre value="" />
                             <Parametre value="" />
                         </Condition>
@@ -552,7 +706,7 @@
                             <Type value="SourisX" Contraire="false" />
                             <Parametre value="NewObject" />
                             <Parametre value="&lt;" />
-                            <Parametre value="NewObject.X() + NewObject.Width()" />
+                            <Parametre value="PlayAgain.X() + PlayAgain.Width()" />
                             <Parametre value="" />
                             <Parametre value="" />
                         </Condition>
@@ -560,7 +714,7 @@
                             <Type value="SourisY" Contraire="false" />
                             <Parametre value="" />
                             <Parametre value="&lt;" />
-                            <Parametre value="NewObject.Y() + NewObject.Height()" />
+                            <Parametre value="PlayAgain.Y() + PlayAgain.Height()" />
                             <Parametre value="" />
                             <Parametre value="" />
                         </Condition>
@@ -912,6 +1066,63 @@
                     <Com2 value="" />
                 </Event>
                 <Event disabled="false" folded="false">
+                    <Type value="BuiltinCommonInstructions::Standard" />
+                    <Conditions>
+                        <Condition>
+                            <Type value="VarObjet" Contraire="false" />
+                            <Parametre value="meteor" />
+                            <Parametre value="destroyed" />
+                            <Parametre value="=" />
+                            <Parametre value="1" />
+                        </Condition>
+                    </Conditions>
+                    <Actions>
+                        <Action>
+                            <Type value="Create" />
+                            <Parametre value="" />
+                            <Parametre value="explosion" />
+                            <Parametre value="0" />
+                            <Parametre value="0" />
+                            <Parametre value="" />
+                        </Action>
+                        <Action>
+                            <Type value="ChangePlan" />
+                            <Parametre value="explosion" />
+                            <Parametre value="=" />
+                            <Parametre value="20" />
+                        </Action>
+                        <Action>
+                            <Type value="MettreAutour" />
+                            <Parametre value="explosion" />
+                            <Parametre value="meteor" />
+                            <Parametre value="0" />
+                            <Parametre value="0" />
+                        </Action>
+                        <Action>
+                            <Type value="Delete" />
+                            <Parametre value="meteor" />
+                            <Parametre value="" />
+                        </Action>
+                    </Actions>
+                </Event>
+                <Event disabled="false" folded="false">
+                    <Type value="BuiltinCommonInstructions::ForEach" />
+                    <Object value="Explosion" />
+                    <Conditions>
+                        <Condition>
+                            <Type value="AnimationEnded" Contraire="false" />
+                            <Parametre value="explosion" />
+                        </Condition>
+                    </Conditions>
+                    <Actions>
+                        <Action>
+                            <Type value="Delete" />
+                            <Parametre value="explosion" />
+                            <Parametre value="" />
+                        </Action>
+                    </Actions>
+                </Event>
+                <Event disabled="false" folded="false">
                     <Type value="BuiltinCommonInstructions::ForEach" />
                     <Object value="meteor" />
                     <Conditions />
@@ -1039,25 +1250,6 @@
                                     <Parametre value="just_created" />
                                     <Parametre value="=" />
                                     <Parametre value="0" />
-                                </Action>
-                            </Actions>
-                        </Event>
-                        <Event disabled="false" folded="false">
-                            <Type value="BuiltinCommonInstructions::Standard" />
-                            <Conditions>
-                                <Condition>
-                                    <Type value="VarObjet" Contraire="false" />
-                                    <Parametre value="meteor" />
-                                    <Parametre value="destroyed" />
-                                    <Parametre value="=" />
-                                    <Parametre value="1" />
-                                </Condition>
-                            </Conditions>
-                            <Actions>
-                                <Action>
-                                    <Type value="Delete" />
-                                    <Parametre value="meteor" />
-                                    <Parametre value="" />
                                 </Action>
                             </Actions>
                         </Event>
