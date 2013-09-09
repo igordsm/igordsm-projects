@@ -116,6 +116,7 @@
             <Resource kind="image" name="64.png" alwaysLoaded="false" smoothed="true" userAdded="true" file="64.png" />
             <Resource kind="image" name="play_again.png" alwaysLoaded="false" smoothed="true" userAdded="true" file="play_again.png" />
             <Resource kind="image" name="gem5.png" alwaysLoaded="false" smoothed="true" userAdded="true" file="gem5.png" />
+            <Resource kind="image" name="ship.png" alwaysLoaded="false" smoothed="true" userAdded="true" file="ship.png" />
         </Resources>
         <ResourceFolders />
     </Resources>
@@ -213,10 +214,10 @@
                         <Animation typeNormal="false">
                             <Direction boucle="false" tempsEntre="1.000000">
                                 <Sprites>
-                                    <Sprite image="use42207.png">
+                                    <Sprite image="ship.png">
                                         <Points />
                                         <PointOrigine nom="origine" X="0.000000" Y="0.000000" />
-                                        <PointCentre nom="centre" X="41.000000" Y="42.000000" automatic="true" />
+                                        <PointCentre nom="centre" X="32.000000" Y="42.000000" automatic="true" />
                                         <CustomCollisionMask custom="false" />
                                     </Sprite>
                                 </Sprites>
@@ -236,7 +237,7 @@
                                     <Sprite image="asteroid2.png">
                                         <Points />
                                         <PointOrigine nom="origine" X="0.000000" Y="0.000000" />
-                                        <PointCentre nom="centre" X="45.000000" Y="45.000000" automatic="true" />
+                                        <PointCentre nom="centre" X="22.000000" Y="22.000000" automatic="true" />
                                         <CustomCollisionMask custom="false" />
                                     </Sprite>
                                 </Sprites>
@@ -480,16 +481,29 @@
                         </Animation>
                     </Animations>
                 </Objet>
+                <Objet nom="WaveText" type="TextObject::Text" smoothed="true" bold="true" italic="false" underlined="false">
+                    <Variables />
+                    <String value="WAVE XX" />
+                    <Font value="" />
+                    <CharacterSize value="50" />
+                    <Color r="255" g="0" b="0" />
+                </Objet>
             </Objets>
             <Layers>
                 <Layer Name="" Visibility="true">
                     <Camera DefaultSize="true" Width="0.000000" Height="0.000000" DefaultViewport="true" ViewportLeft="0.000000" ViewportTop="0.000000" ViewportRight="1.000000" ViewportBottom="1.000000" />
                 </Layer>
-                <Layer Name="GameOver" Visibility="true">
+                <Layer Name="WaveShow" Visibility="true">
+                    <Camera DefaultSize="true" Width="0.000000" Height="0.000000" DefaultViewport="true" ViewportLeft="0.000000" ViewportTop="0.000000" ViewportRight="1.000000" ViewportBottom="1.000000" />
+                </Layer>
+                <Layer Name="GameOver" Visibility="false">
                     <Camera DefaultSize="true" Width="0.000000" Height="0.000000" DefaultViewport="true" ViewportLeft="0.000000" ViewportTop="0.000000" ViewportRight="1.000000" ViewportBottom="1.000000" />
                 </Layer>
             </Layers>
             <Variables>
+                <Variable Name="meteor_fall" Value="0" />
+                <Variable Name="show_wave" Value="1" />
+                <Variable Name="wave" Value="1" />
                 <Variable Name="meteor_interval" Value="1" />
                 <Variable Name="game_over" Value="0" />
                 <Variable Name="init_game" Value="1" />
@@ -526,14 +540,19 @@
                     <stringInfos />
                     <InitialVariables />
                 </Objet>
-                <Objet nom="ship" x="350.000000" y="353.000000" plan="10" layer="" angle="0.000000" personalizedSize="false" width="0.000000" height="0.000000" locked="false">
+                <Objet nom="ship" x="352.000000" y="338.000000" plan="21" layer="" angle="0.000000" personalizedSize="false" width="0.000000" height="0.000000" locked="false">
+                    <floatInfos />
+                    <stringInfos />
+                    <InitialVariables />
+                </Objet>
+                <Objet nom="WaveText" x="288.000000" y="224.000000" plan="1" layer="WaveShow" angle="0.000000" personalizedSize="false" width="0.000000" height="0.000000" locked="false">
                     <floatInfos />
                     <stringInfos />
                     <InitialVariables />
                 </Objet>
             </Positions>
             <Events>
-                <Event disabled="false" folded="false">
+                <Event disabled="true" folded="false">
                     <Type value="BuiltinCommonInstructions::Comment" />
                     <Couleur r="255.000000" v="230.000000" b="109.000000" textR="0.000000" textG="0.000000" textB="0.000000" />
                     <Com1 value="GameInit&#x0A;" />
@@ -562,14 +581,6 @@
                             <Parametre value="init_game" />
                             <Parametre value="=" />
                             <Parametre value="0" />
-                        </Action>
-                        <Action>
-                            <Type value="MettreXY" />
-                            <Parametre value="ship" />
-                            <Parametre value="=" />
-                            <Parametre value="350" />
-                            <Parametre value="=" />
-                            <Parametre value="353" />
                         </Action>
                         <Action>
                             <Type value="MettreXY" />
@@ -638,7 +649,26 @@
                             <Parametre value="=" />
                             <Parametre value="373" />
                         </Action>
+                        <Action>
+                            <Type value="ModVarScene" />
+                            <Parametre value="" />
+                            <Parametre value="show_wave" />
+                            <Parametre value="=" />
+                            <Parametre value="1" />
+                        </Action>
                     </Actions>
+                </Event>
+                <Event disabled="false" folded="false">
+                    <Type value="BuiltinCommonInstructions::Link" />
+                    <Type value="Link" />
+                    <Limites includeAll="true" start="4294967295.000000" end="4294967295.000000" />
+                    <Scene value="ShowWave" />
+                </Event>
+                <Event disabled="false" folded="false">
+                    <Type value="BuiltinCommonInstructions::Link" />
+                    <Type value="Link" />
+                    <Limites includeAll="true" start="4294967295.000000" end="4294967295.000000" />
+                    <Scene value="WaveTimer" />
                 </Event>
                 <Event disabled="false" folded="false">
                     <Type value="BuiltinCommonInstructions::Standard" />
@@ -648,6 +678,13 @@
                             <Parametre value="" />
                             <Parametre value="Variable(meteor_interval)" />
                             <Parametre value='&quot;MeteorFall1&quot;' />
+                        </Condition>
+                        <Condition>
+                            <Type value="VarScene" Contraire="false" />
+                            <Parametre value="" />
+                            <Parametre value="meteor_fall" />
+                            <Parametre value="=" />
+                            <Parametre value="1" />
                         </Condition>
                     </Conditions>
                     <Actions>
@@ -930,10 +967,11 @@
                             </Conditions>
                             <Actions>
                                 <Action>
-                                    <Type value="MettreX" />
+                                    <Type value="AddForceXY" />
                                     <Parametre value="player" />
-                                    <Parametre value="-" />
-                                    <Parametre value="5" />
+                                    <Parametre value="-56" />
+                                    <Parametre value="0" />
+                                    <Parametre value="0" />
                                 </Action>
                                 <Action>
                                     <Type value="ChangeAnimation" />
@@ -1017,10 +1055,11 @@
                                     <Parametre value="no" />
                                 </Action>
                                 <Action>
-                                    <Type value="MettreX" />
+                                    <Type value="AddForceXY" />
                                     <Parametre value="player" />
-                                    <Parametre value="+" />
-                                    <Parametre value="5" />
+                                    <Parametre value="56" />
+                                    <Parametre value="0" />
+                                    <Parametre value="0" />
                                 </Action>
                                 <Action>
                                     <Type value="ModVarObjet" />
@@ -1101,23 +1140,6 @@
                         <Action>
                             <Type value="Delete" />
                             <Parametre value="meteor" />
-                            <Parametre value="" />
-                        </Action>
-                    </Actions>
-                </Event>
-                <Event disabled="false" folded="false">
-                    <Type value="BuiltinCommonInstructions::ForEach" />
-                    <Object value="Explosion" />
-                    <Conditions>
-                        <Condition>
-                            <Type value="AnimationEnded" Contraire="false" />
-                            <Parametre value="explosion" />
-                        </Condition>
-                    </Conditions>
-                    <Actions>
-                        <Action>
-                            <Type value="Delete" />
-                            <Parametre value="explosion" />
                             <Parametre value="" />
                         </Action>
                     </Actions>
@@ -1255,6 +1277,22 @@
                         </Event>
                     </Events>
                 </Event>
+                <Event disabled="false" folded="false">
+                    <Type value="BuiltinCommonInstructions::Standard" />
+                    <Conditions>
+                        <Condition>
+                            <Type value="AnimationEnded" Contraire="false" />
+                            <Parametre value="explosion" />
+                        </Condition>
+                    </Conditions>
+                    <Actions>
+                        <Action>
+                            <Type value="Delete" />
+                            <Parametre value="explosion" />
+                            <Parametre value="" />
+                        </Action>
+                    </Actions>
+                </Event>
             </Events>
         </Scene>
         <Scene nom="Menu" mangledName="Menu" r="209.000000" v="209.000000" b="209.000000" titre="" oglFOV="90.000000" oglZNear="1.000000" oglZFar="500.000000" standardSortMethod="true" stopSoundsOnStartup="true" disableInputWhenNotFocused="true">
@@ -1277,7 +1315,90 @@
             <Events />
         </Scene>
     </Scenes>
-    <ExternalEvents />
+    <ExternalEvents>
+        <ExternalEvents Name="ShowWave" AssociatedScene="Game" LastChangeTimeStamp="0">
+            <Events>
+                <Event disabled="false" folded="false">
+                    <Type value="BuiltinCommonInstructions::Standard" />
+                    <Conditions>
+                        <Condition>
+                            <Type value="VarScene" Contraire="false" />
+                            <Parametre value="" />
+                            <Parametre value="show_wave" />
+                            <Parametre value="=" />
+                            <Parametre value="1" />
+                        </Condition>
+                    </Conditions>
+                    <Actions>
+                        <Action>
+                            <Type value="ShowLayer" />
+                            <Parametre value="" />
+                            <Parametre value='&quot;WaveShow&quot;' />
+                        </Action>
+                        <Action>
+                            <Type value="TextObject::String" />
+                            <Parametre value="WaveText" />
+                            <Parametre value="=" />
+                            <Parametre value='&quot;WAVE &quot; + ToString(Variable(wave))' />
+                        </Action>
+                        <Action>
+                            <Type value="ResetTimer" />
+                            <Parametre value="" />
+                            <Parametre value='&quot;WaveHide&quot;' />
+                        </Action>
+                        <Action>
+                            <Type value="ModVarScene" />
+                            <Parametre value="" />
+                            <Parametre value="show_wave" />
+                            <Parametre value="=" />
+                            <Parametre value="0" />
+                        </Action>
+                        <Action>
+                            <Type value="ModVarScene" />
+                            <Parametre value="" />
+                            <Parametre value="meteor_fall" />
+                            <Parametre value="=" />
+                            <Parametre value="0" />
+                        </Action>
+                    </Actions>
+                </Event>
+                <Event disabled="false" folded="false">
+                    <Type value="BuiltinCommonInstructions::Standard" />
+                    <Conditions>
+                        <Condition>
+                            <Type value="Timer" Contraire="false" />
+                            <Parametre value="" />
+                            <Parametre value="1" />
+                            <Parametre value='&quot;WaveHide&quot;' />
+                        </Condition>
+                    </Conditions>
+                    <Actions>
+                        <Action>
+                            <Type value="HideLayer" />
+                            <Parametre value="" />
+                            <Parametre value='&quot;WaveShow&quot;' />
+                        </Action>
+                        <Action>
+                            <Type value="ModVarScene" />
+                            <Parametre value="" />
+                            <Parametre value="meteor_fall" />
+                            <Parametre value="=" />
+                            <Parametre value="1" />
+                        </Action>
+                    </Actions>
+                </Event>
+            </Events>
+        </ExternalEvents>
+        <ExternalEvents Name="WaveTimer" AssociatedScene="Game" LastChangeTimeStamp="0">
+            <Events>
+                <Event disabled="false" folded="false">
+                    <Type value="BuiltinCommonInstructions::Standard" />
+                    <Conditions />
+                    <Actions />
+                </Event>
+            </Events>
+        </ExternalEvents>
+    </ExternalEvents>
     <ExternalLayouts />
     <ExternalSourceFiles />
 </Project>
